@@ -9,7 +9,7 @@ A single-page web app for learning Polish vocabulary, built as a standalone HTML
 - **Flashcards** — Flip cards showing a Polish word on the front and English translation on the back. Includes word type metadata (noun gender, verb, adjective). Supports hints that reveal the first letter with blanks.
 - **Spelling** — Given an English word, type the Polish translation. Accepts answers with or without Polish diacritics (e.g. "zly" matches "zły"). Shows the exact spelling after answering. Includes an on-screen Polish character keyboard (ą, ć, ę, ł, ń, ó, ś, ź, ż).
 - **Multiple Choice** — Pick the correct translation from four options. Supports both directions: Polish → English and English → Polish.
-- **Listening** — Hear a Polish word spoken aloud (via browser Speech Synthesis API) and type its English meaning. Includes replay and hint buttons.
+- **Listening** — Hear a Polish word spoken aloud (via the browser's Speech Synthesis API, `pl-PL` locale, 0.85x speed) and type its English meaning. Includes a replay button and hints. Requires the browser/OS to have a Polish voice installed.
 - **Declension** — Practice noun declension by filling in a grid of cases (Nominative, Accusative, Genitive) in both singular and plural forms, plus identifying the noun's grammatical gender (m/f/n).
 
 ### Vocabulary

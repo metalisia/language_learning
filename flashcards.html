@@ -342,6 +342,52 @@
   }
   .no-words-msg h3 { font-size: 1.1rem; color: var(--text); margin-bottom: 8px; }
 
+  /* CONJUGATION */
+  .conj-grid {
+    display: grid; grid-template-columns: auto 1fr; gap: 8px;
+    align-items: center; margin-top: 20px; text-align: left;
+  }
+  .conj-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-align: right; padding-right: 8px; }
+  .conj-input {
+    padding: 7px 10px; border: 2px solid var(--border); border-radius: 8px;
+    font-size: 0.9rem; font-family: inherit; text-align: center; width: 100%;
+    outline: none; transition: border-color 0.2s; background: var(--bg); color: var(--text);
+  }
+  .conj-input:focus { border-color: var(--accent); }
+  .conj-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .conj-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .conj-correction { font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px; }
+  .ipa-text { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 6px; }
+  .pron-guide { margin-top: 16px; text-align: left; }
+  .pron-guide summary {
+    cursor: pointer; font-size: 0.78rem; color: var(--accent); font-weight: 500;
+    margin-bottom: 8px; user-select: none;
+  }
+  .pron-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  .pron-table th { text-align: left; padding: 4px 8px; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; }
+  .pron-table td { padding: 4px 8px; border-bottom: 1px solid var(--border); }
+  .pron-table td:first-child { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+  .pron-table td:nth-child(2) { font-style: italic; color: var(--text-muted); }
+
+  /* GENDER */
+  .gen-prompt { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; }
+  .gen-context { font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; }
+  .gen-type-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.7rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px;
+  }
+  .gen-type-adj { background: var(--accent-light); color: var(--accent); }
+  .gen-type-past { background: var(--warn-light); color: var(--warn); }
+
+  /* ERROR PATTERNS */
+  .error-section { margin-bottom: 20px; }
+  .error-bars { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .error-row { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; }
+  .error-label { width: 100px; text-align: right; color: var(--text-muted); font-size: 0.78rem; }
+  .error-bar-wrap { flex: 1; height: 18px; background: var(--border); border-radius: 4px; overflow: hidden; position: relative; }
+  .error-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; display: flex; align-items: center; padding-left: 6px; font-size: 0.68rem; color: #fff; font-weight: 600; }
+  .error-count { width: 30px; font-size: 0.78rem; color: var(--text-muted); }
+
   @media (max-width: 600px) {
     header { padding: 14px 18px 0; flex-direction: column; gap: 6px; }
     .mode-nav { padding: 10px 18px 0; gap: 0; }
@@ -488,6 +534,53 @@
 <div class="controls" id="decl-controls" style="display:none">
   <button class="btn btn-primary" onclick="decl_check()" id="decl-check-btn">Check</button>
   <button class="btn btn-primary" onclick="decl_next()" id="decl-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- CONJUGATION -->
+<div class="mode-section" id="mode-conjugation">
+  <div class="card-box" id="conj-card">
+    <div class="card-label">Conjugate this verb (present tense)</div>
+    <div class="card-word" id="conj-word">--</div>
+    <div class="word-meta" id="conj-en"></div>
+    <div class="ipa-text" id="conj-ipa"></div>
+    <div class="conj-grid" id="conj-grid">
+      <div class="conj-label">ja</div><input class="conj-input" id="cj-0" placeholder="ja...">
+      <div class="conj-label">ty</div><input class="conj-input" id="cj-1" placeholder="ty...">
+      <div class="conj-label">on/ona/ono</div><input class="conj-input" id="cj-2" placeholder="on/ona/ono...">
+      <div class="conj-label">my</div><input class="conj-input" id="cj-3" placeholder="my...">
+      <div class="conj-label">wy</div><input class="conj-input" id="cj-4" placeholder="wy...">
+      <div class="conj-label">oni/one</div><input class="conj-input" id="cj-5" placeholder="oni/one...">
+    </div>
+    <div class="pl-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
+    <details class="pron-guide">
+      <summary>Polish Pronunciation Guide</summary>
+      <table class="pron-table" id="pron-table"></table>
+    </details>
+  </div>
+</div>
+<div class="controls" id="conj-controls" style="display:none">
+  <button class="btn btn-primary" onclick="conj_check()" id="conj-check-btn">Check</button>
+  <button class="btn btn-primary" onclick="conj_next()" id="conj-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- GENDER -->
+<div class="mode-section" id="mode-gender">
+  <div class="card-box" id="gen-card">
+    <div class="gen-type-tag" id="gen-tag">--</div>
+    <div class="gen-prompt" id="gen-prompt">--</div>
+    <div class="card-word" id="gen-sentence">--</div>
+    <div class="gen-context" id="gen-context"></div>
+    <div class="spell-input-row">
+      <input type="text" class="spell-input" id="gen-input" placeholder="Type the correct form..." autocomplete="off">
+      <button class="btn btn-primary" onclick="gen_check()" id="gen-submit">Check</button>
+    </div>
+    <div class="pl-keyboard" id="gen-keyboard" style="margin-top:8px"></div>
+    <div class="spell-feedback" id="gen-feedback"></div>
+    <div class="spell-answer" id="gen-answer"></div>
+  </div>
+</div>
+<div class="controls" id="gen-controls" style="display:none">
+  <button class="btn btn-primary" onclick="gen_next()" id="gen-next-btn" style="display:none">Next</button>
 </div>
 
 <!-- PROGRESS -->
@@ -675,6 +768,125 @@ const ADJECTIVES = [
   ["wysoki","tall"],["niski","short"],["ciężki","heavy"],["lekki","light (weight)"],
 ];
 
+// Verb conjugations (present tense): [ja, ty, on/ona/ono, my, wy, oni/one]
+const VERB_CONJ = [
+  ["jestem","jesteś","jest","jesteśmy","jesteście","są"],
+  ["mam","masz","ma","mamy","macie","mają"],
+  ["jem","jesz","je","jemy","jecie","jedzą"],
+  ["piję","pijesz","pije","pijemy","pijecie","piją"],
+  ["idę","idziesz","idzie","idziemy","idziecie","idą"],
+  ["jadę","jedziesz","jedzie","jedziemy","jedziecie","jadą"],
+  ["robię","robisz","robi","robimy","robicie","robią"],
+  ["mówię","mówisz","mówi","mówimy","mówicie","mówią"],
+  ["widzę","widzisz","widzi","widzimy","widzicie","widzą"],
+  ["słyszę","słyszysz","słyszy","słyszymy","słyszycie","słyszą"],
+  ["chcę","chcesz","chce","chcemy","chcecie","chcą"],
+  ["mogę","możesz","może","możemy","możecie","mogą"],
+  ["muszę","musisz","musi","musimy","musicie","muszą"],
+  ["wiem","wiesz","wie","wiemy","wiecie","wiedzą"],
+  ["znam","znasz","zna","znamy","znacie","znają"],
+  ["lubię","lubisz","lubi","lubimy","lubicie","lubią"],
+  ["kocham","kochasz","kocha","kochamy","kochacie","kochają"],
+  ["czytam","czytasz","czyta","czytamy","czytacie","czytają"],
+  ["piszę","piszesz","pisze","piszemy","piszecie","piszą"],
+  ["kupuję","kupujesz","kupuje","kupujemy","kupujecie","kupują"],
+  ["pracuję","pracujesz","pracuje","pracujemy","pracujecie","pracują"],
+  ["uczę się","uczysz się","uczy się","uczymy się","uczycie się","uczą się"],
+  ["mieszkam","mieszkasz","mieszka","mieszkamy","mieszkacie","mieszkają"],
+  ["śpię","śpisz","śpi","śpimy","śpicie","śpią"],
+  ["gotuję","gotujesz","gotuje","gotujemy","gotujecie","gotują"],
+  ["myślę","myślisz","myśli","myślimy","myślicie","myślą"],
+  ["pytam","pytasz","pyta","pytamy","pytacie","pytają"],
+  ["odpowiadam","odpowiadasz","odpowiada","odpowiadamy","odpowiadacie","odpowiadają"],
+  ["daję","dajesz","daje","dajemy","dajecie","dają"],
+  ["biorę","bierzesz","bierze","bierzemy","bierzecie","biorą"],
+];
+const CONJ_LABELS = ["ja","ty","on/ona/ono","my","wy","oni/one"];
+
+// Verb IPA transcriptions
+const VERB_IPA = [
+  "/bɨtɕ/","/mjɛtɕ/","/jɛɕtɕ/","/pitɕ/","/iɕtɕ/","/ˈjɛxatɕ/",
+  "/ˈrɔbitɕ/","/ˈmuvitɕ/","/ˈviʥɛtɕ/","/ˈswɨʂɛtɕ/","/ˈxʨɛtɕ/","/mutɕ/",
+  "/ˈmuɕɛtɕ/","/ˈvjɛʥɛtɕ/","/znatɕ/","/ˈlubitɕ/","/ˈkɔxatɕ/","/ˈʧɨtatɕ/",
+  "/ˈpisatɕ/","/kuˈpɔvatɕ/","/praˈʦɔvatɕ/","/ˈuʧɨtɕ ɕɛ/","/ˈmjɛʂkatɕ/",
+  "/spatɕ/","/ɡɔˈtɔvatɕ/","/ˈmɨɕlɛtɕ/","/ˈpɨtatɕ/","/ɔtpɔˈvjadatɕ/",
+  "/ˈdavatɕ/","/bratɕ/",
+];
+
+// Adjective forms: [masculine, feminine, neuter]
+const ADJ_FORMS = [
+  ["duży","duża","duże"],["mały","mała","małe"],["dobry","dobra","dobre"],["zły","zła","złe"],
+  ["nowy","nowa","nowe"],["stary","stara","stare"],["piękny","piękna","piękne"],["brzydki","brzydka","brzydkie"],
+  ["szybki","szybka","szybkie"],["wolny","wolna","wolne"],["gorący","gorąca","gorące"],["zimny","zimna","zimne"],
+  ["drogi","droga","drogie"],["tani","tania","tanie"],["łatwy","łatwa","łatwe"],["trudny","trudna","trudne"],
+  ["wysoki","wysoka","wysokie"],["niski","niska","niskie"],["ciężki","ciężka","ciężkie"],["lekki","lekka","lekkie"],
+];
+
+// Verb past tense: [masc_1sg, fem_1sg, masc_3sg, fem_3sg, neut_3sg]
+const VERB_PAST = [
+  ["byłem","byłam","był","była","było"],
+  ["miałem","miałam","miał","miała","miało"],
+  ["jadłem","jadłam","jadł","jadła","jadło"],
+  ["piłem","piłam","pił","piła","piło"],
+  ["szedłem","szłam","szedł","szła","szło"],
+  ["jechałem","jechałam","jechał","jechała","jechało"],
+  ["robiłem","robiłam","robił","robiła","robiło"],
+  ["mówiłem","mówiłam","mówił","mówiła","mówiło"],
+  ["widziałem","widziałam","widział","widziała","widziało"],
+  ["słyszałem","słyszałam","słyszał","słyszała","słyszało"],
+  ["chciałem","chciałam","chciał","chciała","chciało"],
+  ["mogłem","mogłam","mógł","mogła","mogło"],
+  ["musiałem","musiałam","musiał","musiała","musiało"],
+  ["wiedziałem","wiedziałam","wiedział","wiedziała","wiedziało"],
+  ["znałem","znałam","znał","znała","znało"],
+  ["lubiłem","lubiłam","lubił","lubiła","lubiło"],
+  ["kochałem","kochałam","kochał","kochała","kochało"],
+  ["czytałem","czytałam","czytał","czytała","czytało"],
+  ["pisałem","pisałam","pisał","pisała","pisało"],
+  ["kupowałem","kupowałam","kupował","kupowała","kupowało"],
+  ["pracowałem","pracowałam","pracował","pracowała","pracowało"],
+  ["uczyłem się","uczyłam się","uczył się","uczyła się","uczyło się"],
+  ["mieszkałem","mieszkałam","mieszkał","mieszkała","mieszkało"],
+  ["spałem","spałam","spał","spała","spało"],
+  ["gotowałem","gotowałam","gotował","gotowała","gotowało"],
+  ["myślałem","myślałam","myślał","myślała","myślało"],
+  ["pytałem","pytałam","pytał","pytała","pytało"],
+  ["odpowiadałem","odpowiadałam","odpowiadał","odpowiadała","odpowiadało"],
+  ["dawałem","dawałam","dawał","dawała","dawało"],
+  ["brałem","brałam","brał","brała","brało"],
+];
+
+// Example nouns for gender-aware adjective practice
+const GENDER_NOUNS = [
+  {pl:"dom",en:"house",g:"m"},{pl:"kot",en:"cat",g:"m"},{pl:"pies",en:"dog",g:"m"},
+  {pl:"stół",en:"table",g:"m"},{pl:"samochód",en:"car",g:"m"},
+  {pl:"kobieta",en:"woman",g:"f"},{pl:"kawa",en:"coffee",g:"f"},{pl:"książka",en:"book",g:"f"},
+  {pl:"szkoła",en:"school",g:"f"},{pl:"noc",en:"night",g:"f"},
+  {pl:"dziecko",en:"child",g:"n"},{pl:"okno",en:"window",g:"n"},{pl:"mleko",en:"milk",g:"n"},
+  {pl:"miasto",en:"city",g:"n"},{pl:"jajko",en:"egg",g:"n"},
+];
+
+// Polish pronunciation guide for English speakers
+const PRONUNCIATION_GUIDE = [
+  {sound:"ą",ipa:"/ɔ̃/",desc:"Nasal 'o', like French 'on'. Before b/p becomes 'om'."},
+  {sound:"ć",ipa:"/tɕ/",desc:"Soft 'ch', like 'cheese' but softer. Tongue touches palate."},
+  {sound:"ę",ipa:"/ɛ̃/",desc:"Nasal 'e', like French 'in'. At word end often just /ɛ/."},
+  {sound:"ł",ipa:"/w/",desc:"Like English 'w'. 'Łóżko' sounds like 'woosh-ko'."},
+  {sound:"ń",ipa:"/ɲ/",desc:"Like 'ny' in 'canyon'. Soft nasal n."},
+  {sound:"ó",ipa:"/u/",desc:"Same sound as 'u'. 'Góra' sounds like 'goora'."},
+  {sound:"ś",ipa:"/ɕ/",desc:"Soft 'sh', tongue near palate. Softer than 'sz'."},
+  {sound:"ź",ipa:"/ʑ/",desc:"Soft 'zh', voiced version of ś."},
+  {sound:"ż/rz",ipa:"/ʐ/",desc:"Hard 'zh', like 'pleasure'. ż and rz sound the same."},
+  {sound:"sz",ipa:"/ʂ/",desc:"Hard 'sh', like English 'sh' in 'ship'."},
+  {sound:"cz",ipa:"/ʈʂ/",desc:"Hard 'ch', like English 'ch' in 'church'."},
+  {sound:"dz",ipa:"/dz/",desc:"Like 'ds' in 'beds'."},
+  {sound:"dź",ipa:"/dʑ/",desc:"Soft 'j', like 'jeans' but softer."},
+  {sound:"dż",ipa:"/dʐ/",desc:"Hard 'j', like English 'j' in 'judge'."},
+  {sound:"ch/h",ipa:"/x/",desc:"Like Scottish 'loch'. ch and h sound the same."},
+  {sound:"w",ipa:"/v/",desc:"Like English 'v'. 'Woda' sounds like 'voda'."},
+  {sound:"y",ipa:"/ɨ/",desc:"Between 'i' and 'u'. Like 'i' in 'bit' but further back."},
+];
+
 const NOUN_GROUPS = {
   "All Nouns": null, "People": [0,9], "Animals": [10,19], "Food": [20,29],
   "Home": [30,39], "Nature": [40,49], "Body": [50,59], "Objects": [60,69],
@@ -683,7 +895,8 @@ const NOUN_GROUPS = {
 
 const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
-  ["listening","Listening"],["declension","Declension"],["progress","Progress"],
+  ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
+  ["gender","Gender"],["progress","Progress"],
 ];
 
 // ===================== STATE =====================
@@ -693,6 +906,8 @@ let activeGroup = "All Nouns";
 let mc_dir = "pe", fc_flipped = false, sp_answered = false, mc_answered = false;
 let li_answered = false, decl_answered = false, decl_genderPick = null;
 let lastFocusedInput = null;
+let conj_answered = false, gen_answered = false;
+let gen_deck = [], gen_current = 0, gen_correct = 0, gen_missed = [];
 
 // ===================== SRS (Leitner) =====================
 const BOX_INTERVALS = [0, 1, 2, 4, 8, 16]; // days per box (box 0 unused)
@@ -759,6 +974,25 @@ function recordSession(reviewed, numCorrect, newWords) {
   saveStats(s);
 }
 
+// ===================== ERROR PATTERNS =====================
+function getErrors() {
+  try { return JSON.parse(localStorage.getItem('fiszki_errors')) || { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
+  catch { return { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
+}
+function saveErrors(e) { localStorage.setItem('fiszki_errors', JSON.stringify(e)); }
+
+function recordError(category) {
+  const e = getErrors();
+  e[category] = (e[category] || 0) + 1;
+  saveErrors(e);
+}
+
+function classifySpellingError(userAnswer, correctAnswer) {
+  if (!userAnswer.trim()) return 'vocabulary';
+  if (normalize(userAnswer) === normalize(correctAnswer) && userAnswer.trim().toLowerCase() !== correctAnswer.toLowerCase()) return 'diacritics';
+  return 'vocabulary';
+}
+
 // ===================== UTILITIES =====================
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -821,7 +1055,7 @@ function insertChar(inputId, ch) {
 
 // Track last focused declension input
 document.addEventListener('focusin', (e) => {
-  if (e.target.classList && e.target.classList.contains('decl-input') && !e.target.disabled) {
+  if (e.target.classList && (e.target.classList.contains('decl-input') || e.target.classList.contains('conj-input')) && !e.target.disabled) {
     lastFocusedInput = e.target.id;
   }
 });
@@ -851,14 +1085,15 @@ function switchMode(mode) {
   if (section) section.classList.add('active');
 
   // Hide all controls
-  ['fc','sp','mc','li','decl'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
 
   // Show/hide non-progress UI
   const isProgress = mode === 'progress';
-  document.getElementById('group-bar').style.display = isProgress ? 'none' : '';
+  const hideGroups = isProgress || mode === 'conjugation' || mode === 'gender';
+  document.getElementById('group-bar').style.display = hideGroups ? 'none' : '';
   document.getElementById('progress-bar-wrap').style.display = isProgress ? 'none' : '';
   document.getElementById('stats-bar').style.display = isProgress ? 'none' : '';
   document.getElementById('results').classList.remove('visible');
@@ -879,11 +1114,19 @@ function switchMode(mode) {
   } else if (mode === 'declension') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next';
     kb.style.display = '';
+  } else if (mode === 'conjugation') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>Tab</kbd> next field';
+    kb.style.display = '';
+  } else if (mode === 'gender') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next';
+    kb.style.display = '';
   } else {
     kb.style.display = 'none';
   }
 
   if (isProgress) { renderProgress(); return; }
+  if (mode === 'conjugation') { conj_startRound(); return; }
+  if (mode === 'gender') { gen_startRound(); return; }
   startRound();
 }
 
@@ -926,7 +1169,7 @@ function startRound(wordList) {
   }
 
   // Show relevant controls
-  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',declension:'decl'}[currentMode];
+  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',declension:'decl',conjugation:'conj',gender:'gen'}[currentMode];
   if (ctrlId) document.getElementById(ctrlId + '-controls').style.display = '';
 
   showCurrent();
@@ -970,7 +1213,7 @@ function finishRound() {
 function showResults() {
   const section = document.getElementById('mode-' + currentMode);
   if (section) section.style.display = 'none';
-  ['fc','sp','mc','li','decl'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1017,7 +1260,7 @@ function fc_show() {
   document.getElementById('fc-hint').textContent = '';
   const meta = [];
   if (w.type === 'noun') meta.push(w.gender === 'pl' ? 'noun (plural only)' : `noun (${w.gender})`);
-  else if (w.type === 'verb') meta.push('verb');
+  else if (w.type === 'verb') { meta.push('verb'); if (VERB_IPA[w.idx]) meta.push(VERB_IPA[w.idx]); }
   else if (w.type === 'adj') meta.push('adjective');
   document.getElementById('fc-meta').textContent = meta.join(' ');
 }
@@ -1084,6 +1327,7 @@ function sp_check() {
     inp.className = 'spell-input incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
     ans.textContent = 'Answer: ' + w.pl;
+    recordError(classifySpellingError(inp.value, w.pl));
     markWord(w, false);
   }
   updateProgress();
@@ -1139,7 +1383,7 @@ function mc_pick(btn) {
   });
 
   const isCorrect = btn.dataset.value === correctAns;
-  if (!isCorrect) btn.classList.add('incorrect');
+  if (!isCorrect) { btn.classList.add('incorrect'); recordError('vocabulary'); }
   markWord(w, isCorrect);
   document.getElementById('mc-next-btn').style.display = '';
   updateProgress();
@@ -1194,6 +1438,7 @@ function li_check() {
     inp.className = 'spell-input incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
     ans.textContent = w.pl + ' = ' + w.en;
+    recordError('vocabulary');
     markWord(w, false);
   }
   updateProgress();
@@ -1273,7 +1518,7 @@ function decl_check() {
     if (b.dataset.g === answers.gender) b.classList.add('correct');
     else if (b.dataset.g === decl_genderPick && decl_genderPick !== answers.gender) b.classList.add('incorrect');
   });
-  if (decl_genderPick !== answers.gender) allCorrect = false;
+  if (decl_genderPick !== answers.gender) { allCorrect = false; recordError('gender'); }
 
   // Check case inputs
   ['d-nom-pl','d-acc-sg','d-acc-pl','d-gen-sg','d-gen-pl'].forEach(id => {
@@ -1285,6 +1530,7 @@ function decl_check() {
     } else {
       inp.classList.add('incorrect');
       allCorrect = false;
+      recordError(classifySpellingError(inp.value, correct) === 'diacritics' ? 'diacritics' : 'case_form');
       const corr = document.createElement('div');
       corr.className = 'decl-correction';
       corr.textContent = correct;
@@ -1299,6 +1545,233 @@ function decl_check() {
 }
 
 function decl_next() { if (!decl_answered) return; current++; showCurrent(); }
+
+// ===================== CONJUGATION =====================
+function conj_startRound() {
+  deck = shuffle(VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i })));
+  current = 0; correct = 0; missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-conjugation').style.display = '';
+  document.getElementById('conj-controls').style.display = '';
+  if (deck.length === 0) { showNoWords(); return; }
+  conj_show();
+  updateProgress();
+}
+
+function conj_show() {
+  conj_answered = false;
+  const w = deck[current];
+  const v = VERBS[w.idx];
+  document.getElementById('conj-word').textContent = v[0];
+  document.getElementById('conj-en').textContent = '(' + v[1] + ')';
+  document.getElementById('conj-ipa').textContent = VERB_IPA[w.idx] || '';
+
+  for (let i = 0; i < 6; i++) {
+    const inp = document.getElementById('cj-' + i);
+    inp.value = ''; inp.className = 'conj-input'; inp.disabled = false;
+    const next = inp.nextElementSibling;
+    if (next && next.classList.contains('conj-correction')) next.remove();
+  }
+  document.getElementById('conj-check-btn').style.display = '';
+  document.getElementById('conj-next-btn').style.display = 'none';
+  buildPlKeyboard('conj-keyboard', 'cj-0');
+
+  // Build pronunciation guide table
+  const tbl = document.getElementById('pron-table');
+  tbl.innerHTML = '<tr><th>Letter(s)</th><th>IPA</th><th>For English speakers</th></tr>' +
+    PRONUNCIATION_GUIDE.map(p => `<tr><td>${p.sound}</td><td>${p.ipa}</td><td>${p.desc}</td></tr>`).join('');
+
+  document.querySelectorAll('#conj-grid .conj-input').forEach(inp => {
+    inp.onfocus = () => buildPlKeyboard('conj-keyboard', inp.id);
+  });
+  document.getElementById('cj-0').focus();
+}
+
+function conj_check() {
+  if (conj_answered) return;
+  conj_answered = true;
+  const w = deck[current];
+  const forms = VERB_CONJ[w.idx];
+  let allCorrect = true;
+
+  for (let i = 0; i < 6; i++) {
+    const inp = document.getElementById('cj-' + i);
+    inp.disabled = true;
+    if (plEqual(inp.value, forms[i])) {
+      inp.classList.add('correct');
+    } else {
+      inp.classList.add('incorrect');
+      allCorrect = false;
+      if (classifySpellingError(inp.value, forms[i]) === 'diacritics') recordError('diacritics');
+      else recordError('conjugation');
+      const corr = document.createElement('div');
+      corr.className = 'conj-correction';
+      corr.textContent = forms[i];
+      inp.insertAdjacentElement('afterend', corr);
+    }
+  }
+
+  markWord(w, allCorrect);
+  document.getElementById('conj-check-btn').style.display = 'none';
+  document.getElementById('conj-next-btn').style.display = '';
+  updateProgress();
+}
+
+function conj_next() { if (!conj_answered) return; current++; if (current >= deck.length) finishRound(); else { conj_show(); updateProgress(); } }
+
+// ===================== GENDER-AWARE PRACTICE =====================
+function gen_buildExercises() {
+  const exercises = [];
+
+  // Type 1: Adjective agreement with nouns
+  ADJ_FORMS.forEach((forms, ai) => {
+    const adj = ADJECTIVES[ai];
+    GENDER_NOUNS.forEach(noun => {
+      const gi = noun.g === 'm' ? 0 : noun.g === 'f' ? 1 : 2;
+      const genderName = noun.g === 'm' ? 'masculine' : noun.g === 'f' ? 'feminine' : 'neuter';
+      exercises.push({
+        type: 'adj',
+        prompt: `_____ ${noun.pl}`,
+        hint: `${adj[1]} ${noun.en} (${genderName})`,
+        answer: forms[gi],
+        display: `${forms[gi]} ${noun.pl}`,
+        id: 'ga_' + ai + '_' + noun.pl,
+      });
+    });
+  });
+
+  // Type 2: Past tense 1st person (male/female speaker)
+  VERB_PAST.forEach((forms, vi) => {
+    const verb = VERBS[vi];
+    exercises.push({
+      type: 'past',
+      prompt: `Ja _____. (male speaker)`,
+      hint: `I ${verb[1].replace('to ','')} (past, male)`,
+      answer: forms[0],
+      display: `Ja ${forms[0]}.`,
+      id: 'gp_m1_' + vi,
+    });
+    exercises.push({
+      type: 'past',
+      prompt: `Ja _____. (female speaker)`,
+      hint: `I ${verb[1].replace('to ','')} (past, female)`,
+      answer: forms[1],
+      display: `Ja ${forms[1]}.`,
+      id: 'gp_f1_' + vi,
+    });
+  });
+
+  // Type 3: Past tense 3rd person (he/she/it)
+  VERB_PAST.forEach((forms, vi) => {
+    const verb = VERBS[vi];
+    exercises.push({
+      type: 'past',
+      prompt: `On _____.`,
+      hint: `He ${verb[1].replace('to ','')} (past)`,
+      answer: forms[2],
+      display: `On ${forms[2]}.`,
+      id: 'gp_m3_' + vi,
+    });
+    exercises.push({
+      type: 'past',
+      prompt: `Ona _____.`,
+      hint: `She ${verb[1].replace('to ','')} (past)`,
+      answer: forms[3],
+      display: `Ona ${forms[3]}.`,
+      id: 'gp_f3_' + vi,
+    });
+    exercises.push({
+      type: 'past',
+      prompt: `Ono _____.`,
+      hint: `It ${verb[1].replace('to ','')} (past)`,
+      answer: forms[4],
+      display: `Ono ${forms[4]}.`,
+      id: 'gp_n3_' + vi,
+    });
+  });
+
+  return exercises;
+}
+
+function gen_startRound() {
+  const all = gen_buildExercises();
+  gen_deck = shuffle(all).slice(0, 20); // Pick 20 random exercises per round
+  gen_current = 0; gen_correct = 0; gen_missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-gender').style.display = '';
+  document.getElementById('gen-controls').style.display = '';
+  // Update progress bar for gender mode
+  deck = gen_deck; current = 0; correct = 0; missed = [];
+  gen_show();
+  updateProgress();
+}
+
+function gen_show() {
+  gen_answered = false;
+  const ex = gen_deck[gen_current];
+  const tag = document.getElementById('gen-tag');
+  tag.textContent = ex.type === 'adj' ? 'Adjective Agreement' : 'Past Tense Gender';
+  tag.className = 'gen-type-tag ' + (ex.type === 'adj' ? 'gen-type-adj' : 'gen-type-past');
+
+  document.getElementById('gen-prompt').textContent = 'Fill in the correct form:';
+  document.getElementById('gen-sentence').textContent = ex.prompt;
+  document.getElementById('gen-context').textContent = ex.hint;
+
+  const inp = document.getElementById('gen-input');
+  inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
+  document.getElementById('gen-submit').style.display = '';
+  document.getElementById('gen-next-btn').style.display = 'none';
+  document.getElementById('gen-feedback').textContent = '';
+  document.getElementById('gen-feedback').className = 'spell-feedback';
+  document.getElementById('gen-answer').textContent = '';
+  buildPlKeyboard('gen-keyboard', 'gen-input');
+  inp.focus();
+}
+
+function gen_check() {
+  if (gen_answered || gen_current >= gen_deck.length) return;
+  gen_answered = true;
+  const ex = gen_deck[gen_current];
+  const inp = document.getElementById('gen-input');
+  inp.disabled = true;
+  document.getElementById('gen-submit').style.display = 'none';
+  document.getElementById('gen-next-btn').style.display = '';
+  const fb = document.getElementById('gen-feedback');
+  const ans = document.getElementById('gen-answer');
+
+  if (plEqual(inp.value, ex.answer)) {
+    inp.className = 'spell-input correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    if (inp.value.trim().toLowerCase() !== ex.answer.toLowerCase()) {
+      ans.textContent = 'Exact: ' + ex.display;
+    }
+    gen_correct++; correct++;
+  } else {
+    inp.className = 'spell-input incorrect';
+    fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
+    ans.textContent = 'Answer: ' + ex.display;
+    gen_missed.push({ pl: ex.answer, en: ex.hint });
+    missed.push({ pl: ex.answer, en: ex.hint });
+    // Classify the error
+    if (classifySpellingError(inp.value, ex.answer) === 'diacritics') recordError('diacritics');
+    else recordError('gender');
+  }
+  current = gen_current + 1;
+  updateProgress();
+}
+
+function gen_next() {
+  if (!gen_answered) return;
+  gen_current++;
+  current = gen_current;
+  if (gen_current >= gen_deck.length) {
+    deck = gen_deck;
+    finishRound();
+  } else {
+    gen_show();
+    updateProgress();
+  }
+}
 
 // ===================== PROGRESS PAGE =====================
 function renderProgress() {
@@ -1358,6 +1831,50 @@ function renderProgress() {
     `<div class="mastery-legend-item"><div class="mastery-dot" style="background:${boxColors[i]}"></div>${l}: ${boxes[i]}</div>`
   ).join('');
 
+  // Error pattern analysis
+  const errors = getErrors();
+  const errorCategories = [
+    { key: 'diacritics', label: 'Diacritics', color: '#f59e0b', desc: 'Missing or wrong Polish special characters' },
+    { key: 'gender', label: 'Gender', color: '#ec4899', desc: 'Wrong masculine/feminine/neuter form' },
+    { key: 'case_form', label: 'Case Forms', color: '#8b5cf6', desc: 'Wrong noun declension' },
+    { key: 'conjugation', label: 'Conjugation', color: '#06b6d4', desc: 'Wrong verb form' },
+    { key: 'vocabulary', label: 'Vocabulary', color: '#ef4444', desc: 'Wrong word or meaning' },
+  ];
+  const maxErr = Math.max(1, ...errorCategories.map(c => errors[c.key] || 0));
+  const totalErrors = errorCategories.reduce((s, c) => s + (errors[c.key] || 0), 0);
+
+  const errorSection = document.getElementById('error-section');
+  if (!errorSection) {
+    const sec = document.createElement('div');
+    sec.className = 'error-section card-box';
+    sec.id = 'error-section';
+    document.getElementById('weak-section').insertAdjacentElement('beforebegin', sec);
+  }
+  const errSec = document.getElementById('error-section');
+  if (totalErrors > 0) {
+    errSec.style.display = '';
+    errSec.innerHTML = '<h3 class="chart-section" style="margin-bottom:0;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Error Patterns</h3>' +
+      '<div style="font-size:0.78rem;color:var(--text-muted);margin:6px 0 12px">Total errors: ' + totalErrors + '. Focus on your weakest areas.</div>' +
+      '<div class="error-bars">' + errorCategories.map(c => {
+        const count = errors[c.key] || 0;
+        const pct = count / maxErr * 100;
+        return `<div class="error-row">
+          <div class="error-label">${c.label}</div>
+          <div class="error-bar-wrap"><div class="error-bar-fill" style="width:${pct}%;background:${c.color}">${count > 0 ? count : ''}</div></div>
+          <div class="error-count">${count}</div>
+        </div>`;
+      }).join('') + '</div>' +
+      '<div style="margin-top:12px;font-size:0.72rem;color:var(--text-muted)">' +
+      errorCategories.filter(c => (errors[c.key] || 0) > 0).sort((a,b) => (errors[b.key]||0) - (errors[a.key]||0))
+        .slice(0,2).map(c => `<strong>${c.label}:</strong> ${c.desc}`).join(' &bull; ') +
+      '</div>' +
+      '<div style="margin-top:10px"><button class="btn btn-sm" onclick="if(confirm(\'Reset error stats?\')){saveErrors({diacritics:0,gender:0,case_form:0,conjugation:0,vocabulary:0});renderProgress();}">Reset Error Stats</button></div>';
+  } else {
+    errSec.style.display = '';
+    errSec.innerHTML = '<h3 class="chart-section" style="margin-bottom:0;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Error Patterns</h3>' +
+      '<div style="padding:12px;color:var(--text-muted);font-size:0.85rem">No errors tracked yet. Practice more to see your patterns!</div>';
+  }
+
   // Weak words
   const weak = allWords
     .filter(w => srs[w.id] && srs[w.id].reviews >= 2 && srs[w.id].box <= 1)
@@ -1402,6 +1919,10 @@ document.addEventListener('keydown', (e) => {
     else if ((e.key === 'r' || e.key === 'R') && !inInput) li_play();
   } else if (currentMode === 'declension') {
     if (e.key === 'Enter') { e.preventDefault(); decl_answered ? decl_next() : decl_check(); }
+  } else if (currentMode === 'conjugation') {
+    if (e.key === 'Enter') { e.preventDefault(); conj_answered ? conj_next() : conj_check(); }
+  } else if (currentMode === 'gender') {
+    if (e.key === 'Enter') { e.preventDefault(); gen_answered ? gen_next() : gen_check(); }
   }
 });
 
