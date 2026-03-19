@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schede - Italian Language Trainer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --accent-light: #e8eefb;
+    --text: #1a1a1a;
+    --text-muted: #888;
+    --border: #dde1e8;
+    --correct: #16a34a;
+    --correct-light: #dcfce7;
+    --correct-border: #86efac;
+    --incorrect: #dc2626;
+    --incorrect-light: #fee2e2;
+    --incorrect-border: #fca5a5;
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --radius: 12px;
+    --warn: #f59e0b;
+    --warn-light: #fef3c7;
+  }
+
+  [data-theme="dark"] {
+    --bg: #111318;
+    --card-bg: #1a1d24;
+    --accent: #5b8def;
+    --accent-hover: #7da5f7;
+    --accent-light: #1e2a42;
+    --text: #e4e6ea;
+    --text-muted: #777d8a;
+    --border: #2a2e38;
+    --correct: #34d399;
+    --correct-light: #0d2a1f;
+    --correct-border: #166534;
+    --incorrect: #f87171;
+    --incorrect-light: #2a1015;
+    --incorrect-border: #7f1d1d;
+    --shadow: 0 2px 16px rgba(0,0,0,0.25);
+    --warn: #fbbf24;
+    --warn-light: #2a2410;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* HEADER */
+  header {
+    width: 100%; max-width: 900px; padding: 20px 32px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  header h1 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; }
+  header h1 span { color: var(--text-muted); font-weight: 400; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .stats { display: flex; gap: 16px; font-size: 0.82rem; color: var(--text-muted); }
+  .stats strong { color: var(--text); font-weight: 600; }
+
+  .dark-toggle {
+    background: none; border: 1px solid var(--border); border-radius: 100px;
+    padding: 6px 10px; cursor: pointer; font-size: 0.85rem; color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .dark-toggle:hover { border-color: var(--accent); color: var(--text); }
+
+  /* MODE NAV */
+  .mode-nav-wrap {
+    width: 100%; max-width: 900px; padding: 14px 32px 0;
+    display: flex; align-items: stretch; position: relative;
+    border-bottom: 1px solid var(--border); margin-bottom: 18px;
+  }
+  .mode-nav-arrow {
+    background: none; border: none; cursor: pointer; padding: 0 6px;
+    font-size: 1.1rem; color: var(--text-muted); transition: color 0.15s;
+    display: flex; align-items: center; flex-shrink: 0;
+  }
+  .mode-nav-arrow:hover { color: var(--accent); }
+  .mode-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
+  .mode-nav {
+    display: flex; gap: 2px; overflow-x: hidden; scroll-behavior: smooth;
+    flex: 1; -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .mode-nav::-webkit-scrollbar { display: none; }
+  .mode-tab {
+    padding: 9px 16px; border: none; background: none; cursor: pointer;
+    font-size: 0.82rem; color: var(--text-muted); font-weight: 500;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .mode-tab:hover { color: var(--text); }
+  .mode-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* GROUPS */
+  .group-selector { width: 100%; max-width: 900px; padding: 0 32px; margin-bottom: 16px; }
+  .group-selector label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); margin-bottom: 6px; display: block;
+  }
+  .groups { display: flex; flex-wrap: wrap; gap: 6px; }
+  .group-btn {
+    padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.8rem;
+    color: var(--text-muted); transition: all 0.15s;
+  }
+  .group-btn:hover { border-color: var(--accent); color: var(--text); }
+  .group-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* PROGRESS BAR */
+  .progress-wrap { width: 100%; max-width: 900px; padding: 0 32px; margin-bottom: 24px; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+  .progress-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 5px; text-align: right; }
+
+  /* SHARED */
+  .mode-section { display: none; width: 100%; max-width: 540px; padding: 0 32px; }
+  .mode-section.active { display: block; }
+  .card-box {
+    background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow);
+    border: 1px solid var(--border); padding: 36px; text-align: center; margin-bottom: 20px;
+  }
+  .card-label {
+    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .card-word {
+    font-size: 2rem; font-weight: 600; letter-spacing: -0.02em;
+    text-align: center; line-height: 1.3;
+  }
+  .controls {
+    display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+    justify-content: center; width: 100%; max-width: 540px; padding: 0 32px;
+  }
+  .btn {
+    padding: 9px 20px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.82rem;
+    color: var(--text); transition: all 0.15s; font-weight: 500; font-family: inherit;
+  }
+  .btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-skip { background: transparent; color: var(--text-muted); }
+  .btn-hint { background: transparent; color: var(--text-muted); border-style: dashed; }
+  .btn-sm { padding: 6px 14px; font-size: 0.78rem; }
+
+  .keyboard-hints {
+    font-size: 0.72rem; color: var(--text-muted); margin-bottom: 32px;
+    opacity: 0.5; text-align: center; padding: 0 32px;
+  }
+  .keyboard-hints kbd {
+    display: inline-block; padding: 2px 6px; border: 1px solid var(--border);
+    border-radius: 4px; background: var(--card-bg); font-family: inherit;
+    font-size: 0.68rem; margin: 0 2px;
+  }
+
+  /* FLASHCARD */
+  .card-area { perspective: 1000px; }
+  .card-container {
+    position: relative; width: 100%; aspect-ratio: 4 / 3;
+    cursor: pointer; margin-bottom: 20px;
+  }
+  .card {
+    width: 100%; height: 100%; position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow);
+    border: 1px solid var(--border); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 36px; user-select: none;
+  }
+  .card-back { transform: rotateY(180deg); }
+  .card-back .card-word { color: var(--accent); }
+  .hint-text { margin-top: 16px; font-size: 0.95rem; color: var(--text-muted); letter-spacing: 0.12em; min-height: 1.4em; }
+  .click-hint { position: absolute; bottom: 16px; font-size: 0.72rem; color: var(--text-muted); opacity: 0.5; }
+  .word-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; }
+
+  /* SPELLING */
+  .spell-prompt { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 6px; }
+  .spell-input-row { display: flex; gap: 8px; margin-top: 20px; justify-content: center; }
+  .spell-input {
+    padding: 9px 16px; border: 2px solid var(--border); border-radius: var(--radius);
+    font-size: 1.05rem; font-family: inherit; width: 220px; text-align: center;
+    outline: none; transition: border-color 0.2s; background: var(--bg); color: var(--text);
+  }
+  .spell-input:focus { border-color: var(--accent); }
+  .spell-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .spell-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .spell-feedback { margin-top: 14px; font-size: 0.92rem; font-weight: 600; min-height: 1.4em; }
+  .spell-feedback.correct { color: var(--correct); }
+  .spell-feedback.incorrect { color: var(--incorrect); }
+  .spell-answer { margin-top: 4px; font-size: 0.85rem; color: var(--text-muted); min-height: 1.2em; }
+
+  /* ITALIAN KEYBOARD */
+  .it-keyboard {
+    display: flex; gap: 4px; justify-content: center; margin-top: 10px; flex-wrap: wrap;
+  }
+  .it-key {
+    width: 32px; height: 30px; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.85rem; color: var(--text);
+    display: flex; align-items: center; justify-content: center; transition: all 0.1s;
+    font-family: inherit;
+  }
+  .it-key:hover { border-color: var(--accent); background: var(--accent-light); }
+
+  /* MULTIPLE CHOICE */
+  .mc-direction { margin-bottom: 16px; display: flex; justify-content: center; gap: 6px; }
+  .mc-dir-btn {
+    padding: 5px 12px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.75rem;
+    color: var(--text-muted); transition: all 0.15s;
+  }
+  .mc-dir-btn:hover { border-color: var(--accent); }
+  .mc-dir-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .mc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
+  .mc-option {
+    padding: 12px 16px; border: 2px solid var(--border); border-radius: var(--radius);
+    background: var(--card-bg); cursor: pointer; font-size: 0.9rem; text-align: center;
+    transition: all 0.15s; font-family: inherit; font-weight: 500; color: var(--text);
+  }
+  .mc-option:hover:not(.disabled) { border-color: var(--accent); background: var(--accent-light); }
+  .mc-option.correct { border-color: var(--correct); background: var(--correct-light); color: var(--correct); }
+  .mc-option.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); color: var(--incorrect); }
+  .mc-option.disabled { cursor: default; opacity: 0.5; }
+  .mc-option.disabled.correct { opacity: 1; }
+
+  /* LISTENING */
+  .listen-btn {
+    width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--border);
+    background: var(--card-bg); cursor: pointer; font-size: 2rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; transition: all 0.2s; color: var(--accent);
+  }
+  .listen-btn:hover { border-color: var(--accent); background: var(--accent-light); transform: scale(1.05); }
+  .listen-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px; }
+
+  /* ARTICLES */
+  .art-grid {
+    display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px;
+    align-items: center; margin-top: 20px; text-align: left;
+  }
+  .art-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+  .art-col-head { font-size: 0.7rem; color: var(--text-muted); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+  .art-input {
+    padding: 7px 10px; border: 2px solid var(--border); border-radius: 8px;
+    font-size: 0.9rem; font-family: inherit; text-align: center; width: 100%;
+    outline: none; transition: border-color 0.2s; background: var(--bg); color: var(--text);
+  }
+  .art-input:focus { border-color: var(--accent); }
+  .art-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .art-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .art-input.given { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .art-input:disabled { opacity: 0.8; }
+  .art-cell { display: flex; flex-direction: column; }
+  .art-correction {
+    font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px;
+  }
+  .gender-picker { display: flex; gap: 6px; justify-content: center; margin: 16px 0 8px; }
+  .gender-btn {
+    padding: 6px 18px; border: 2px solid var(--border); border-radius: 8px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.85rem; font-weight: 600;
+    color: var(--text-muted); transition: all 0.15s; font-family: inherit;
+  }
+  .gender-btn:hover { border-color: var(--accent); }
+  .gender-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+  .gender-btn.correct { border-color: var(--correct); background: var(--correct-light); color: var(--correct); }
+  .gender-btn.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); color: var(--incorrect); }
+  .gender-btn.disabled { cursor: default; pointer-events: none; }
+
+  /* PROGRESS */
+  .progress-page { max-width: 700px !important; }
+  .stat-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; text-align: center;
+  }
+  .stat-card .val { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+  .chart-section { margin-bottom: 20px; }
+  .chart-section h3 {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 100px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar {
+    width: 100%; border-radius: 4px 4px 0 0; background: var(--accent);
+    min-height: 2px; transition: height 0.5s;
+  }
+  .bar-label { font-size: 0.65rem; color: var(--text-muted); }
+  .bar-val { font-size: 0.65rem; color: var(--text-muted); }
+
+  .mastery-section { margin-bottom: 20px; }
+  .mastery-bar {
+    display: flex; height: 24px; border-radius: 6px; overflow: hidden;
+    background: var(--border); margin-top: 8px;
+  }
+  .mastery-seg { transition: width 0.5s; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #fff; font-weight: 600; }
+  .mastery-legend { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .mastery-legend-item { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-muted); }
+  .mastery-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  .weak-words-section h3 {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .weak-word-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 0.85rem;
+  }
+  .weak-word-item:last-child { border-bottom: none; }
+  .weak-rate { font-size: 0.78rem; color: var(--incorrect); font-weight: 600; }
+
+  /* RESULTS */
+  .results { width: 100%; max-width: 540px; padding: 0 32px; margin-bottom: 40px; display: none; }
+  .results.visible { display: block; }
+  .results-card {
+    background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow);
+    border: 1px solid var(--border); padding: 36px; text-align: center;
+  }
+  .results-card h2 { font-size: 1.3rem; margin-bottom: 6px; font-weight: 600; }
+  .results-card p { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; line-height: 1.6; }
+  .score-ring { width: 110px; height: 110px; margin: 0 auto 20px; position: relative; }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .bg { stroke: var(--border); }
+  .score-ring .fill { stroke: var(--accent); transition: stroke-dashoffset 1s ease; }
+  .score-ring .label {
+    position: absolute; inset: 0; display: flex; align-items: center;
+    justify-content: center; font-size: 1.5rem; font-weight: 700;
+  }
+  .missed-list { text-align: left; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .missed-list h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 10px; }
+  .missed-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .missed-item span:last-child { color: var(--text-muted); }
+  .results-buttons { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+  .no-words-msg {
+    text-align: center; padding: 40px 20px; color: var(--text-muted);
+  }
+  .no-words-msg h3 { font-size: 1.1rem; color: var(--text); margin-bottom: 8px; }
+
+  /* CONJUGATION */
+  .conj-grid {
+    display: grid; grid-template-columns: auto 1fr; gap: 8px;
+    align-items: center; margin-top: 20px; text-align: left;
+  }
+  .conj-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-align: right; padding-right: 8px; }
+  .conj-input {
+    padding: 7px 10px; border: 2px solid var(--border); border-radius: 8px;
+    font-size: 0.9rem; font-family: inherit; text-align: center; width: 100%;
+    outline: none; transition: border-color 0.2s; background: var(--bg); color: var(--text);
+  }
+  .conj-input:focus { border-color: var(--accent); }
+  .conj-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .conj-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .conj-cell { display: flex; flex-direction: column; }
+  .conj-correction { font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px; }
+  .ipa-text { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 6px; }
+  .pron-guide { margin-top: 16px; text-align: left; }
+  .pron-guide summary {
+    cursor: pointer; font-size: 0.78rem; color: var(--accent); font-weight: 500;
+    margin-bottom: 8px; user-select: none;
+  }
+  .pron-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  .pron-table th { text-align: left; padding: 4px 8px; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; }
+  .pron-table td { padding: 4px 8px; border-bottom: 1px solid var(--border); }
+  .pron-table td:first-child { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+  .pron-table td:nth-child(2) { font-style: italic; color: var(--text-muted); }
+
+  /* GENDER */
+  .gen-prompt { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; }
+  .gen-context { font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; }
+  .gen-type-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.7rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px;
+  }
+  .gen-type-adj { background: var(--accent-light); color: var(--accent); }
+  .gen-type-past { background: var(--warn-light); color: var(--warn); }
+
+  /* ERROR PATTERNS */
+  .error-section { margin-bottom: 20px; }
+  .error-bars { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .error-row { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; }
+  .error-label { width: 100px; text-align: right; color: var(--text-muted); font-size: 0.78rem; }
+  .error-bar-wrap { flex: 1; height: 18px; background: var(--border); border-radius: 4px; overflow: hidden; position: relative; }
+  .error-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; display: flex; align-items: center; padding-left: 6px; font-size: 0.68rem; color: #fff; font-weight: 600; }
+  .error-count { width: 30px; font-size: 0.78rem; color: var(--text-muted); }
+
+  @media (max-width: 600px) {
+    header { padding: 14px 18px 0; flex-direction: column; gap: 6px; }
+    .mode-nav-wrap { padding: 10px 18px 0; }
+    .mode-nav { gap: 0; }
+    .group-selector, .progress-wrap, .controls, .results { padding-left: 18px; padding-right: 18px; }
+    .mode-section { padding: 0 18px; }
+    .card-word { font-size: 1.5rem; }
+    .card-face { padding: 24px; }
+    .mc-options { grid-template-columns: 1fr; }
+    .stat-cards { grid-template-columns: 1fr; }
+    .art-grid { gap: 5px; }
+    .art-input { font-size: 0.8rem; padding: 5px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Schede <span>/ Italian Trainer</span></h1>
+  <div class="header-right">
+    <div class="stats" id="stats-bar">
+      <div>Correct <strong id="stat-correct">0</strong></div>
+      <div>Remaining <strong id="stat-remaining">0</strong></div>
+    </div>
+    <button class="dark-toggle" onclick="toggleDark()" id="dark-btn" title="Toggle dark mode">&#9790;</button>
+  </div>
+</header>
+
+<div class="mode-nav-wrap">
+  <button class="mode-nav-arrow hidden" id="nav-arrow-left" onclick="scrollNav(-1)">&#8249;</button>
+  <nav class="mode-nav" id="mode-nav"></nav>
+  <button class="mode-nav-arrow" id="nav-arrow-right" onclick="scrollNav(1)">&#8250;</button>
+</div>
+
+<div class="group-selector" id="group-bar">
+  <label>Word Groups</label>
+  <div class="groups" id="groups"></div>
+</div>
+
+<div class="progress-wrap" id="progress-bar-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label">0 / 0</div>
+</div>
+
+<!-- FLASHCARD -->
+<div class="mode-section card-area" id="mode-flashcard">
+  <div class="card-container" onclick="fc_flip()">
+    <div class="card" id="fc-card">
+      <div class="card-face card-front">
+        <div class="card-label">Italian</div>
+        <div class="card-word" id="fc-front">--</div>
+        <div class="word-meta" id="fc-meta"></div>
+        <div class="hint-text" id="fc-hint"></div>
+        <div class="click-hint">click to reveal</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-label">English</div>
+        <div class="card-word" id="fc-back">--</div>
+        <div class="click-hint">did you know it?</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="controls" id="fc-controls" style="display:none">
+  <button class="btn btn-hint" onclick="fc_showHint()">Hint</button>
+  <button class="btn btn-skip" onclick="fc_mark(false)">Don't know</button>
+  <button class="btn btn-primary" onclick="fc_mark(true)">Know it</button>
+</div>
+
+<!-- SPELLING -->
+<div class="mode-section" id="mode-spelling">
+  <div class="card-box">
+    <div class="spell-prompt" id="sp-prompt">Translate to Italian:</div>
+    <div class="card-word" id="sp-word">--</div>
+    <div class="spell-input-row">
+      <input type="text" class="spell-input" id="sp-input" placeholder="Type in Italian..." autocomplete="off">
+      <button class="btn btn-primary" onclick="sp_check()" id="sp-submit">Check</button>
+    </div>
+    <div class="it-keyboard" id="sp-keyboard"></div>
+    <div class="spell-feedback" id="sp-feedback"></div>
+    <div class="spell-answer" id="sp-answer"></div>
+  </div>
+</div>
+<div class="controls" id="sp-controls" style="display:none">
+  <button class="btn btn-hint" onclick="sp_showHint()">Hint</button>
+  <button class="btn btn-skip" onclick="sp_giveUp()" id="sp-giveup-btn">I don't know</button>
+  <button class="btn btn-primary" onclick="sp_next()" id="sp-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- MULTIPLE CHOICE -->
+<div class="mode-section" id="mode-multichoice">
+  <div class="mc-direction">
+    <button class="mc-dir-btn active" id="mc-dir-pen" onclick="mc_setDir('ie')">Italian &rarr; English</button>
+    <button class="mc-dir-btn" id="mc-dir-enp" onclick="mc_setDir('ei')">English &rarr; Italian</button>
+  </div>
+  <div class="card-box">
+    <div class="card-label" id="mc-label">Italian</div>
+    <div class="card-word" id="mc-word">--</div>
+    <div class="mc-options" id="mc-options"></div>
+  </div>
+</div>
+<div class="controls" id="mc-controls" style="display:none">
+  <button class="btn btn-primary" onclick="mc_next()" id="mc-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- LISTENING -->
+<div class="mode-section" id="mode-listening">
+  <div class="card-box">
+    <div class="listen-hint">Listen and type the English meaning</div>
+    <button class="listen-btn" onclick="li_play()" title="Play again">&#9835;</button>
+    <div class="spell-input-row">
+      <input type="text" class="spell-input" id="li-input" placeholder="English meaning..." autocomplete="off">
+      <button class="btn btn-primary" onclick="li_check()" id="li-submit">Check</button>
+    </div>
+    <div class="spell-feedback" id="li-feedback"></div>
+    <div class="spell-answer" id="li-answer"></div>
+  </div>
+</div>
+<div class="controls" id="li-controls" style="display:none">
+  <button class="btn btn-hint" onclick="li_showHint()">Hint</button>
+  <button class="btn btn-primary" onclick="li_next()" id="li-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- ARTICLES (replaces Polish Declension) -->
+<div class="mode-section" id="mode-articles">
+  <div class="card-box" id="art-card">
+    <div class="card-label">Give the articles for this noun</div>
+    <div class="card-word" id="art-word">--</div>
+    <div class="word-meta" id="art-en"></div>
+    <div class="gender-picker" id="art-gender">
+      <button class="gender-btn" data-g="m" onclick="art_pickGender(this)">m</button>
+      <button class="gender-btn" data-g="f" onclick="art_pickGender(this)">f</button>
+    </div>
+    <div class="art-grid" id="art-grid">
+      <div class="art-label"></div><div class="art-col-head">Singular</div><div class="art-col-head">Plural</div>
+      <div class="art-label">Def.</div>
+      <div class="art-cell"><input class="art-input" id="a-def-sg" placeholder="il/la/l'..."></div>
+      <div class="art-cell"><input class="art-input" id="a-def-pl" placeholder="i/le/gli..."></div>
+      <div class="art-label">Indef.</div>
+      <div class="art-cell"><input class="art-input" id="a-indef-sg" placeholder="un/una..."></div>
+      <div class="art-cell"><input class="art-input" id="a-indef-pl" placeholder="dei/delle..."></div>
+      <div class="art-label">Plural</div>
+      <div class="art-cell"><input class="art-input given" id="a-noun-sg" disabled></div>
+      <div class="art-cell"><input class="art-input" id="a-noun-pl" placeholder="plural form"></div>
+    </div>
+  </div>
+</div>
+<div class="controls" id="art-controls" style="display:none">
+  <button class="btn btn-primary" onclick="art_check()" id="art-check-btn">Check</button>
+  <button class="btn btn-primary" onclick="art_next()" id="art-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- CONJUGATION -->
+<div class="mode-section" id="mode-conjugation">
+  <div class="card-box" id="conj-card">
+    <div class="card-label">Conjugate this verb (presente indicativo)</div>
+    <div class="card-word" id="conj-word">--</div>
+    <div class="word-meta" id="conj-en"></div>
+    <div class="ipa-text" id="conj-ipa"></div>
+    <div class="conj-grid" id="conj-grid">
+      <div class="conj-label">io</div><div class="conj-cell"><input class="conj-input" id="cj-0" placeholder="io..."></div>
+      <div class="conj-label">tu</div><div class="conj-cell"><input class="conj-input" id="cj-1" placeholder="tu..."></div>
+      <div class="conj-label">lui/lei</div><div class="conj-cell"><input class="conj-input" id="cj-2" placeholder="lui/lei..."></div>
+      <div class="conj-label">noi</div><div class="conj-cell"><input class="conj-input" id="cj-3" placeholder="noi..."></div>
+      <div class="conj-label">voi</div><div class="conj-cell"><input class="conj-input" id="cj-4" placeholder="voi..."></div>
+      <div class="conj-label">loro</div><div class="conj-cell"><input class="conj-input" id="cj-5" placeholder="loro..."></div>
+    </div>
+    <div class="it-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
+    <details class="pron-guide">
+      <summary>Italian Pronunciation Guide</summary>
+      <table class="pron-table" id="pron-table"></table>
+    </details>
+  </div>
+</div>
+<div class="controls" id="conj-controls" style="display:none">
+  <button class="btn btn-primary" onclick="conj_check()" id="conj-check-btn">Check</button>
+  <button class="btn btn-primary" onclick="conj_next()" id="conj-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- GENDER -->
+<div class="mode-section" id="mode-gender">
+  <div class="card-box" id="gen-card">
+    <div class="gen-type-tag" id="gen-tag">--</div>
+    <div class="gen-prompt" id="gen-prompt">--</div>
+    <div class="card-word" id="gen-sentence">--</div>
+    <div class="gen-context" id="gen-context"></div>
+    <div class="spell-input-row">
+      <input type="text" class="spell-input" id="gen-input" placeholder="Type the correct form..." autocomplete="off">
+      <button class="btn btn-primary" onclick="gen_check()" id="gen-submit">Check</button>
+    </div>
+    <div class="it-keyboard" id="gen-keyboard" style="margin-top:8px"></div>
+    <div class="spell-feedback" id="gen-feedback"></div>
+    <div class="spell-answer" id="gen-answer"></div>
+  </div>
+</div>
+<div class="controls" id="gen-controls" style="display:none">
+  <button class="btn btn-hint" onclick="gen_showHint()" id="gen-hint-btn">Hint</button>
+  <button class="btn btn-primary" onclick="gen_next()" id="gen-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- PROGRESS -->
+<div class="mode-section progress-page" id="mode-progress">
+  <div class="stat-cards" id="prog-stats"></div>
+  <div class="chart-section card-box">
+    <h3>Last 7 Days</h3>
+    <div class="bar-chart" id="prog-chart"></div>
+  </div>
+  <div class="mastery-section card-box">
+    <h3 class="chart-section" style="margin-bottom:0">Word Mastery</h3>
+    <div class="mastery-bar" id="mastery-bar"></div>
+    <div class="mastery-legend" id="mastery-legend"></div>
+  </div>
+  <div class="weak-words-section card-box" id="weak-section">
+    <h3>Weak Words</h3>
+    <div id="weak-list"></div>
+  </div>
+</div>
+
+<div class="keyboard-hints" id="kb-hints"></div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+  <div class="results-card">
+    <div class="score-ring">
+      <svg width="110" height="110" viewBox="0 0 120 120">
+        <circle class="bg" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
+        <circle class="fill" id="score-circle" cx="60" cy="60" r="52" fill="none" stroke-width="8"
+          stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"/>
+      </svg>
+      <div class="label" id="score-label">0%</div>
+    </div>
+    <h2 id="results-heading">Session complete</h2>
+    <p id="results-text"></p>
+    <div class="results-buttons">
+      <button class="btn" onclick="restartMissed()" id="btn-retry">Retry missed</button>
+      <button class="btn btn-primary" onclick="restart()">New round</button>
+    </div>
+    <div class="missed-list" id="missed-list">
+      <h3>Words to review</h3>
+      <div id="missed-items"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const IT_CHARS = ['à','è','é','ì','ò','ù'];
+
+// Nouns: [it, en, gender, plural, def_sg, def_pl, indef_sg, indef_pl]
+// gender: "m","f"
+// def_sg = definite article singular, def_pl = definite article plural
+// indef_sg = indefinite article singular, indef_pl = partitive article plural
+const NOUNS = [
+  // People
+  ["donna","woman","f","donne","la","le","una","delle"],
+  ["uomo","man","m","uomini","l'","gli","un","degli"],
+  ["bambino","child","m","bambini","il","i","un","dei"],
+  ["ragazza","girl","f","ragazze","la","le","una","delle"],
+  ["ragazzo","boy","m","ragazzi","il","i","un","dei"],
+  ["madre","mother","f","madri","la","le","una","delle"],
+  ["padre","father","m","padri","il","i","un","dei"],
+  ["sorella","sister","f","sorelle","la","le","una","delle"],
+  ["fratello","brother","m","fratelli","il","i","un","dei"],
+  ["amico","friend","m","amici","l'","gli","un","degli"],
+  // Animals
+  ["cane","dog","m","cani","il","i","un","dei"],
+  ["gatto","cat","m","gatti","il","i","un","dei"],
+  ["uccello","bird","m","uccelli","l'","gli","un","degli"],
+  ["pesce","fish","m","pesci","il","i","un","dei"],
+  ["cavallo","horse","m","cavalli","il","i","un","dei"],
+  ["mucca","cow","f","mucche","la","le","una","delle"],
+  ["topo","mouse","m","topi","il","i","un","dei"],
+  ["farfalla","butterfly","f","farfalle","la","le","una","delle"],
+  ["lupo","wolf","m","lupi","il","i","un","dei"],
+  ["orso","bear","m","orsi","l'","gli","un","degli"],
+  // Food
+  ["pane","bread","m","pani","il","i","un","dei"],
+  ["acqua","water","f","acque","l'","le","un'","delle"],
+  ["latte","milk","m","latti","il","i","un","dei"],
+  ["mela","apple","f","mele","la","le","una","delle"],
+  ["formaggio","cheese","m","formaggi","il","i","un","dei"],
+  ["carne","meat","f","carni","la","le","una","delle"],
+  ["tè","tea","m","tè","il","i","un","dei"],
+  ["caffè","coffee","m","caffè","il","i","un","dei"],
+  ["uovo","egg","m","uova","l'","le","un","delle"],
+  ["burro","butter","m","burri","il","i","un","dei"],
+  // Home
+  ["casa","house","f","case","la","le","una","delle"],
+  ["porta","door","f","porte","la","le","una","delle"],
+  ["finestra","window","f","finestre","la","le","una","delle"],
+  ["tavolo","table","m","tavoli","il","i","un","dei"],
+  ["sedia","chair","f","sedie","la","le","una","delle"],
+  ["letto","bed","m","letti","il","i","un","dei"],
+  ["cucina","kitchen","f","cucine","la","le","una","delle"],
+  ["bagno","bathroom","m","bagni","il","i","un","dei"],
+  ["chiave","key","f","chiavi","la","le","una","delle"],
+  ["scala","stairs","f","scale","la","le","una","delle"],
+  // Nature
+  ["albero","tree","m","alberi","l'","gli","un","degli"],
+  ["fiore","flower","m","fiori","il","i","un","dei"],
+  ["sole","sun","m","soli","il","i","un","dei"],
+  ["luna","moon","f","lune","la","le","una","delle"],
+  ["stella","star","f","stelle","la","le","una","delle"],
+  ["cielo","sky","m","cieli","il","i","un","dei"],
+  ["pioggia","rain","f","piogge","la","le","una","delle"],
+  ["neve","snow","f","nevi","la","le","una","delle"],
+  ["montagna","mountain","f","montagne","la","le","una","delle"],
+  ["fiume","river","m","fiumi","il","i","un","dei"],
+  // Body
+  ["testa","head","f","teste","la","le","una","delle"],
+  ["mano","hand","f","mani","la","le","una","delle"],
+  ["gamba","leg","f","gambe","la","le","una","delle"],
+  ["occhio","eye","m","occhi","l'","gli","un","degli"],
+  ["orecchio","ear","m","orecchie","l'","le","un","delle"],
+  ["naso","nose","m","nasi","il","i","un","dei"],
+  ["bocca","mouth","f","bocche","la","le","una","delle"],
+  ["cuore","heart","m","cuori","il","i","un","dei"],
+  ["dito","finger","m","dita","il","le","un","delle"],
+  ["ginocchio","knee","m","ginocchia","il","le","un","delle"],
+  // Objects
+  ["libro","book","m","libri","il","i","un","dei"],
+  ["telefono","phone","m","telefoni","il","i","un","dei"],
+  ["macchina","car","f","macchine","la","le","una","delle"],
+  ["orologio","watch","m","orologi","l'","gli","un","degli"],
+  ["borsa","bag","f","borse","la","le","una","delle"],
+  ["soldi","money","m","soldi","i","i","dei","dei"],
+  ["lettera","letter","f","lettere","la","le","una","delle"],
+  ["mappa","map","f","mappe","la","le","una","delle"],
+  ["ombrello","umbrella","m","ombrelli","l'","gli","un","degli"],
+  ["occhiali","glasses","m","occhiali","gli","gli","degli","degli"],
+  // Places
+  ["città","city","f","città","la","le","una","delle"],
+  ["strada","street","f","strade","la","le","una","delle"],
+  ["negozio","shop","m","negozi","il","i","un","dei"],
+  ["scuola","school","f","scuole","la","le","una","delle"],
+  ["ospedale","hospital","m","ospedali","l'","gli","un","degli"],
+  ["chiesa","church","f","chiese","la","le","una","delle"],
+  ["ponte","bridge","m","ponti","il","i","un","dei"],
+  ["parco","park","m","parchi","il","i","un","dei"],
+  ["aeroporto","airport","m","aeroporti","l'","gli","un","degli"],
+  ["spiaggia","beach","f","spiagge","la","le","una","delle"],
+  // Concepts
+  ["tempo","time","m","tempi","il","i","un","dei"],
+  ["giorno","day","m","giorni","il","i","un","dei"],
+  ["notte","night","f","notti","la","le","una","delle"],
+  ["anno","year","m","anni","l'","gli","un","degli"],
+  ["inizio","beginning","m","inizi","l'","gli","un","degli"],
+  ["fine","end","f","fini","la","le","una","delle"],
+  ["strada","road","f","strade","la","le","una","delle"],
+  ["lavoro","work","m","lavori","il","i","un","dei"],
+  ["domanda","question","f","domande","la","le","una","delle"],
+  ["risposta","answer","f","risposte","la","le","una","delle"],
+  // Misc
+  ["scarpe","shoes","f","scarpe","le","le","delle","delle"],
+  ["camicia","shirt","f","camicie","la","le","una","delle"],
+  ["cappello","hat","m","cappelli","il","i","un","dei"],
+  ["luce","light","f","luci","la","le","una","delle"],
+  ["fuoco","fire","m","fuochi","il","i","un","dei"],
+  ["ghiaccio","ice","m","ghiacci","il","i","un","dei"],
+  ["vento","wind","m","venti","il","i","un","dei"],
+  ["pietra","stone","f","pietre","la","le","una","delle"],
+  ["nuvola","cloud","f","nuvole","la","le","una","delle"],
+  ["sogno","dream","m","sogni","il","i","un","dei"],
+];
+
+// Verbs: [it, en]
+const VERBS = [
+  ["essere","to be"],["avere","to have"],["mangiare","to eat"],["bere","to drink"],
+  ["andare","to go"],["venire","to come"],["fare","to do"],["parlare","to speak"],
+  ["vedere","to see"],["sentire","to hear"],["volere","to want"],["potere","to be able"],
+  ["dovere","to have to"],["sapere","to know (fact)"],["conoscere","to know (person)"],["piacere","to like"],
+  ["amare","to love"],["leggere","to read"],["scrivere","to write"],["comprare","to buy"],
+  ["lavorare","to work"],["imparare","to learn"],["vivere","to live"],["dormire","to sleep"],
+  ["cucinare","to cook"],["pensare","to think"],["chiedere","to ask"],["rispondere","to answer"],
+  ["dare","to give"],["prendere","to take"],
+];
+
+// Adjectives: [it, en]
+const ADJECTIVES = [
+  ["grande","big"],["piccolo","small"],["buono","good"],["cattivo","bad"],
+  ["nuovo","new"],["vecchio","old"],["bello","beautiful"],["brutto","ugly"],
+  ["veloce","fast"],["lento","slow"],["caldo","hot"],["freddo","cold"],
+  ["caro","expensive"],["economico","cheap"],["facile","easy"],["difficile","difficult"],
+  ["alto","tall"],["basso","short"],["pesante","heavy"],["leggero","light (weight)"],
+];
+
+// Verb conjugations (presente indicativo): [io, tu, lui/lei, noi, voi, loro]
+const VERB_CONJ = [
+  ["sono","sei","è","siamo","siete","sono"],
+  ["ho","hai","ha","abbiamo","avete","hanno"],
+  ["mangio","mangi","mangia","mangiamo","mangiate","mangiano"],
+  ["bevo","bevi","beve","beviamo","bevete","bevono"],
+  ["vado","vai","va","andiamo","andate","vanno"],
+  ["vengo","vieni","viene","veniamo","venite","vengono"],
+  ["faccio","fai","fa","facciamo","fate","fanno"],
+  ["parlo","parli","parla","parliamo","parlate","parlano"],
+  ["vedo","vedi","vede","vediamo","vedete","vedono"],
+  ["sento","senti","sente","sentiamo","sentite","sentono"],
+  ["voglio","vuoi","vuole","vogliamo","volete","vogliono"],
+  ["posso","puoi","può","possiamo","potete","possono"],
+  ["devo","devi","deve","dobbiamo","dovete","devono"],
+  ["so","sai","sa","sappiamo","sapete","sanno"],
+  ["conosco","conosci","conosce","conosciamo","conoscete","conoscono"],
+  ["piaccio","piaci","piace","piacciamo","piacete","piacciono"],
+  ["amo","ami","ama","amiamo","amate","amano"],
+  ["leggo","leggi","legge","leggiamo","leggete","leggono"],
+  ["scrivo","scrivi","scrive","scriviamo","scrivete","scrivono"],
+  ["compro","compri","compra","compriamo","comprate","comprano"],
+  ["lavoro","lavori","lavora","lavoriamo","lavorate","lavorano"],
+  ["imparo","impari","impara","impariamo","imparate","imparano"],
+  ["vivo","vivi","vive","viviamo","vivete","vivono"],
+  ["dormo","dormi","dorme","dormiamo","dormite","dormono"],
+  ["cucino","cucini","cucina","cuciniamo","cucinate","cucinano"],
+  ["penso","pensi","pensa","pensiamo","pensate","pensano"],
+  ["chiedo","chiedi","chiede","chiediamo","chiedete","chiedono"],
+  ["rispondo","rispondi","risponde","rispondiamo","rispondete","rispondono"],
+  ["do","dai","dà","diamo","date","danno"],
+  ["prendo","prendi","prende","prendiamo","prendete","prendono"],
+];
+const CONJ_LABELS = ["io","tu","lui/lei","noi","voi","loro"];
+
+// Verb IPA transcriptions
+const VERB_IPA = [
+  "/ˈɛssere/","/aˈvere/","/manˈdʒare/","/ˈbere/","/anˈdare/","/veˈnire/",
+  "/ˈfare/","/parˈlare/","/veˈdere/","/senˈtire/","/voˈlere/","/poˈtere/",
+  "/doˈvere/","/saˈpere/","/koˈnoʃʃere/","/pjaˈtʃere/","/aˈmare/","/ˈlɛddʒere/",
+  "/ˈskrivere/","/komˈprare/","/lavoˈrare/","/impaˈrare/","/ˈvivere/",
+  "/dorˈmire/","/kutʃiˈnare/","/penˈsare/","/ˈkjɛdere/","/risˈpondere/",
+  "/ˈdare/","/ˈprɛndere/",
+];
+
+// Adjective forms: [masculine_sg, feminine_sg, masculine_pl, feminine_pl]
+const ADJ_FORMS = [
+  ["grande","grande","grandi","grandi"],["piccolo","piccola","piccoli","piccole"],
+  ["buono","buona","buoni","buone"],["cattivo","cattiva","cattivi","cattive"],
+  ["nuovo","nuova","nuovi","nuove"],["vecchio","vecchia","vecchi","vecchie"],
+  ["bello","bella","belli","belle"],["brutto","brutta","brutti","brutte"],
+  ["veloce","veloce","veloci","veloci"],["lento","lenta","lenti","lente"],
+  ["caldo","calda","caldi","calde"],["freddo","fredda","freddi","fredde"],
+  ["caro","cara","cari","care"],["economico","economica","economici","economiche"],
+  ["facile","facile","facili","facili"],["difficile","difficile","difficili","difficili"],
+  ["alto","alta","alti","alte"],["basso","bassa","bassi","basse"],
+  ["pesante","pesante","pesanti","pesanti"],["leggero","leggera","leggeri","leggere"],
+];
+
+// Verb past tense (passato prossimo): [masc_sg, fem_sg, masc_pl, fem_pl, auxiliary]
+// auxiliary: "essere" or "avere"
+const VERB_PAST = [
+  ["stato","stata","stati","state","essere"],
+  ["avuto","avuta","avuti","avute","avere"],
+  ["mangiato","mangiata","mangiati","mangiate","avere"],
+  ["bevuto","bevuta","bevuti","bevute","avere"],
+  ["andato","andata","andati","andate","essere"],
+  ["venuto","venuta","venuti","venute","essere"],
+  ["fatto","fatta","fatti","fatte","avere"],
+  ["parlato","parlata","parlati","parlate","avere"],
+  ["visto","vista","visti","viste","avere"],
+  ["sentito","sentita","sentiti","sentite","avere"],
+  ["voluto","voluta","voluti","volute","avere"],
+  ["potuto","potuta","potuti","potute","avere"],
+  ["dovuto","dovuta","dovuti","dovute","avere"],
+  ["saputo","saputa","saputi","sapute","avere"],
+  ["conosciuto","conosciuta","conosciuti","conosciute","avere"],
+  ["piaciuto","piaciuta","piaciuti","piaciute","essere"],
+  ["amato","amata","amati","amate","avere"],
+  ["letto","letta","letti","lette","avere"],
+  ["scritto","scritta","scritti","scritte","avere"],
+  ["comprato","comprata","comprati","comprate","avere"],
+  ["lavorato","lavorata","lavorati","lavorate","avere"],
+  ["imparato","imparata","imparati","imparate","avere"],
+  ["vissuto","vissuta","vissuti","vissute","essere"],
+  ["dormito","dormita","dormiti","dormite","avere"],
+  ["cucinato","cucinata","cucinati","cucinate","avere"],
+  ["pensato","pensata","pensati","pensate","avere"],
+  ["chiesto","chiesta","chiesti","chieste","avere"],
+  ["risposto","risposta","risposti","risposte","avere"],
+  ["dato","data","dati","date","avere"],
+  ["preso","presa","presi","prese","avere"],
+];
+
+// Example nouns for gender-aware adjective practice
+const GENDER_NOUNS = [
+  {it:"libro",en:"book",g:"m"},{it:"gatto",en:"cat",g:"m"},{it:"cane",en:"dog",g:"m"},
+  {it:"tavolo",en:"table",g:"m"},{it:"treno",en:"train",g:"m"},
+  {it:"donna",en:"woman",g:"f"},{it:"casa",en:"house",g:"f"},{it:"scuola",en:"school",g:"f"},
+  {it:"sedia",en:"chair",g:"f"},{it:"notte",en:"night",g:"f"},
+];
+
+// Italian pronunciation guide for English speakers
+const PRONUNCIATION_GUIDE = [
+  {sound:"à",ipa:"/a/",desc:"Open 'a' as in 'father'. The accent marks stress position."},
+  {sound:"è",ipa:"/ɛ/",desc:"Open 'e' as in 'bed'. Used in stressed syllables."},
+  {sound:"é",ipa:"/e/",desc:"Closed 'e' as in 'they' (without the glide)."},
+  {sound:"ì",ipa:"/i/",desc:"Like 'ee' in 'see'. The accent marks stress."},
+  {sound:"ò",ipa:"/ɔ/",desc:"Open 'o' as in British 'hot'. Used in stressed syllables."},
+  {sound:"ù",ipa:"/u/",desc:"Like 'oo' in 'food'. The accent marks stress."},
+  {sound:"c (before e/i)",ipa:"/tʃ/",desc:"Like 'ch' in 'church'. 'Cena' = 'chena'."},
+  {sound:"c (before a/o/u)",ipa:"/k/",desc:"Like 'k' in 'cat'. 'Casa' = 'kasa'."},
+  {sound:"ch",ipa:"/k/",desc:"Always hard 'k' sound. 'Chi' = 'ki', 'che' = 'ke'."},
+  {sound:"g (before e/i)",ipa:"/dʒ/",desc:"Like 'j' in 'jump'. 'Gelato' = 'jelato'."},
+  {sound:"g (before a/o/u)",ipa:"/ɡ/",desc:"Like 'g' in 'go'. 'Gatto' = 'gatto'."},
+  {sound:"gh",ipa:"/ɡ/",desc:"Always hard 'g'. 'Ghiaccio' = 'giattcho'."},
+  {sound:"gl (before i)",ipa:"/ʎ/",desc:"Like 'lli' in 'million'. 'Figlio' = 'fee-lyo'."},
+  {sound:"gn",ipa:"/ɲ/",desc:"Like 'ny' in 'canyon'. 'Gnocchi' = 'nyokki'."},
+  {sound:"sc (before e/i)",ipa:"/ʃ/",desc:"Like 'sh' in 'ship'. 'Pesce' = 'peshe'."},
+  {sound:"z",ipa:"/ts/ or /dz/",desc:"Either 'ts' as in 'pizza' or 'dz' as in 'zero'."},
+  {sound:"double consonants",ipa:"(lengthened)",desc:"Hold the sound longer: 'anno' vs 'ano', 'palla' vs 'pala'."},
+];
+
+const NOUN_GROUPS = {
+  "All Nouns": null, "People": [0,9], "Animals": [10,19], "Food": [20,29],
+  "Home": [30,39], "Nature": [40,49], "Body": [50,59], "Objects": [60,69],
+  "Places": [70,79], "Concepts": [80,89], "Misc": [90,99],
+};
+
+const MODES = [
+  ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
+  ["listening","Listening"],["articles","Articles"],["conjugation","Conjugation"],
+  ["gender","Gender"],["progress","Progress"],
+];
+
+// ===================== STATE =====================
+let deck = [], current = 0, correct = 0, missed = [];
+let currentMode = "flashcard";
+let activeGroup = "All Nouns";
+let mc_dir = "ie", fc_flipped = false, sp_answered = false, mc_answered = false;
+let li_answered = false, art_answered = false, art_genderPick = null;
+let lastFocusedInput = null;
+let conj_answered = false, gen_answered = false;
+let gen_deck = [], gen_current = 0, gen_correct = 0, gen_missed = [];
+
+// ===================== SRS (Leitner) =====================
+const BOX_INTERVALS = [0, 1, 2, 4, 8, 16]; // days per box (box 0 unused)
+
+function getSRS() {
+  try { return JSON.parse(localStorage.getItem('schede_srs')) || {}; } catch { return {}; }
+}
+function saveSRS(data) { localStorage.setItem('schede_srs', JSON.stringify(data)); }
+
+function getWordSRS(id) {
+  const srs = getSRS();
+  if (!srs[id]) srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: null };
+  return srs[id];
+}
+
+function updateWordSRS(id, wasCorrect) {
+  const srs = getSRS();
+  const w = srs[id] || { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: null };
+  const today = new Date().toISOString().slice(0,10);
+  if (!w.firstSeen) w.firstSeen = today;
+  w.lastReview = today;
+  w.reviews++;
+  if (wasCorrect) { w.correct++; w.box = Math.min(5, w.box + 1); }
+  else { w.box = 1; }
+  srs[id] = w;
+  saveSRS(srs);
+}
+
+function isWordDue(id) {
+  const srs = getSRS();
+  const w = srs[id];
+  if (!w || !w.lastReview) return true;
+  const last = new Date(w.lastReview);
+  const now = new Date();
+  const daysSince = Math.floor((now - last) / 86400000);
+  return daysSince >= BOX_INTERVALS[w.box];
+}
+
+function wordId(type, idx) { return type[0] + idx; }
+
+// ===================== DAILY STATS =====================
+function getStats() {
+  try { return JSON.parse(localStorage.getItem('schede_stats')) || { daily: {}, streak: 0, lastActive: null }; }
+  catch { return { daily: {}, streak: 0, lastActive: null }; }
+}
+function saveStats(s) { localStorage.setItem('schede_stats', JSON.stringify(s)); }
+
+function recordSession(reviewed, numCorrect, newWords) {
+  const s = getStats();
+  const today = new Date().toISOString().slice(0,10);
+  if (!s.daily[today]) s.daily[today] = { reviewed: 0, correct: 0, newWords: 0 };
+  s.daily[today].reviewed += reviewed;
+  s.daily[today].correct += numCorrect;
+  s.daily[today].newWords += newWords;
+
+  // Streak
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0,10);
+  if (s.lastActive === yesterday || s.lastActive === today) {
+    if (s.lastActive !== today) s.streak++;
+  } else if (s.lastActive !== today) {
+    s.streak = 1;
+  }
+  s.lastActive = today;
+  saveStats(s);
+}
+
+// ===================== ERROR PATTERNS =====================
+function getErrors() {
+  try { return JSON.parse(localStorage.getItem('schede_errors')) || { accents:0, gender:0, articles:0, conjugation:0, vocabulary:0 }; }
+  catch { return { accents:0, gender:0, articles:0, conjugation:0, vocabulary:0 }; }
+}
+function saveErrors(e) { localStorage.setItem('schede_errors', JSON.stringify(e)); }
+
+function recordError(category) {
+  const e = getErrors();
+  e[category] = (e[category] || 0) + 1;
+  saveErrors(e);
+}
+
+function classifySpellingError(userAnswer, correctAnswer) {
+  if (!userAnswer.trim()) return 'vocabulary';
+  if (normalize(userAnswer) === normalize(correctAnswer) && userAnswer.trim().toLowerCase() !== correctAnswer.toLowerCase()) return 'accents';
+  return 'vocabulary';
+}
+
+// ===================== UTILITIES =====================
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function normalize(s) {
+  return s.toLowerCase().trim()
+    .replace(/à/g,'a').replace(/è/g,'e').replace(/é/g,'e').replace(/ì/g,'i')
+    .replace(/ò/g,'o').replace(/ù/g,'u');
+}
+
+function itEqual(a, b) { return normalize(a) === normalize(b); }
+
+function getAllWords() {
+  const words = [];
+  NOUNS.forEach((n, i) => words.push({ it: n[0], en: n[1], type: 'noun', idx: i, id: 'n'+i, gender: n[2] }));
+  VERBS.forEach((v, i) => words.push({ it: v[0], en: v[1], type: 'verb', idx: i, id: 'v'+i }));
+  ADJECTIVES.forEach((a, i) => words.push({ it: a[0], en: a[1], type: 'adj', idx: i, id: 'a'+i }));
+  return words;
+}
+
+function getGroupWords() {
+  if (activeGroup === 'Verbs') return VERBS.map((v,i) => ({ it:v[0], en:v[1], type:'verb', idx:i, id:'v'+i }));
+  if (activeGroup === 'Adjectives') return ADJECTIVES.map((a,i) => ({ it:a[0], en:a[1], type:'adj', idx:i, id:'a'+i }));
+  if (activeGroup === 'Smart Review') return getSmartReviewWords();
+  const range = NOUN_GROUPS[activeGroup];
+  const src = range ? NOUNS.slice(range[0], range[1]+1) : NOUNS;
+  return src.map((n, i) => {
+    const realIdx = range ? range[0]+i : i;
+    return { it: n[0], en: n[1], type: 'noun', idx: realIdx, id: 'n'+realIdx, gender: n[2] };
+  });
+}
+
+function getSmartReviewWords() {
+  const all = getAllWords();
+  return all.filter(w => isWordDue(w.id));
+}
+
+function buildItKeyboard(containerId, targetInputId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = IT_CHARS.map(c =>
+    `<button class="it-key" onmousedown="event.preventDefault()" onclick="insertChar('${targetInputId}','${c}')">${c}</button>`
+  ).join('');
+}
+
+function insertChar(inputId, ch) {
+  const inp = document.getElementById(inputId);
+  if (!inp || inp.disabled) return;
+  const start = inp.selectionStart, end = inp.selectionEnd;
+  inp.value = inp.value.slice(0, start) + ch + inp.value.slice(end);
+  inp.selectionStart = inp.selectionEnd = start + 1;
+  inp.focus();
+}
+
+// Track last focused input
+document.addEventListener('focusin', (e) => {
+  if (e.target.classList && (e.target.classList.contains('art-input') || e.target.classList.contains('conj-input')) && !e.target.disabled) {
+    lastFocusedInput = e.target.id;
+  }
+});
+
+// ===================== DARK MODE =====================
+function toggleDark() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+  document.getElementById('dark-btn').innerHTML = isDark ? '&#9790;' : '&#9788;';
+  localStorage.setItem('schede_dark', isDark ? '' : 'dark');
+}
+
+function initDark() {
+  const pref = localStorage.getItem('schede_dark');
+  if (pref === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('dark-btn').innerHTML = '&#9788;';
+  }
+}
+
+// ===================== MODE SWITCHING =====================
+function switchMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+  document.querySelectorAll('.mode-section').forEach(s => s.classList.remove('active'));
+  const section = document.getElementById('mode-' + mode);
+  if (section) section.classList.add('active');
+
+  // Hide all controls
+  ['fc','sp','mc','li','art','conj','gen'].forEach(p => {
+    const c = document.getElementById(p + '-controls');
+    if (c) c.style.display = 'none';
+  });
+
+  // Show/hide non-progress UI
+  const isProgress = mode === 'progress';
+  const hideGroups = isProgress || mode === 'conjugation' || mode === 'gender';
+  document.getElementById('group-bar').style.display = hideGroups ? 'none' : '';
+  document.getElementById('progress-bar-wrap').style.display = isProgress ? 'none' : '';
+  document.getElementById('stats-bar').style.display = isProgress ? 'none' : '';
+  document.getElementById('results').classList.remove('visible');
+
+  const kb = document.getElementById('kb-hints');
+  if (mode === 'flashcard') {
+    kb.innerHTML = '<kbd>Space</kbd> flip &nbsp;<kbd>&#8592;</kbd> don\'t know &nbsp;<kbd>&#8594;</kbd> know it &nbsp;<kbd>H</kbd> hint';
+    kb.style.display = '';
+  } else if (mode === 'spelling') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>Ctrl+H</kbd> hint';
+    kb.style.display = '';
+  } else if (mode === 'multichoice') {
+    kb.innerHTML = '<kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> choose &nbsp;<kbd>Enter</kbd> next';
+    kb.style.display = '';
+  } else if (mode === 'listening') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>R</kbd> replay';
+    kb.style.display = '';
+  } else if (mode === 'articles') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next';
+    kb.style.display = '';
+  } else if (mode === 'conjugation') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>Tab</kbd> next field';
+    kb.style.display = '';
+  } else if (mode === 'gender') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next';
+    kb.style.display = '';
+  } else {
+    kb.style.display = 'none';
+  }
+
+  if (isProgress) { renderProgress(); return; }
+  if (mode === 'conjugation') { conj_startRound(); return; }
+  if (mode === 'gender') { gen_startRound(); return; }
+  startRound();
+}
+
+function buildModeNav() {
+  const nav = document.getElementById('mode-nav');
+  nav.innerHTML = MODES.map(([id, label]) =>
+    `<button class="mode-tab${id === currentMode ? ' active' : ''}" data-mode="${id}" onclick="switchMode('${id}')">${label}</button>`
+  ).join('');
+}
+
+function buildGroups() {
+  const el = document.getElementById('groups');
+  const groups = currentMode === 'articles'
+    ? Object.keys(NOUN_GROUPS).concat(['Smart Review'])
+    : Object.keys(NOUN_GROUPS).concat(['Verbs','Adjectives','Smart Review']);
+  el.innerHTML = groups.map(name =>
+    `<button class="group-btn${name === activeGroup ? ' active' : ''}" onclick="selectGroup('${name}')">${name}</button>`
+  ).join('');
+}
+
+function selectGroup(name) { activeGroup = name; buildGroups(); startRound(); }
+
+// ===================== ROUND MANAGEMENT =====================
+function startRound(wordList) {
+  const words = wordList || getGroupWords();
+  if (currentMode === 'articles') {
+    deck = shuffle(words.filter(w => w.type === 'noun'));
+  } else {
+    deck = shuffle([...words]);
+  }
+  current = 0; correct = 0; missed = [];
+  document.getElementById('results').classList.remove('visible');
+  const section = document.getElementById('mode-' + currentMode);
+  if (section) section.style.display = '';
+
+  if (deck.length === 0) {
+    showNoWords();
+    return;
+  }
+
+  // Show relevant controls
+  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',articles:'art',conjugation:'conj',gender:'gen'}[currentMode];
+  if (ctrlId) document.getElementById(ctrlId + '-controls').style.display = '';
+
+  showCurrent();
+}
+
+function showCurrent() {
+  if (current >= deck.length) return finishRound();
+  if (currentMode === 'flashcard') fc_show();
+  else if (currentMode === 'spelling') sp_show();
+  else if (currentMode === 'multichoice') mc_show();
+  else if (currentMode === 'listening') li_show();
+  else if (currentMode === 'articles') art_show();
+  updateProgress();
+}
+
+function showNoWords() {
+  const section = document.getElementById('mode-' + currentMode);
+  if (!section) return;
+  section.innerHTML = '<div class="no-words-msg"><h3>No words to review</h3><p>All caught up! Try a different group or come back later.</p></div>';
+  section.classList.add('active');
+}
+
+function updateProgress() {
+  const total = deck.length;
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-remaining').textContent = Math.max(0, total - current);
+  const pct = total ? (current / total * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = current + ' / ' + total;
+}
+
+function finishRound() {
+  const newWords = deck.filter(w => { const s = getSRS()[w.id]; return s && s.reviews === 1; }).length;
+  recordSession(deck.length, correct, newWords);
+  showResults();
+}
+
+function showResults() {
+  const section = document.getElementById('mode-' + currentMode);
+  if (section) section.style.display = 'none';
+  ['fc','sp','mc','li','art','conj','gen'].forEach(p => {
+    const c = document.getElementById(p + '-controls');
+    if (c) c.style.display = 'none';
+  });
+
+  const total = deck.length;
+  const pct = total ? Math.round(correct / total * 100) : 0;
+  const circ = document.getElementById('score-circle');
+  circ.style.strokeDashoffset = '326.7';
+  setTimeout(() => { circ.style.strokeDashoffset = 326.7 - 326.7 * pct / 100; }, 50);
+  document.getElementById('score-label').textContent = pct + '%';
+  document.getElementById('results-heading').textContent =
+    pct === 100 ? 'Perfetto!' : pct >= 70 ? 'Ottimo!' : 'Continua a praticare';
+  document.getElementById('results-text').textContent =
+    `You got ${correct} out of ${total} correct.`;
+  document.getElementById('btn-retry').style.display = missed.length ? '' : 'none';
+  const missedEl = document.getElementById('missed-items');
+  const missedSec = document.getElementById('missed-list');
+  if (missed.length) {
+    missedSec.style.display = '';
+    missedEl.innerHTML = missed.map(w =>
+      `<div class="missed-item"><span>${escHtml(w.it || w.pl || '')}</span><span>${escHtml(w.en)}</span></div>`
+    ).join('');
+  } else { missedSec.style.display = 'none'; }
+  document.getElementById('results').classList.add('visible');
+  updateProgress();
+}
+
+function restartMissed() { startRound(missed); }
+function restart() { startRound(); }
+
+function markWord(word, wasCorrect) {
+  updateWordSRS(word.id, wasCorrect);
+  if (wasCorrect) correct++;
+  else missed.push(word);
+}
+
+// ===================== FLASHCARD =====================
+function fc_show() {
+  const w = deck[current];
+  document.getElementById('fc-card').classList.remove('flipped');
+  fc_flipped = false;
+  document.getElementById('fc-front').textContent = w.it;
+  document.getElementById('fc-back').textContent = w.en;
+  document.getElementById('fc-hint').textContent = '';
+  const meta = [];
+  if (w.type === 'noun') meta.push(`noun (${w.gender})`);
+  else if (w.type === 'verb') { meta.push('verb'); if (VERB_IPA[w.idx]) meta.push(VERB_IPA[w.idx]); }
+  else if (w.type === 'adj') meta.push('adjective');
+  document.getElementById('fc-meta').textContent = meta.join(' ');
+}
+
+function fc_flip() {
+  if (currentMode !== 'flashcard') return;
+  fc_flipped = !fc_flipped;
+  document.getElementById('fc-card').classList.toggle('flipped', fc_flipped);
+}
+
+function fc_showHint() {
+  if (currentMode !== 'flashcard' || current >= deck.length) return;
+  const en = deck[current].en;
+  document.getElementById('fc-hint').textContent = en[0] + en.slice(1).replace(/[a-zA-Z]/g,' _');
+}
+
+function fc_mark(knew) {
+  if (currentMode !== 'flashcard' || current >= deck.length) return;
+  if (!fc_flipped) fc_flip();
+  setTimeout(() => {
+    markWord(deck[current], knew);
+    current++;
+    showCurrent();
+  }, fc_flipped ? 0 : 350);
+}
+
+// ===================== SPELLING =====================
+function sp_show() {
+  sp_answered = false;
+  const w = deck[current];
+  const inp = document.getElementById('sp-input');
+  inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
+  document.getElementById('sp-word').textContent = w.en;
+  let prompt = w.type === 'verb' ? 'Translate this verb to Italian:' :
+    w.type === 'adj' ? 'Translate this adjective to Italian:' : 'Translate to Italian:';
+  if (w.type === 'noun' && w.gender) {
+    const genderHint = {m:'masculine',f:'feminine'}[w.gender];
+    prompt += ` (${genderHint})`;
+  }
+  document.getElementById('sp-prompt').textContent = prompt;
+  document.getElementById('sp-feedback').textContent = '';
+  document.getElementById('sp-feedback').className = 'spell-feedback';
+  document.getElementById('sp-answer').textContent = '';
+  document.getElementById('sp-submit').style.display = '';
+  document.getElementById('sp-next-btn').style.display = 'none';
+  document.getElementById('sp-giveup-btn').style.display = '';
+  buildItKeyboard('sp-keyboard', 'sp-input');
+  inp.focus();
+}
+
+function sp_giveUp() {
+  if (sp_answered || current >= deck.length) return;
+  const w = deck[current];
+  sp_answered = true;
+  const inp = document.getElementById('sp-input');
+  inp.disabled = true;
+  inp.className = 'spell-input incorrect';
+  document.getElementById('sp-submit').style.display = 'none';
+  document.getElementById('sp-giveup-btn').style.display = 'none';
+  document.getElementById('sp-next-btn').style.display = '';
+  const fb = document.getElementById('sp-feedback');
+  fb.textContent = 'Answer:'; fb.className = 'spell-feedback incorrect';
+  document.getElementById('sp-answer').textContent = w.it;
+  recordError('vocabulary');
+  markWord(w, false);
+  updateProgress();
+}
+
+function sp_check() {
+  if (sp_answered || current >= deck.length) return;
+  const inp = document.getElementById('sp-input');
+  const w = deck[current];
+  sp_answered = true;
+  inp.disabled = true;
+  document.getElementById('sp-submit').style.display = 'none';
+  document.getElementById('sp-giveup-btn').style.display = 'none';
+  document.getElementById('sp-next-btn').style.display = '';
+  const fb = document.getElementById('sp-feedback');
+  const ans = document.getElementById('sp-answer');
+
+  if (itEqual(inp.value, w.it)) {
+    inp.className = 'spell-input correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    if (inp.value.trim().toLowerCase() !== w.it.toLowerCase()) {
+      ans.textContent = 'Exact spelling: ' + w.it;
+    }
+    markWord(w, true);
+  } else {
+    inp.className = 'spell-input incorrect';
+    fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
+    ans.textContent = 'Answer: ' + w.it;
+    recordError(classifySpellingError(inp.value, w.it));
+    markWord(w, false);
+  }
+  updateProgress();
+}
+
+function sp_next() { if (!sp_answered) return; current++; showCurrent(); }
+
+function sp_showHint() {
+  if (sp_answered || current >= deck.length) return;
+  const w = deck[current];
+  const h = w.it[0] + w.it.slice(1).replace(/[a-zàèéìòù]/gi,' _');
+  document.getElementById('sp-feedback').textContent = h;
+  document.getElementById('sp-feedback').className = 'spell-feedback';
+}
+
+// ===================== MULTIPLE CHOICE =====================
+function mc_setDir(d) {
+  mc_dir = d;
+  document.getElementById('mc-dir-pen').classList.toggle('active', d === 'ie');
+  document.getElementById('mc-dir-enp').classList.toggle('active', d === 'ei');
+  startRound();
+}
+
+function mc_show() {
+  mc_answered = false;
+  document.getElementById('mc-next-btn').style.display = 'none';
+  const w = deck[current];
+  const qField = mc_dir === 'ie' ? 'it' : 'en';
+  const aField = mc_dir === 'ie' ? 'en' : 'it';
+  document.getElementById('mc-label').textContent = mc_dir === 'ie' ? 'Italian' : 'English';
+  document.getElementById('mc-word').textContent = w[qField];
+
+  const correctAns = w[aField];
+  const allWords = getAllWords();
+  let pool = allWords.filter(x => x[aField] !== correctAns).map(x => x[aField]);
+  shuffle(pool);
+  const opts = shuffle([correctAns, pool[0], pool[1], pool[2]]);
+  document.getElementById('mc-options').innerHTML = opts.map((o, i) =>
+    `<button class="mc-option" data-value="${escHtml(o)}" onclick="mc_pick(this)">${escHtml(o)}</button>`
+  ).join('');
+}
+
+function mc_pick(btn) {
+  if (mc_answered) return;
+  mc_answered = true;
+  const w = deck[current];
+  const aField = mc_dir === 'ie' ? 'en' : 'it';
+  const correctAns = w[aField];
+
+  document.querySelectorAll('.mc-option').forEach(b => {
+    b.classList.add('disabled');
+    if (b.dataset.value === correctAns) b.classList.add('correct');
+  });
+
+  const isCorrect = btn.dataset.value === correctAns;
+  if (!isCorrect) { btn.classList.add('incorrect'); recordError('vocabulary'); }
+  markWord(w, isCorrect);
+  document.getElementById('mc-next-btn').style.display = '';
+  updateProgress();
+}
+
+function mc_next() { if (!mc_answered) return; current++; showCurrent(); }
+
+// ===================== LISTENING =====================
+function li_speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'it-IT'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+
+function li_show() {
+  li_answered = false;
+  const w = deck[current];
+  const inp = document.getElementById('li-input');
+  inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
+  document.getElementById('li-feedback').textContent = '';
+  document.getElementById('li-feedback').className = 'spell-feedback';
+  document.getElementById('li-answer').textContent = '';
+  document.getElementById('li-submit').style.display = '';
+  document.getElementById('li-next-btn').style.display = 'none';
+  inp.focus();
+  setTimeout(() => li_speak(w.it), 300);
+}
+
+function li_play() {
+  if (current < deck.length) li_speak(deck[current].it);
+}
+
+function li_check() {
+  if (li_answered || current >= deck.length) return;
+  const inp = document.getElementById('li-input');
+  const w = deck[current];
+  li_answered = true;
+  inp.disabled = true;
+  document.getElementById('li-submit').style.display = 'none';
+  document.getElementById('li-next-btn').style.display = '';
+  const fb = document.getElementById('li-feedback');
+  const ans = document.getElementById('li-answer');
+
+  if (inp.value.trim().toLowerCase() === w.en.toLowerCase()) {
+    inp.className = 'spell-input correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    ans.textContent = w.it + ' = ' + w.en;
+    markWord(w, true);
+  } else {
+    inp.className = 'spell-input incorrect';
+    fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
+    ans.textContent = w.it + ' = ' + w.en;
+    recordError('vocabulary');
+    markWord(w, false);
+  }
+  updateProgress();
+}
+
+function li_next() { if (!li_answered) return; current++; showCurrent(); }
+
+function li_showHint() {
+  if (li_answered || current >= deck.length) return;
+  const en = deck[current].en;
+  document.getElementById('li-feedback').textContent = en[0] + en.slice(1).replace(/[a-zA-Z]/g,' _');
+  document.getElementById('li-feedback').className = 'spell-feedback';
+}
+
+// ===================== ARTICLES (Italian equivalent of Declension) =====================
+function art_show() {
+  art_answered = false;
+  art_genderPick = null;
+  const w = deck[current];
+  const n = NOUNS[w.idx];
+
+  document.getElementById('art-word').textContent = n[0];
+  document.getElementById('art-en').textContent = '(' + n[1] + ')';
+  document.getElementById('a-noun-sg').value = n[0];
+
+  // Reset gender buttons
+  document.querySelectorAll('#art-gender .gender-btn').forEach(b => {
+    b.className = 'gender-btn'; b.style.pointerEvents = '';
+  });
+
+  // Reset inputs
+  ['a-def-sg','a-def-pl','a-indef-sg','a-indef-pl','a-noun-pl'].forEach(id => {
+    const inp = document.getElementById(id);
+    inp.value = ''; inp.className = 'art-input'; inp.disabled = false;
+    const cell = inp.parentElement;
+    const corr = cell.querySelector('.art-correction');
+    if (corr) corr.remove();
+  });
+
+  document.getElementById('art-check-btn').style.display = '';
+  document.getElementById('art-next-btn').style.display = 'none';
+}
+
+function art_pickGender(btn) {
+  if (art_answered) return;
+  document.querySelectorAll('#art-gender .gender-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  art_genderPick = btn.dataset.g;
+}
+
+function art_check() {
+  if (art_answered) return;
+  art_answered = true;
+  const w = deck[current];
+  const n = NOUNS[w.idx];
+  // n = [it, en, gender, plural, def_sg, def_pl, indef_sg, indef_pl]
+  const answers = {
+    'gender': n[2],
+    'a-def-sg': n[4],
+    'a-def-pl': n[5],
+    'a-indef-sg': n[6],
+    'a-indef-pl': n[7],
+    'a-noun-pl': n[3],
+  };
+
+  let allCorrect = true;
+
+  // Check gender
+  document.querySelectorAll('#art-gender .gender-btn').forEach(b => {
+    b.classList.add('disabled');
+    if (b.dataset.g === answers.gender) b.classList.add('correct');
+    else if (b.dataset.g === art_genderPick && art_genderPick !== answers.gender) b.classList.add('incorrect');
+  });
+  if (art_genderPick !== answers.gender) { allCorrect = false; recordError('gender'); }
+
+  // Check article/plural inputs
+  ['a-def-sg','a-def-pl','a-indef-sg','a-indef-pl','a-noun-pl'].forEach(id => {
+    const inp = document.getElementById(id);
+    inp.disabled = true;
+    const correct = answers[id];
+    if (inp.value.trim().toLowerCase() === correct.toLowerCase()) {
+      inp.classList.add('correct');
+    } else {
+      inp.classList.add('incorrect');
+      allCorrect = false;
+      if (id === 'a-noun-pl') recordError('vocabulary');
+      else recordError('articles');
+      const corr = document.createElement('div');
+      corr.className = 'art-correction';
+      corr.textContent = correct;
+      inp.parentElement.appendChild(corr);
+    }
+  });
+
+  markWord(w, allCorrect);
+  document.getElementById('art-check-btn').style.display = 'none';
+  document.getElementById('art-next-btn').style.display = '';
+  updateProgress();
+}
+
+function art_next() { if (!art_answered) return; current++; showCurrent(); }
+
+// ===================== CONJUGATION =====================
+function conj_startRound() {
+  deck = shuffle(VERBS.map((v,i) => ({ it:v[0], en:v[1], type:'verb', idx:i, id:'v'+i })));
+  current = 0; correct = 0; missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-conjugation').style.display = '';
+  document.getElementById('conj-controls').style.display = '';
+  if (deck.length === 0) { showNoWords(); return; }
+  conj_show();
+  updateProgress();
+}
+
+function conj_show() {
+  conj_answered = false;
+  const w = deck[current];
+  const v = VERBS[w.idx];
+  document.getElementById('conj-word').textContent = v[0];
+  document.getElementById('conj-en').textContent = '(' + v[1] + ')';
+  document.getElementById('conj-ipa').textContent = VERB_IPA[w.idx] || '';
+
+  for (let i = 0; i < 6; i++) {
+    const inp = document.getElementById('cj-' + i);
+    inp.value = ''; inp.className = 'conj-input'; inp.disabled = false;
+    const cell = inp.parentElement;
+    const corr = cell.querySelector('.conj-correction');
+    if (corr) corr.remove();
+  }
+  document.getElementById('conj-check-btn').style.display = '';
+  document.getElementById('conj-next-btn').style.display = 'none';
+  buildItKeyboard('conj-keyboard', 'cj-0');
+
+  // Build pronunciation guide table
+  const tbl = document.getElementById('pron-table');
+  tbl.innerHTML = '<tr><th>Letter(s)</th><th>IPA</th><th>For English speakers</th></tr>' +
+    PRONUNCIATION_GUIDE.map(p => `<tr><td>${p.sound}</td><td>${p.ipa}</td><td>${p.desc}</td></tr>`).join('');
+
+  document.querySelectorAll('#conj-grid .conj-input').forEach(inp => {
+    inp.onfocus = () => buildItKeyboard('conj-keyboard', inp.id);
+  });
+  document.getElementById('cj-0').focus();
+}
+
+function conj_check() {
+  if (conj_answered) return;
+  conj_answered = true;
+  const w = deck[current];
+  const forms = VERB_CONJ[w.idx];
+  let allCorrect = true;
+
+  for (let i = 0; i < 6; i++) {
+    const inp = document.getElementById('cj-' + i);
+    inp.disabled = true;
+    if (itEqual(inp.value, forms[i])) {
+      inp.classList.add('correct');
+    } else {
+      inp.classList.add('incorrect');
+      allCorrect = false;
+      if (classifySpellingError(inp.value, forms[i]) === 'accents') recordError('accents');
+      else recordError('conjugation');
+      const corr = document.createElement('div');
+      corr.className = 'conj-correction';
+      corr.textContent = forms[i];
+      inp.parentElement.appendChild(corr);
+    }
+  }
+
+  markWord(w, allCorrect);
+  document.getElementById('conj-check-btn').style.display = 'none';
+  document.getElementById('conj-next-btn').style.display = '';
+  updateProgress();
+}
+
+function conj_next() { if (!conj_answered) return; current++; if (current >= deck.length) finishRound(); else { conj_show(); updateProgress(); } }
+
+// ===================== GENDER-AWARE PRACTICE =====================
+function gen_buildExercises() {
+  const exercises = [];
+
+  // Type 1: Adjective agreement with nouns
+  ADJ_FORMS.forEach((forms, ai) => {
+    const adj = ADJECTIVES[ai];
+    GENDER_NOUNS.forEach(noun => {
+      const fi = noun.g === 'm' ? 0 : 1; // masc_sg or fem_sg
+      const genderName = noun.g === 'm' ? 'masculine' : 'feminine';
+      exercises.push({
+        type: 'adj',
+        prompt: `${noun.it} _____`,
+        hint: `<strong>${adj[1]}</strong> ${noun.en} (${genderName})`,
+        hintWord: `${forms[0]} (masc. singular)`,
+        answer: forms[fi],
+        display: `${noun.it} ${forms[fi]}`,
+        id: 'ga_' + ai + '_' + noun.it,
+      });
+    });
+  });
+
+  // Type 2: Passato prossimo with correct past participle agreement
+  VERB_PAST.forEach((forms, vi) => {
+    const verb = VERBS[vi];
+    const aux = forms[4]; // "essere" or "avere"
+    if (aux === 'essere') {
+      // With essere, past participle agrees with subject
+      exercises.push({
+        type: 'past',
+        prompt: `Lui è _____.`,
+        hint: `He <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
+        hintWord: `${verb[0]} (infinitive)`,
+        answer: forms[0],
+        display: `Lui è ${forms[0]}.`,
+        id: 'gp_m_' + vi,
+      });
+      exercises.push({
+        type: 'past',
+        prompt: `Lei è _____.`,
+        hint: `She <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
+        hintWord: `${verb[0]} (infinitive)`,
+        answer: forms[1],
+        display: `Lei è ${forms[1]}.`,
+        id: 'gp_f_' + vi,
+      });
+      exercises.push({
+        type: 'past',
+        prompt: `Loro sono _____.`,
+        hint: `They (m.) <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
+        hintWord: `${verb[0]} (infinitive)`,
+        answer: forms[2],
+        display: `Loro sono ${forms[2]}.`,
+        id: 'gp_mpl_' + vi,
+      });
+      exercises.push({
+        type: 'past',
+        prompt: `Loro sono _____.`,
+        hint: `They (f.) <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
+        hintWord: `${verb[0]} (infinitive)`,
+        answer: forms[3],
+        display: `Loro sono ${forms[3]}.`,
+        id: 'gp_fpl_' + vi,
+      });
+    } else {
+      // With avere, typically invariable (masculine singular)
+      exercises.push({
+        type: 'past',
+        prompt: `Io ho _____.`,
+        hint: `I <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
+        hintWord: `${verb[0]} (infinitive)`,
+        answer: forms[0],
+        display: `Io ho ${forms[0]}.`,
+        id: 'gp_avere_' + vi,
+      });
+    }
+  });
+
+  return exercises;
+}
+
+function gen_startRound() {
+  const all = gen_buildExercises();
+  gen_deck = shuffle(all).slice(0, 20);
+  gen_current = 0; gen_correct = 0; gen_missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-gender').style.display = '';
+  document.getElementById('gen-controls').style.display = '';
+  deck = gen_deck; current = 0; correct = 0; missed = [];
+  gen_show();
+  updateProgress();
+}
+
+function gen_show() {
+  gen_answered = false;
+  const ex = gen_deck[gen_current];
+  const tag = document.getElementById('gen-tag');
+  tag.textContent = ex.type === 'adj' ? 'Adjective Agreement' : 'Passato Prossimo';
+  tag.className = 'gen-type-tag ' + (ex.type === 'adj' ? 'gen-type-adj' : 'gen-type-past');
+
+  document.getElementById('gen-prompt').textContent = 'Fill in the correct form:';
+  document.getElementById('gen-sentence').textContent = ex.prompt;
+  document.getElementById('gen-context').innerHTML = ex.hint;
+
+  const inp = document.getElementById('gen-input');
+  inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
+  document.getElementById('gen-submit').style.display = '';
+  document.getElementById('gen-next-btn').style.display = 'none';
+  document.getElementById('gen-hint-btn').style.display = ex.hintWord ? '' : 'none';
+  document.getElementById('gen-feedback').textContent = '';
+  document.getElementById('gen-feedback').className = 'spell-feedback';
+  document.getElementById('gen-answer').textContent = '';
+  buildItKeyboard('gen-keyboard', 'gen-input');
+  inp.focus();
+}
+
+function gen_showHint() {
+  if (gen_answered || gen_current >= gen_deck.length) return;
+  const ex = gen_deck[gen_current];
+  if (ex.hintWord) {
+    document.getElementById('gen-feedback').textContent = ex.hintWord;
+    document.getElementById('gen-feedback').className = 'spell-feedback';
+  }
+}
+
+function gen_check() {
+  if (gen_answered || gen_current >= gen_deck.length) return;
+  gen_answered = true;
+  const ex = gen_deck[gen_current];
+  const inp = document.getElementById('gen-input');
+  inp.disabled = true;
+  document.getElementById('gen-submit').style.display = 'none';
+  document.getElementById('gen-hint-btn').style.display = 'none';
+  document.getElementById('gen-next-btn').style.display = '';
+  const fb = document.getElementById('gen-feedback');
+  const ans = document.getElementById('gen-answer');
+
+  if (itEqual(inp.value, ex.answer)) {
+    inp.className = 'spell-input correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    if (inp.value.trim().toLowerCase() !== ex.answer.toLowerCase()) {
+      ans.textContent = 'Exact: ' + ex.display;
+    }
+    gen_correct++; correct++;
+  } else {
+    inp.className = 'spell-input incorrect';
+    fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
+    ans.textContent = 'Answer: ' + ex.display;
+    gen_missed.push({ it: ex.answer, en: ex.hint });
+    missed.push({ it: ex.answer, en: ex.hint });
+    if (classifySpellingError(inp.value, ex.answer) === 'accents') recordError('accents');
+    else recordError('gender');
+  }
+  current = gen_current + 1;
+  updateProgress();
+}
+
+function gen_next() {
+  if (!gen_answered) return;
+  gen_current++;
+  current = gen_current;
+  if (gen_current >= gen_deck.length) {
+    deck = gen_deck;
+    finishRound();
+  } else {
+    gen_show();
+    updateProgress();
+  }
+}
+
+// ===================== PROGRESS PAGE =====================
+function renderProgress() {
+  const srs = getSRS();
+  const stats = getStats();
+  const allWords = getAllWords();
+  const today = new Date();
+
+  const totalReviewed = allWords.filter(w => srs[w.id] && srs[w.id].reviews > 0).length;
+  const streak = stats.streak || 0;
+  const todayStr = today.toISOString().slice(0,10);
+
+  let weekNew = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today - i * 86400000).toISOString().slice(0,10);
+    if (stats.daily[d]) weekNew += stats.daily[d].newWords;
+  }
+
+  document.getElementById('prog-stats').innerHTML = [
+    { val: streak, lbl: 'Day Streak' },
+    { val: weekNew, lbl: 'New This Week' },
+    { val: totalReviewed + '/' + allWords.length, lbl: 'Words Seen' },
+  ].map(s => `<div class="stat-card"><div class="val">${s.val}</div><div class="lbl">${s.lbl}</div></div>`).join('');
+
+  // 7-day chart
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today - i * 86400000);
+    const key = d.toISOString().slice(0,10);
+    const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    days.push({ label: dayNames[d.getDay()], ...(stats.daily[key] || { reviewed: 0, correct: 0 }) });
+  }
+  const maxReviewed = Math.max(1, ...days.map(d => d.reviewed));
+  document.getElementById('prog-chart').innerHTML = days.map(d => {
+    const h = Math.round(d.reviewed / maxReviewed * 80);
+    return `<div class="bar-col"><div class="bar-val">${d.reviewed || ''}</div><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.label}</div></div>`;
+  }).join('');
+
+  // Mastery bar
+  const boxes = [0,0,0,0,0,0];
+  allWords.forEach(w => {
+    const b = srs[w.id] ? srs[w.id].box : 0;
+    boxes[b]++;
+  });
+  const boxColors = ['var(--border)','#ef4444','#f59e0b','#3b82f6','#8b5cf6','#10b981'];
+  const boxLabels = ['Unseen','Box 1','Box 2','Box 3','Box 4','Mastered'];
+  const totalWords = allWords.length;
+  document.getElementById('mastery-bar').innerHTML = boxes.map((count, i) => {
+    if (!count) return '';
+    return `<div class="mastery-seg" style="width:${count/totalWords*100}%;background:${boxColors[i]}">${count > 3 ? count : ''}</div>`;
+  }).join('');
+  document.getElementById('mastery-legend').innerHTML = boxLabels.map((l, i) =>
+    `<div class="mastery-legend-item"><div class="mastery-dot" style="background:${boxColors[i]}"></div>${l}: ${boxes[i]}</div>`
+  ).join('');
+
+  // Error pattern analysis
+  const errors = getErrors();
+  const errorCategories = [
+    { key: 'accents', label: 'Accents', color: '#f59e0b', desc: 'Missing or wrong Italian accent marks' },
+    { key: 'gender', label: 'Gender', color: '#ec4899', desc: 'Wrong masculine/feminine form' },
+    { key: 'articles', label: 'Articles', color: '#8b5cf6', desc: 'Wrong definite/indefinite article' },
+    { key: 'conjugation', label: 'Conjugation', color: '#06b6d4', desc: 'Wrong verb form' },
+    { key: 'vocabulary', label: 'Vocabulary', color: '#ef4444', desc: 'Wrong word or meaning' },
+  ];
+  const maxErr = Math.max(1, ...errorCategories.map(c => errors[c.key] || 0));
+  const totalErrors = errorCategories.reduce((s, c) => s + (errors[c.key] || 0), 0);
+
+  const errorSection = document.getElementById('error-section');
+  if (!errorSection) {
+    const sec = document.createElement('div');
+    sec.className = 'error-section card-box';
+    sec.id = 'error-section';
+    document.getElementById('weak-section').insertAdjacentElement('beforebegin', sec);
+  }
+  const errSec = document.getElementById('error-section');
+  if (totalErrors > 0) {
+    errSec.style.display = '';
+    errSec.innerHTML = '<h3 class="chart-section" style="margin-bottom:0;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Error Patterns</h3>' +
+      '<div style="font-size:0.78rem;color:var(--text-muted);margin:6px 0 12px">Total errors: ' + totalErrors + '. Focus on your weakest areas.</div>' +
+      '<div class="error-bars">' + errorCategories.map(c => {
+        const count = errors[c.key] || 0;
+        const pct = count / maxErr * 100;
+        return `<div class="error-row">
+          <div class="error-label">${c.label}</div>
+          <div class="error-bar-wrap"><div class="error-bar-fill" style="width:${pct}%;background:${c.color}">${count > 0 ? count : ''}</div></div>
+          <div class="error-count">${count}</div>
+        </div>`;
+      }).join('') + '</div>' +
+      '<div style="margin-top:12px;font-size:0.72rem;color:var(--text-muted)">' +
+      errorCategories.filter(c => (errors[c.key] || 0) > 0).sort((a,b) => (errors[b.key]||0) - (errors[a.key]||0))
+        .slice(0,2).map(c => `<strong>${c.label}:</strong> ${c.desc}`).join(' &bull; ') +
+      '</div>' +
+      '<div style="margin-top:10px"><button class="btn btn-sm" onclick="if(confirm(\'Reset error stats?\')){saveErrors({accents:0,gender:0,articles:0,conjugation:0,vocabulary:0});renderProgress();}">Reset Error Stats</button></div>';
+  } else {
+    errSec.style.display = '';
+    errSec.innerHTML = '<h3 class="chart-section" style="margin-bottom:0;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Error Patterns</h3>' +
+      '<div style="padding:12px;color:var(--text-muted);font-size:0.85rem">No errors tracked yet. Practice more to see your patterns!</div>';
+  }
+
+  // Weak words
+  const weak = allWords
+    .filter(w => srs[w.id] && srs[w.id].reviews >= 2 && srs[w.id].box <= 1)
+    .map(w => ({ ...w, rate: Math.round(srs[w.id].correct / srs[w.id].reviews * 100), reviews: srs[w.id].reviews }))
+    .sort((a, b) => a.rate - b.rate)
+    .slice(0, 15);
+
+  const weakEl = document.getElementById('weak-list');
+  const weakSec = document.getElementById('weak-section');
+  if (weak.length) {
+    weakSec.style.display = '';
+    weakEl.innerHTML = weak.map(w =>
+      `<div class="weak-word-item"><span>${escHtml(w.it)} <span style="color:var(--text-muted)">- ${escHtml(w.en)}</span></span><span class="weak-rate">${w.rate}% (${w.reviews} reviews)</span></div>`
+    ).join('');
+  } else {
+    weakSec.style.display = '';
+    weakEl.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:0.85rem">No weak words yet. Keep practicing!</div>';
+  }
+}
+
+// ===================== KEYBOARD =====================
+document.addEventListener('keydown', (e) => {
+  const inInput = ['sp-input','li-input'].includes(document.activeElement?.id) ||
+    document.activeElement?.classList.contains('art-input');
+
+  if (currentMode === 'flashcard') {
+    if (e.key === ' ') { e.preventDefault(); fc_flip(); }
+    else if (e.key === 'ArrowRight') fc_mark(true);
+    else if (e.key === 'ArrowLeft') fc_mark(false);
+    else if ((e.key === 'h' || e.key === 'H') && !inInput) fc_showHint();
+  } else if (currentMode === 'spelling') {
+    if (e.key === 'Enter') { e.preventDefault(); sp_answered ? sp_next() : sp_check(); }
+    else if (e.key === 'h' && e.ctrlKey) { e.preventDefault(); sp_showHint(); }
+  } else if (currentMode === 'multichoice') {
+    if (e.key === 'Enter' && mc_answered) { e.preventDefault(); mc_next(); }
+    else if (!mc_answered && e.key >= '1' && e.key <= '4') {
+      const btns = document.querySelectorAll('.mc-option');
+      if (btns[+e.key - 1]) mc_pick(btns[+e.key - 1]);
+    }
+  } else if (currentMode === 'listening') {
+    if (e.key === 'Enter') { e.preventDefault(); li_answered ? li_next() : li_check(); }
+    else if ((e.key === 'r' || e.key === 'R') && !inInput) li_play();
+  } else if (currentMode === 'articles') {
+    if (e.key === 'Enter') { e.preventDefault(); art_answered ? art_next() : art_check(); }
+  } else if (currentMode === 'conjugation') {
+    if (e.key === 'Enter') { e.preventDefault(); conj_answered ? conj_next() : conj_check(); }
+  } else if (currentMode === 'gender') {
+    if (e.key === 'Enter') { e.preventDefault(); gen_answered ? gen_next() : gen_check(); }
+  }
+});
+
+const origInsertChar = window.insertChar;
+
+// ===================== NAV SCROLL =====================
+function scrollNav(dir) {
+  const nav = document.getElementById('mode-nav');
+  nav.scrollBy({ left: dir * 120, behavior: 'smooth' });
+}
+
+function updateNavArrows() {
+  const nav = document.getElementById('mode-nav');
+  const left = document.getElementById('nav-arrow-left');
+  const right = document.getElementById('nav-arrow-right');
+  left.classList.toggle('hidden', nav.scrollLeft <= 0);
+  right.classList.toggle('hidden', nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 1);
+}
+
+document.getElementById('mode-nav').addEventListener('scroll', updateNavArrows);
+window.addEventListener('resize', updateNavArrows);
+setTimeout(updateNavArrows, 50);
+
+// ===================== INIT =====================
+initDark();
+buildModeNav();
+buildGroups();
+buildItKeyboard('sp-keyboard', 'sp-input');
+switchMode('flashcard');
+</script>
+</body>
+</html>
