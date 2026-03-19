@@ -583,6 +583,7 @@
   </div>
 </div>
 <div class="controls" id="gen-controls" style="display:none">
+  <button class="btn btn-hint" onclick="gen_showHint()" id="gen-hint-btn">Hint</button>
   <button class="btn btn-primary" onclick="gen_next()" id="gen-next-btn" style="display:none">Next</button>
 </div>
 
@@ -1662,7 +1663,8 @@ function gen_buildExercises() {
       exercises.push({
         type: 'adj',
         prompt: `_____ ${noun.pl}`,
-        hint: `${adj[1]} ${noun.en} (${genderName})`,
+        hint: `<strong>${adj[1]}</strong> ${noun.en} (${genderName})`,
+        hintWord: `${forms[0]} (masc. nominative)`,
         answer: forms[gi],
         display: `${forms[gi]} ${noun.pl}`,
         id: 'ga_' + ai + '_' + noun.pl,
@@ -1676,7 +1678,8 @@ function gen_buildExercises() {
     exercises.push({
       type: 'past',
       prompt: `Ja _____. (male speaker)`,
-      hint: `I ${verb[1].replace('to ','')} (past, male)`,
+      hint: `I <strong>${verb[1].replace('to ','')}</strong> (past, male)`,
+      hintWord: `${verb[0]} (infinitive)`,
       answer: forms[0],
       display: `Ja ${forms[0]}.`,
       id: 'gp_m1_' + vi,
@@ -1684,7 +1687,8 @@ function gen_buildExercises() {
     exercises.push({
       type: 'past',
       prompt: `Ja _____. (female speaker)`,
-      hint: `I ${verb[1].replace('to ','')} (past, female)`,
+      hint: `I <strong>${verb[1].replace('to ','')}</strong> (past, female)`,
+      hintWord: `${verb[0]} (infinitive)`,
       answer: forms[1],
       display: `Ja ${forms[1]}.`,
       id: 'gp_f1_' + vi,
@@ -1697,7 +1701,8 @@ function gen_buildExercises() {
     exercises.push({
       type: 'past',
       prompt: `On _____.`,
-      hint: `He ${verb[1].replace('to ','')} (past)`,
+      hint: `He <strong>${verb[1].replace('to ','')}</strong> (past)`,
+      hintWord: `${verb[0]} (infinitive)`,
       answer: forms[2],
       display: `On ${forms[2]}.`,
       id: 'gp_m3_' + vi,
@@ -1705,7 +1710,8 @@ function gen_buildExercises() {
     exercises.push({
       type: 'past',
       prompt: `Ona _____.`,
-      hint: `She ${verb[1].replace('to ','')} (past)`,
+      hint: `She <strong>${verb[1].replace('to ','')}</strong> (past)`,
+      hintWord: `${verb[0]} (infinitive)`,
       answer: forms[3],
       display: `Ona ${forms[3]}.`,
       id: 'gp_f3_' + vi,
@@ -1713,7 +1719,8 @@ function gen_buildExercises() {
     exercises.push({
       type: 'past',
       prompt: `Ono _____.`,
-      hint: `It ${verb[1].replace('to ','')} (past)`,
+      hint: `It <strong>${verb[1].replace('to ','')}</strong> (past)`,
+      hintWord: `${verb[0]} (infinitive)`,
       answer: forms[4],
       display: `Ono ${forms[4]}.`,
       id: 'gp_n3_' + vi,
@@ -1745,17 +1752,27 @@ function gen_show() {
 
   document.getElementById('gen-prompt').textContent = 'Fill in the correct form:';
   document.getElementById('gen-sentence').textContent = ex.prompt;
-  document.getElementById('gen-context').textContent = ex.hint;
+  document.getElementById('gen-context').innerHTML = ex.hint;
 
   const inp = document.getElementById('gen-input');
   inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
   document.getElementById('gen-submit').style.display = '';
   document.getElementById('gen-next-btn').style.display = 'none';
+  document.getElementById('gen-hint-btn').style.display = ex.hintWord ? '' : 'none';
   document.getElementById('gen-feedback').textContent = '';
   document.getElementById('gen-feedback').className = 'spell-feedback';
   document.getElementById('gen-answer').textContent = '';
   buildPlKeyboard('gen-keyboard', 'gen-input');
   inp.focus();
+}
+
+function gen_showHint() {
+  if (gen_answered || gen_current >= gen_deck.length) return;
+  const ex = gen_deck[gen_current];
+  if (ex.hintWord) {
+    document.getElementById('gen-feedback').textContent = ex.hintWord;
+    document.getElementById('gen-feedback').className = 'spell-feedback';
+  }
 }
 
 function gen_check() {
@@ -1765,6 +1782,7 @@ function gen_check() {
   const inp = document.getElementById('gen-input');
   inp.disabled = true;
   document.getElementById('gen-submit').style.display = 'none';
+  document.getElementById('gen-hint-btn').style.display = 'none';
   document.getElementById('gen-next-btn').style.display = '';
   const fb = document.getElementById('gen-feedback');
   const ans = document.getElementById('gen-answer');
