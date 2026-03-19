@@ -254,6 +254,7 @@
   .decl-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
   .decl-input.given { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
   .decl-input:disabled { opacity: 0.8; }
+  .decl-cell { display: flex; flex-direction: column; }
   .decl-correction {
     font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px;
   }
@@ -356,6 +357,7 @@
   .conj-input:focus { border-color: var(--accent); }
   .conj-input.correct { border-color: var(--correct); background: var(--correct-light); }
   .conj-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .conj-cell { display: flex; flex-direction: column; }
   .conj-correction { font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px; }
   .ipa-text { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 6px; }
   .pron-guide { margin-top: 16px; text-align: left; }
@@ -468,6 +470,7 @@
 </div>
 <div class="controls" id="sp-controls" style="display:none">
   <button class="btn btn-hint" onclick="sp_showHint()">Hint</button>
+  <button class="btn btn-skip" onclick="sp_giveUp()" id="sp-giveup-btn">I don't know</button>
   <button class="btn btn-primary" onclick="sp_next()" id="sp-next-btn" style="display:none">Next</button>
 </div>
 
@@ -519,14 +522,14 @@
     <div class="decl-grid" id="decl-grid">
       <div class="decl-label"></div><div class="decl-col-head">Singular</div><div class="decl-col-head">Plural</div>
       <div class="decl-label">Nom.</div>
-      <input class="decl-input given" id="d-nom-sg" disabled>
-      <input class="decl-input" id="d-nom-pl" placeholder="nom. pl.">
+      <div class="decl-cell"><input class="decl-input given" id="d-nom-sg" disabled></div>
+      <div class="decl-cell"><input class="decl-input" id="d-nom-pl" placeholder="nom. pl."></div>
       <div class="decl-label">Acc.</div>
-      <input class="decl-input" id="d-acc-sg" placeholder="acc. sg.">
-      <input class="decl-input" id="d-acc-pl" placeholder="acc. pl.">
+      <div class="decl-cell"><input class="decl-input" id="d-acc-sg" placeholder="acc. sg."></div>
+      <div class="decl-cell"><input class="decl-input" id="d-acc-pl" placeholder="acc. pl."></div>
       <div class="decl-label">Gen.</div>
-      <input class="decl-input" id="d-gen-sg" placeholder="gen. sg.">
-      <input class="decl-input" id="d-gen-pl" placeholder="gen. pl.">
+      <div class="decl-cell"><input class="decl-input" id="d-gen-sg" placeholder="gen. sg."></div>
+      <div class="decl-cell"><input class="decl-input" id="d-gen-pl" placeholder="gen. pl."></div>
     </div>
     <div class="pl-keyboard" id="decl-keyboard" style="margin-top:12px"></div>
   </div>
@@ -544,12 +547,12 @@
     <div class="word-meta" id="conj-en"></div>
     <div class="ipa-text" id="conj-ipa"></div>
     <div class="conj-grid" id="conj-grid">
-      <div class="conj-label">ja</div><input class="conj-input" id="cj-0" placeholder="ja...">
-      <div class="conj-label">ty</div><input class="conj-input" id="cj-1" placeholder="ty...">
-      <div class="conj-label">on/ona/ono</div><input class="conj-input" id="cj-2" placeholder="on/ona/ono...">
-      <div class="conj-label">my</div><input class="conj-input" id="cj-3" placeholder="my...">
-      <div class="conj-label">wy</div><input class="conj-input" id="cj-4" placeholder="wy...">
-      <div class="conj-label">oni/one</div><input class="conj-input" id="cj-5" placeholder="oni/one...">
+      <div class="conj-label">ja</div><div class="conj-cell"><input class="conj-input" id="cj-0" placeholder="ja..."></div>
+      <div class="conj-label">ty</div><div class="conj-cell"><input class="conj-input" id="cj-1" placeholder="ty..."></div>
+      <div class="conj-label">on/ona/ono</div><div class="conj-cell"><input class="conj-input" id="cj-2" placeholder="on/ona/ono..."></div>
+      <div class="conj-label">my</div><div class="conj-cell"><input class="conj-input" id="cj-3" placeholder="my..."></div>
+      <div class="conj-label">wy</div><div class="conj-cell"><input class="conj-input" id="cj-4" placeholder="wy..."></div>
+      <div class="conj-label">oni/one</div><div class="conj-cell"><input class="conj-input" id="cj-5" placeholder="oni/one..."></div>
     </div>
     <div class="pl-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
     <details class="pron-guide">
@@ -1294,15 +1297,39 @@ function sp_show() {
   const inp = document.getElementById('sp-input');
   inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
   document.getElementById('sp-word').textContent = w.en;
-  document.getElementById('sp-prompt').textContent = w.type === 'verb' ? 'Translate this verb to Polish:' :
+  let prompt = w.type === 'verb' ? 'Translate this verb to Polish:' :
     w.type === 'adj' ? 'Translate this adjective to Polish:' : 'Translate to Polish:';
+  if (w.type === 'noun' && w.gender) {
+    const genderHint = w.gender === 'pl' ? 'plural-only' : {m:'masculine',f:'feminine',n:'neuter'}[w.gender];
+    prompt += ` (${genderHint})`;
+  }
+  document.getElementById('sp-prompt').textContent = prompt;
   document.getElementById('sp-feedback').textContent = '';
   document.getElementById('sp-feedback').className = 'spell-feedback';
   document.getElementById('sp-answer').textContent = '';
   document.getElementById('sp-submit').style.display = '';
   document.getElementById('sp-next-btn').style.display = 'none';
+  document.getElementById('sp-giveup-btn').style.display = '';
   buildPlKeyboard('sp-keyboard', 'sp-input');
   inp.focus();
+}
+
+function sp_giveUp() {
+  if (sp_answered || current >= deck.length) return;
+  const w = deck[current];
+  sp_answered = true;
+  const inp = document.getElementById('sp-input');
+  inp.disabled = true;
+  inp.className = 'spell-input incorrect';
+  document.getElementById('sp-submit').style.display = 'none';
+  document.getElementById('sp-giveup-btn').style.display = 'none';
+  document.getElementById('sp-next-btn').style.display = '';
+  const fb = document.getElementById('sp-feedback');
+  fb.textContent = 'Answer:'; fb.className = 'spell-feedback incorrect';
+  document.getElementById('sp-answer').textContent = w.pl;
+  recordError('vocabulary');
+  markWord(w, false);
+  updateProgress();
 }
 
 function sp_check() {
@@ -1312,6 +1339,7 @@ function sp_check() {
   sp_answered = true;
   inp.disabled = true;
   document.getElementById('sp-submit').style.display = 'none';
+  document.getElementById('sp-giveup-btn').style.display = 'none';
   document.getElementById('sp-next-btn').style.display = '';
   const fb = document.getElementById('sp-feedback');
   const ans = document.getElementById('sp-answer');
@@ -1474,8 +1502,9 @@ function decl_show() {
     const inp = document.getElementById(id);
     inp.value = ''; inp.className = 'decl-input'; inp.disabled = false;
     // Remove any correction labels
-    const next = inp.nextElementSibling;
-    if (next && next.classList.contains('decl-correction')) next.remove();
+    const cell = inp.parentElement;
+    const corr = cell.querySelector('.decl-correction');
+    if (corr) corr.remove();
   });
 
   document.getElementById('decl-check-btn').style.display = '';
@@ -1534,7 +1563,7 @@ function decl_check() {
       const corr = document.createElement('div');
       corr.className = 'decl-correction';
       corr.textContent = correct;
-      inp.insertAdjacentElement('afterend', corr);
+      inp.parentElement.appendChild(corr);
     }
   });
 
@@ -1569,8 +1598,9 @@ function conj_show() {
   for (let i = 0; i < 6; i++) {
     const inp = document.getElementById('cj-' + i);
     inp.value = ''; inp.className = 'conj-input'; inp.disabled = false;
-    const next = inp.nextElementSibling;
-    if (next && next.classList.contains('conj-correction')) next.remove();
+    const cell = inp.parentElement;
+    const corr = cell.querySelector('.conj-correction');
+    if (corr) corr.remove();
   }
   document.getElementById('conj-check-btn').style.display = '';
   document.getElementById('conj-next-btn').style.display = 'none';
@@ -1607,7 +1637,7 @@ function conj_check() {
       const corr = document.createElement('div');
       corr.className = 'conj-correction';
       corr.textContent = forms[i];
-      inp.insertAdjacentElement('afterend', corr);
+      inp.parentElement.appendChild(corr);
     }
   }
 

@@ -6,11 +6,16 @@ A single-page web app for learning Polish vocabulary, built as a standalone HTML
 
 ### Study Modes
 
-- **Flashcards** — Flip cards showing a Polish word on the front and English translation on the back. Includes word type metadata (noun gender, verb, adjective). Supports hints that reveal the first letter with blanks.
+- **Flashcards** — Flip cards showing a Polish word on the front and English translation on the back. Includes word type metadata (noun gender, verb, adjective). Supports hints that reveal the first letter with blanks. Verbs display IPA transcriptions.
 - **Spelling** — Given an English word, type the Polish translation. Accepts answers with or without Polish diacritics (e.g. "zly" matches "zły"). Shows the exact spelling after answering. Includes an on-screen Polish character keyboard (ą, ć, ę, ł, ń, ó, ś, ź, ż).
 - **Multiple Choice** — Pick the correct translation from four options. Supports both directions: Polish → English and English → Polish.
 - **Listening** — Hear a Polish word spoken aloud (via the browser's Speech Synthesis API, `pl-PL` locale, 0.85x speed) and type its English meaning. Includes a replay button and hints. Requires the browser/OS to have a Polish voice installed.
 - **Declension** — Practice noun declension by filling in a grid of cases (Nominative, Accusative, Genitive) in both singular and plural forms, plus identifying the noun's grammatical gender (m/f/n).
+- **Conjugation** — Practice present-tense verb conjugation by filling in all 6 person forms (ja, ty, on/ona/ono, my, wy, oni/one) for each of the 30 verbs. Each verb displays its IPA transcription and includes a collapsible pronunciation guide covering all Polish sounds.
+- **Gender** — Gender-aware practice mode testing adjective agreement and past-tense gender forms. Exercise types include:
+  - *Adjective agreement*: given a noun, type the correctly gendered adjective (e.g. "duży dom" vs "duża kobieta" vs "duże dziecko").
+  - *Past tense 1st person*: fill in the correct form for male or female speakers (e.g. "byłem" vs "byłam").
+  - *Past tense 3rd person*: fill in the correct he/she/it form (e.g. "on czytał" vs "ona czytała" vs "ono czytało").
 
 ### Vocabulary
 
@@ -23,6 +28,18 @@ A single-page web app for learning Polish vocabulary, built as a standalone HTML
 | — | Adjectives | 20 |
 
 Noun entries include full declension data (nominative plural, accusative singular/plural, genitive singular/plural) and grammatical gender. Plural-only nouns (e.g. drzwi, okulary) are handled separately.
+
+Verb entries include present-tense conjugation for all 6 persons, past-tense forms (masculine/feminine/neuter for 1st and 3rd person singular), and IPA transcriptions.
+
+Adjective entries include masculine, feminine, and neuter nominative forms.
+
+### Pronunciation Guide
+
+A built-in reference for Polish pronunciation aimed at English speakers, accessible from the Conjugation tab. Covers 17 Polish sounds with:
+
+- IPA transcription
+- Plain-English description of how to produce each sound
+- Special focus on sounds that don't exist in English: nasal vowels (ą, ę), soft consonants (ć, ś, ź, ń, dź), hard sibilants (sz, cz, ż/rz, dż), and common surprises (ł = /w/, w = /v/, ó = /u/)
 
 ### Word Groups
 
@@ -41,7 +58,22 @@ A dedicated Progress tab showing:
 - **Words seen** — total words encountered vs. total available
 - **7-day activity chart** — bar chart of daily review counts
 - **Word mastery breakdown** — stacked bar showing distribution across Leitner boxes (Unseen → Mastered)
+- **Error pattern analysis** — horizontal bar chart breaking down mistakes by category (Diacritics, Gender, Case Forms, Conjugation, Vocabulary), with descriptions of your weakest areas and a reset option
 - **Weak words list** — words with the lowest accuracy after 2+ reviews
+
+### Error Pattern Analysis
+
+Errors are automatically classified and tracked across all modes:
+
+| Category | Tracked from | Description |
+|---|---|---|
+| Diacritics | Spelling, Declension, Conjugation, Gender | Correct letters but wrong/missing Polish special characters |
+| Gender | Declension, Gender | Wrong masculine/feminine/neuter form |
+| Case Forms | Declension | Wrong noun case form |
+| Conjugation | Conjugation | Wrong verb conjugation form |
+| Vocabulary | Spelling, Multiple Choice, Listening | Completely wrong word or meaning |
+
+All error counts are persisted in `localStorage` and visualized in the Progress tab.
 
 ### Session Results
 
@@ -55,9 +87,9 @@ After completing a round, a results screen shows:
 ### UI / UX
 
 - **Dark mode** — toggle between light and dark themes, preference saved in `localStorage`
-- **Keyboard shortcuts** — full keyboard navigation for every mode (Space to flip, arrow keys, number keys for multiple choice, Enter to advance, etc.)
+- **Keyboard shortcuts** — full keyboard navigation for every mode (Space to flip, arrow keys, number keys for multiple choice, Enter to advance, Tab between conjugation fields, etc.)
 - **Responsive design** — adapts layout for mobile screens
-- **Polish keyboard** — on-screen buttons for special characters in spelling and declension modes
+- **Polish keyboard** — on-screen buttons for special characters in spelling, declension, conjugation, and gender modes
 
 ## Usage
 
