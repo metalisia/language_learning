@@ -2,6 +2,8 @@
 
 A single-page web app for learning Polish vocabulary, built as a standalone HTML file with no dependencies.
 
+`python3 -m http.server 8000  `
+
 ## Features
 
 ### Study Modes
