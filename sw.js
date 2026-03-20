@@ -1,4 +1,4 @@
-const CACHE_NAME = 'linguo-v2';
+const CACHE_NAME = 'linguo-v3';
 const ASSETS = [
   '/',
   '/index.html',
