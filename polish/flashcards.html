@@ -1905,6 +1905,13 @@ function conv_showSelector() {
   const cefrColors = { A1: '#10b981', A2: '#3b82f6', B1: '#8b5cf6', B2: '#f59e0b' };
   const catIcons = { social: '\u{1F44B}', restaurant: '\u2615', directions: '\u{1F5FA}', shopping: '\u{1F6D2}', health: '\u{1F3E5}', travel: '\u{1F3E8}' };
 
+  if (!CONVERSATIONS || CONVERSATIONS.length === 0) {
+    el.innerHTML = '<div class="no-words-msg"><h3>Conversations loading...</h3>' +
+      '<p>Try clearing your browser cache and reloading.<br>The service worker may be serving old data.</p></div>';
+    document.getElementById('conv-controls').style.display = 'none';
+    return;
+  }
+
   el.innerHTML =
     '<div style="text-align:center;margin-bottom:20px">' +
     '<h3 style="font-size:1.05rem;font-weight:600;margin-bottom:4px">Conversations</h3>' +
@@ -1918,9 +1925,7 @@ function conv_showSelector() {
     ).join('') +
     '</div>';
 
-  document.getElementById('conv-back-btn').style.display = 'none';
-  document.getElementById('conv-next-btn').style.display = 'none';
-  document.getElementById('conv-check-btn').style.display = 'none';
+  document.getElementById('conv-controls').style.display = 'none';
 }
 
 function conv_select(idx) {
