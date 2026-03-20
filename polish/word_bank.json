@@ -196,5 +196,161 @@
     {"pl": "gotowy", "en": "ready", "level": "A2", "forms": ["gotowy", "gotowa", "gotowe"]},
     {"pl": "pewny", "en": "certain/sure", "level": "A2", "forms": ["pewny", "pewna", "pewne"]},
     {"pl": "ostatni", "en": "last/final", "level": "B1", "forms": ["ostatni", "ostatnia", "ostatnie"]}
+  ],
+  "examples": {
+    "n0": {"pl": "Ta kobieta czyta książkę.", "en": "This woman is reading a book."},
+    "n1": {"pl": "Ten mężczyzna pracuje w biurze.", "en": "This man works in an office."},
+    "n2": {"pl": "Dziecko bawi się w parku.", "en": "The child is playing in the park."},
+    "n3": {"pl": "Ta dziewczyna uczy się polskiego.", "en": "This girl is learning Polish."},
+    "n4": {"pl": "Chłopiec je jabłko.", "en": "The boy is eating an apple."},
+    "n5": {"pl": "Moja matka gotuje obiad.", "en": "My mother is cooking dinner."},
+    "n6": {"pl": "Ojciec czyta gazetę.", "en": "The father is reading a newspaper."},
+    "n10": {"pl": "Pies biega po parku.", "en": "The dog is running in the park."},
+    "n11": {"pl": "Kot śpi na kanapie.", "en": "The cat is sleeping on the couch."},
+    "n14": {"pl": "Ryba pływa w rzece.", "en": "The fish swims in the river."},
+    "n20": {"pl": "Lubię jeść jabłka.", "en": "I like to eat apples."},
+    "n25": {"pl": "Poproszę szklankę mleka.", "en": "A glass of milk, please."},
+    "n30": {"pl": "Mieszkam w dużym domu.", "en": "I live in a big house."},
+    "n31": {"pl": "Otwórz okno, jest gorąco.", "en": "Open the window, it's hot."},
+    "n35": {"pl": "Usiądź na krześle.", "en": "Sit on the chair."},
+    "n40": {"pl": "Drzewo rośnie w ogrodzie.", "en": "The tree grows in the garden."},
+    "n50": {"pl": "Boli mnie głowa.", "en": "My head hurts."},
+    "n60": {"pl": "Klucze leżą na stole.", "en": "The keys are on the table."},
+    "n70": {"pl": "Sklep jest zamknięty.", "en": "The shop is closed."},
+    "n80": {"pl": "Czas szybko leci.", "en": "Time flies quickly."},
+    "v0": {"pl": "Chcę być szczęśliwy.", "en": "I want to be happy."},
+    "v1": {"pl": "Mam dużo pracy.", "en": "I have a lot of work."},
+    "v2": {"pl": "Lubię jeść polskie jedzenie.", "en": "I like to eat Polish food."},
+    "v3": {"pl": "Piję kawę każdego ranka.", "en": "I drink coffee every morning."},
+    "v4": {"pl": "Idę do szkoły.", "en": "I'm going to school."},
+    "v5": {"pl": "Jadę pociągiem do Warszawy.", "en": "I'm going by train to Warsaw."},
+    "v10": {"pl": "Chcę kupić nowy samochód.", "en": "I want to buy a new car."},
+    "v20": {"pl": "Uczę się polskiego od roku.", "en": "I've been learning Polish for a year."},
+    "a0": {"pl": "To jest duży dom.", "en": "This is a big house."},
+    "a1": {"pl": "Mały kot śpi na łóżku.", "en": "The little cat sleeps on the bed."},
+    "a2": {"pl": "To jest dobra restauracja.", "en": "This is a good restaurant."},
+    "a3": {"pl": "Mam zły dzień.", "en": "I'm having a bad day."}
+  },
+  "conversations": [
+    {
+      "id": "meeting",
+      "title": "Meeting Someone",
+      "scene": "You're at a party in Warsaw.",
+      "category": "social",
+      "level": "A1",
+      "lines": [
+        {"speaker": "other", "pl": "Cześć! Jak masz na imię?", "en": "Hi! What's your name?"},
+        {"speaker": "you", "pl": "Cześć! Mam na imię Anna.", "en": "Hi! My name is Anna."},
+        {"speaker": "other", "pl": "Miło cię poznać! Skąd jesteś?", "en": "Nice to meet you! Where are you from?"},
+        {"speaker": "you", "pl": "Jestem z Anglii. Uczę się polskiego.", "en": "I'm from England. I'm learning Polish."},
+        {"speaker": "other", "pl": "Naprawdę? Mówisz bardzo dobrze!", "en": "Really? You speak very well!"},
+        {"speaker": "you", "pl": "Dziękuję! To bardzo miłe.", "en": "Thank you! That's very nice."}
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "At a Cafe",
+      "scene": "You walk into a cafe in Kraków.",
+      "category": "restaurant",
+      "level": "A1",
+      "lines": [
+        {"speaker": "other", "pl": "Dzień dobry! Co podać?", "en": "Good day! What can I get you?"},
+        {"speaker": "you", "pl": "Dzień dobry. Poproszę kawę.", "en": "Good day. I'd like a coffee, please."},
+        {"speaker": "other", "pl": "Dużą czy małą?", "en": "Large or small?"},
+        {"speaker": "you", "pl": "Dużą proszę.", "en": "Large, please."},
+        {"speaker": "other", "pl": "Proszę bardzo. Dwanaście złotych.", "en": "Here you go. Twelve zloty."},
+        {"speaker": "you", "pl": "Dziękuję bardzo!", "en": "Thank you very much!"}
+      ]
+    },
+    {
+      "id": "directions",
+      "title": "Asking for Directions",
+      "scene": "You're lost in the city center.",
+      "category": "directions",
+      "level": "A1",
+      "lines": [
+        {"speaker": "you", "pl": "Przepraszam, gdzie jest dworzec?", "en": "Excuse me, where is the station?"},
+        {"speaker": "other", "pl": "Proszę iść prosto, potem w lewo.", "en": "Go straight, then turn left."},
+        {"speaker": "you", "pl": "Czy to daleko?", "en": "Is it far?"},
+        {"speaker": "other", "pl": "Nie, pięć minut pieszo.", "en": "No, five minutes on foot."},
+        {"speaker": "you", "pl": "Dziękuję bardzo!", "en": "Thank you very much!"},
+        {"speaker": "other", "pl": "Nie ma za co!", "en": "You're welcome!"}
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "At the Market",
+      "scene": "You're shopping at a local market.",
+      "category": "shopping",
+      "level": "A1",
+      "lines": [
+        {"speaker": "you", "pl": "Dzień dobry. Ile kosztują jabłka?", "en": "Good day. How much are the apples?"},
+        {"speaker": "other", "pl": "Pięć złotych za kilogram.", "en": "Five zloty per kilogram."},
+        {"speaker": "you", "pl": "Poproszę dwa kilogramy.", "en": "Two kilograms, please."},
+        {"speaker": "other", "pl": "Coś jeszcze?", "en": "Anything else?"},
+        {"speaker": "you", "pl": "Nie, to wszystko. Dziękuję.", "en": "No, that's everything. Thank you."},
+        {"speaker": "other", "pl": "Dziesięć złotych proszę.", "en": "Ten zloty, please."}
+      ]
+    },
+    {
+      "id": "restaurant",
+      "title": "Dinner at a Restaurant",
+      "scene": "You're dining at a Polish restaurant.",
+      "category": "restaurant",
+      "level": "A2",
+      "lines": [
+        {"speaker": "other", "pl": "Dobry wieczór! Stolik dla dwóch osób?", "en": "Good evening! A table for two?"},
+        {"speaker": "you", "pl": "Tak, proszę. Mogę prosić o menu?", "en": "Yes, please. May I have the menu?"},
+        {"speaker": "other", "pl": "Oczywiście. Proszę bardzo.", "en": "Of course. Here you go."},
+        {"speaker": "you", "pl": "Poproszę pierogi i zupę pomidorową.", "en": "I'd like pierogi and tomato soup."},
+        {"speaker": "other", "pl": "Świetny wybór! Coś do picia?", "en": "Great choice! Something to drink?"},
+        {"speaker": "you", "pl": "Poproszę wodę niegazowaną.", "en": "Still water, please."}
+      ]
+    },
+    {
+      "id": "doctor",
+      "title": "At the Doctor",
+      "scene": "You visit a doctor because you feel ill.",
+      "category": "health",
+      "level": "A2",
+      "lines": [
+        {"speaker": "other", "pl": "Dzień dobry. Co Panu dolega?", "en": "Good day. What seems to be the problem?"},
+        {"speaker": "you", "pl": "Nie czuję się dobrze. Boli mnie głowa.", "en": "I don't feel well. My head hurts."},
+        {"speaker": "other", "pl": "Od kiedy?", "en": "Since when?"},
+        {"speaker": "you", "pl": "Od wczoraj. I mam gorączkę.", "en": "Since yesterday. And I have a fever."},
+        {"speaker": "other", "pl": "Przepiszę Panu leki.", "en": "I'll prescribe you medicine."},
+        {"speaker": "you", "pl": "Dziękuję, doktorze.", "en": "Thank you, doctor."}
+      ]
+    },
+    {
+      "id": "hotel",
+      "title": "Checking into a Hotel",
+      "scene": "You arrive at your hotel in Gdańsk.",
+      "category": "travel",
+      "level": "A2",
+      "lines": [
+        {"speaker": "you", "pl": "Dzień dobry. Mam rezerwację.", "en": "Good day. I have a reservation."},
+        {"speaker": "other", "pl": "Na jakie nazwisko?", "en": "Under what name?"},
+        {"speaker": "you", "pl": "Smith. Na dwie noce.", "en": "Smith. For two nights."},
+        {"speaker": "other", "pl": "Pokój numer dwanaście. Drugie piętro.", "en": "Room number twelve. Second floor."},
+        {"speaker": "you", "pl": "O której jest śniadanie?", "en": "What time is breakfast?"},
+        {"speaker": "other", "pl": "Od siódmej do dziesiątej. Miłego pobytu!", "en": "From seven to ten. Enjoy your stay!"}
+      ]
+    },
+    {
+      "id": "plans",
+      "title": "Making Plans",
+      "scene": "You're texting a Polish friend.",
+      "category": "social",
+      "level": "A2",
+      "lines": [
+        {"speaker": "other", "pl": "Cześć! Co robisz dzisiaj wieczorem?", "en": "Hi! What are you doing tonight?"},
+        {"speaker": "you", "pl": "Jeszcze nie wiem. Masz jakiś pomysł?", "en": "I don't know yet. Do you have an idea?"},
+        {"speaker": "other", "pl": "Może pójdziemy do kina?", "en": "Maybe we'll go to the cinema?"},
+        {"speaker": "you", "pl": "Dobry pomysł! O której?", "en": "Good idea! At what time?"},
+        {"speaker": "other", "pl": "O dwudziestej. Spotkamy się przed kinem.", "en": "At eight. We'll meet in front of the cinema."},
+        {"speaker": "you", "pl": "Świetnie! Do zobaczenia!", "en": "Great! See you!"}
+      ]
+    }
   ]
 }

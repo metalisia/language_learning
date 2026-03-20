@@ -408,6 +408,92 @@
 
   html, body { overflow-x: hidden; }
 
+  /* CONVERSATIONS */
+  .conv-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 540px; margin: 0 auto; }
+  .conv-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px; cursor: pointer; transition: all 0.2s; text-align: left;
+  }
+  .conv-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .conv-card-title { font-weight: 600; font-size: 0.88rem; margin-bottom: 4px; }
+  .conv-card-scene { font-size: 0.73rem; color: var(--text-muted); line-height: 1.3; }
+  .conv-card-level {
+    display: inline-block; font-size: 0.62rem; font-weight: 600; padding: 2px 8px;
+    border-radius: 100px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .conv-title { font-size: 1.05rem; font-weight: 600; text-align: center; margin-bottom: 4px; }
+  .conv-scene { font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-bottom: 14px; text-align: center; }
+  .conv-mode-toggle { display: flex; gap: 4px; justify-content: center; margin-bottom: 16px; }
+  .conv-mode-btn {
+    padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.78rem;
+    color: var(--text-muted); transition: all 0.15s; font-family: inherit;
+  }
+  .conv-mode-btn:hover { border-color: var(--accent); }
+  .conv-mode-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .conv-chat { display: flex; flex-direction: column; gap: 10px; max-width: 420px; margin: 0 auto 20px; }
+  .conv-bubble {
+    max-width: 82%; padding: 10px 14px; border-radius: 16px;
+    font-size: 0.88rem; line-height: 1.4; animation: bubbleIn 0.3s ease;
+  }
+  .conv-bubble-other {
+    align-self: flex-start; background: var(--card-bg); border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
+  .conv-bubble-you {
+    align-self: flex-end; background: var(--accent); color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+  .conv-bubble-you.input-mode {
+    background: var(--card-bg); border: 2px dashed var(--accent); color: var(--text);
+  }
+  .conv-bubble-en { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+  .conv-bubble-you .conv-bubble-en { color: rgba(255,255,255,0.65); }
+  .conv-bubble-you.input-mode .conv-bubble-en { color: var(--text-muted); }
+  .conv-input {
+    width: 100%; padding: 8px 12px; border: 2px solid var(--accent); border-radius: 10px;
+    font-size: 0.88rem; font-family: inherit; background: var(--bg); color: var(--text);
+    outline: none; margin-top: 6px;
+  }
+  .conv-input:focus { border-color: var(--accent-hover); }
+  .conv-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .conv-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .conv-result { text-align: center; margin-top: 20px; }
+
+  /* ANIMATIONS */
+  @keyframes bubbleIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .conv-bubble { opacity: 0; animation-fill-mode: forwards; }
+  .conv-bubble.no-anim { opacity: 1; animation: none; }
+  @keyframes correctPulse {
+    0% { box-shadow: 0 0 0 0 rgba(16,163,74,0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(16,163,74,0); }
+    100% { box-shadow: 0 0 0 0 rgba(16,163,74,0); }
+  }
+  @keyframes incorrectShake {
+    0%,100% { transform:translateX(0); }
+    20%,60% { transform:translateX(-4px); }
+    40%,80% { transform:translateX(4px); }
+  }
+  .anim-correct { animation: correctPulse 0.5s ease; }
+  .anim-incorrect { animation: incorrectShake 0.3s ease; }
+
+  /* EXAMPLE SENTENCE ON FLASHCARD */
+  .card-example { font-size: 0.78rem; color: var(--text-muted); margin-top: 14px; line-height: 1.5; }
+  .card-example-pl { color: var(--accent); font-weight: 500; }
+
+  /* CONVERSATION READINESS */
+  .readiness-value { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
+  .readiness-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+  .readiness-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: 10px; }
+  .readiness-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #10b981); border-radius: 4px; transition: width 1s ease; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
+  .badge {
+    padding: 4px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 500;
+    border: 1px solid var(--border); transition: all 0.3s;
+  }
+  .badge.locked { opacity: 0.3; background: var(--bg); color: var(--text-muted); }
+  .badge.unlocked { background: var(--correct-light); color: var(--correct); border-color: var(--correct-border); }
+
   @media (max-width: 600px) {
     header { padding: 14px 18px 0; flex-direction: column; gap: 6px; align-items: stretch; }
     header h1 { font-size: 1.05rem; text-align: center; }
@@ -435,6 +521,9 @@
     .error-row { gap: 6px; }
     .results-card { padding: 24px 18px; }
     .keyboard-hints { display: none; }
+    .conv-selector { grid-template-columns: 1fr; }
+    .conv-bubble { max-width: 90%; }
+    .conv-input { font-size: 0.82rem; }
   }
 </style>
 </head>
@@ -482,6 +571,7 @@
       <div class="card-face card-back">
         <div class="card-label">English</div>
         <div class="card-word" id="fc-back">--</div>
+        <div class="card-example" id="fc-example"></div>
         <div class="click-hint">did you know it?</div>
       </div>
     </div>
@@ -626,8 +716,25 @@
   <button class="btn btn-primary" onclick="gen_next()" id="gen-next-btn" style="display:none">Next</button>
 </div>
 
+<!-- CONVERSATIONS -->
+<div class="mode-section" id="mode-conversations" style="max-width:540px">
+  <div id="conv-content"></div>
+</div>
+<div class="controls" id="conv-controls" style="display:none">
+  <button class="btn" onclick="conv_back()" id="conv-back-btn">Back to List</button>
+  <button class="btn btn-primary" onclick="conv_check()" id="conv-check-btn" style="display:none">Check</button>
+  <button class="btn btn-primary" onclick="conv_next()" id="conv-next-btn" style="display:none">Continue</button>
+</div>
+
 <!-- PROGRESS -->
 <div class="mode-section progress-page" id="mode-progress">
+  <div class="card-box" style="text-align:center;margin-bottom:20px" id="readiness-section">
+    <h3 class="chart-section" style="margin-bottom:8px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Conversation Readiness</h3>
+    <div class="readiness-value" id="readiness-value">0%</div>
+    <div class="readiness-label" id="readiness-label">of the 500 most common Polish words</div>
+    <div class="readiness-bar"><div class="readiness-fill" id="readiness-fill" style="width:0%"></div></div>
+    <div class="badges" id="readiness-badges"></div>
+  </div>
   <div class="stat-cards" id="prog-stats"></div>
   <div class="chart-section card-box">
     <h3>Last 7 Days</h3>
@@ -759,6 +866,10 @@ function loadWordBank(data) {
   });
   NOUN_GROUPS = { "All Nouns": null };
   Object.keys(groupMap).forEach(g => { NOUN_GROUPS[g] = groupMap[g]; });
+
+  // Load examples and conversations
+  EXAMPLES = data.examples || {};
+  CONVERSATIONS = data.conversations || [];
 }
 
 const CONJ_LABELS = ["ja","ty","on/ona/ono","my","wy","oni/one"];
@@ -799,7 +910,7 @@ let NOUN_GROUPS = { "All Nouns": null };
 const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
   ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
-  ["gender","Gender"],["progress","Progress"],
+  ["gender","Gender"],["conversations","Conversations"],["progress","Progress"],
 ];
 
 // ===================== STATE =====================
@@ -1005,17 +1116,18 @@ function switchMode(mode) {
   if (section) section.classList.add('active');
 
   // Hide all controls
-  ['fc','sp','mc','li','decl','conj','gen'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen','conv'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
 
   // Show/hide non-progress UI
   const isProgress = mode === 'progress';
-  const hideGroups = isProgress || mode === 'conjugation' || mode === 'gender';
+  const isConv = mode === 'conversations';
+  const hideGroups = isProgress || isConv || mode === 'conjugation' || mode === 'gender';
   document.getElementById('group-bar').style.display = hideGroups ? 'none' : '';
-  document.getElementById('progress-bar-wrap').style.display = isProgress ? 'none' : '';
-  document.getElementById('stats-bar').style.display = isProgress ? 'none' : '';
+  document.getElementById('progress-bar-wrap').style.display = (isProgress || isConv) ? 'none' : '';
+  document.getElementById('stats-bar').style.display = (isProgress || isConv) ? 'none' : '';
   document.getElementById('results').classList.remove('visible');
 
   const kb = document.getElementById('kb-hints');
@@ -1040,11 +1152,15 @@ function switchMode(mode) {
   } else if (mode === 'gender') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next';
     kb.style.display = '';
+  } else if (mode === 'conversations') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / continue';
+    kb.style.display = '';
   } else {
     kb.style.display = 'none';
   }
 
   if (isProgress) { renderProgress(); return; }
+  if (isConv) { conv_init(); return; }
   if (mode === 'conjugation') { conj_startRound(); return; }
   if (mode === 'gender') { gen_startRound(); return; }
   startRound();
@@ -1141,7 +1257,7 @@ function finishRound() {
 function showResults() {
   const section = document.getElementById('mode-' + currentMode);
   if (section) section.style.display = 'none';
-  ['fc','sp','mc','li','decl','conj','gen'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen','conv'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1191,6 +1307,14 @@ function fc_show() {
   else if (w.type === 'verb') { meta.push('verb'); if (VERB_IPA[w.idx]) meta.push(VERB_IPA[w.idx]); }
   else if (w.type === 'adj') meta.push('adjective');
   document.getElementById('fc-meta').textContent = meta.join(' ');
+  // Show example sentence if available
+  const ex = EXAMPLES[w.id];
+  const exEl = document.getElementById('fc-example');
+  if (ex) {
+    exEl.innerHTML = '<span class="card-example-pl">' + escHtml(ex.pl) + '</span><br>' + escHtml(ex.en);
+  } else {
+    exEl.textContent = '';
+  }
 }
 
 function fc_flip() {
@@ -1270,14 +1394,14 @@ function sp_check() {
   const ans = document.getElementById('sp-answer');
 
   if (plEqual(inp.value, w.pl)) {
-    inp.className = 'spell-input correct';
+    inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     if (inp.value.trim().toLowerCase() !== w.pl.toLowerCase()) {
       ans.textContent = 'Exact spelling: ' + w.pl;
     }
     markWord(w, true);
   } else {
-    inp.className = 'spell-input incorrect';
+    inp.className = 'spell-input incorrect anim-incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
     ans.textContent = 'Answer: ' + w.pl;
     recordError(classifySpellingError(inp.value, w.pl));
@@ -1392,17 +1516,17 @@ function li_check() {
   }
   const typedPolish = normalize(inp.value) === normalize(w.pl);
   if (accepted.some(a => userAns === a)) {
-    inp.className = 'spell-input correct';
+    inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     ans.textContent = w.pl + ' = ' + w.en;
     markWord(w, true);
   } else if (typedPolish) {
-    inp.className = 'spell-input correct';
+    inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'You typed the Polish word — the English meaning is:'; fb.className = 'spell-feedback';
     ans.textContent = w.en;
     markWord(w, true);
   } else {
-    inp.className = 'spell-input incorrect';
+    inp.className = 'spell-input incorrect anim-incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
     ans.textContent = w.pl + ' = ' + w.en;
     recordError('vocabulary');
@@ -1762,6 +1886,213 @@ function gen_next() {
   }
 }
 
+// ===================== CONVERSATIONS =====================
+let CONVERSATIONS = [];
+let conv_current = null;
+let conv_mode = 'browse';
+let conv_lineIdx = 0;
+let conv_correct = 0;
+let conv_total = 0;
+let EXAMPLES = {};
+
+function conv_init() {
+  CONVERSATIONS = WORD_BANK.conversations || [];
+  EXAMPLES = WORD_BANK.examples || {};
+  conv_current = null;
+  conv_showSelector();
+}
+
+function conv_showSelector() {
+  const el = document.getElementById('conv-content');
+  const cefrColors = { A1: '#10b981', A2: '#3b82f6', B1: '#8b5cf6', B2: '#f59e0b' };
+  const catIcons = { social: '\u{1F44B}', restaurant: '\u2615', directions: '\u{1F5FA}', shopping: '\u{1F6D2}', health: '\u{1F3E5}', travel: '\u{1F3E8}' };
+
+  if (!CONVERSATIONS || CONVERSATIONS.length === 0) {
+    el.innerHTML = '<div class="no-words-msg"><h3>Conversations loading...</h3>' +
+      '<p>Try clearing your browser cache and reloading.<br>The service worker may be serving old data.</p></div>';
+    document.getElementById('conv-controls').style.display = 'none';
+    return;
+  }
+
+  el.innerHTML =
+    '<div style="text-align:center;margin-bottom:20px">' +
+    '<h3 style="font-size:1.05rem;font-weight:600;margin-bottom:4px">Conversations</h3>' +
+    '<p style="font-size:0.8rem;color:var(--text-muted)">Practice real-life Polish dialogues</p></div>' +
+    '<div class="conv-selector">' +
+    CONVERSATIONS.map((c, i) =>
+      '<div class="conv-card" onclick="conv_select(' + i + ')">' +
+      '<div class="conv-card-level" style="background:' + cefrColors[c.level] + '22;color:' + cefrColors[c.level] + '">' + c.level + '</div>' +
+      '<div class="conv-card-title">' + (catIcons[c.category] || '') + ' ' + escHtml(c.title) + '</div>' +
+      '<div class="conv-card-scene">' + escHtml(c.scene) + '</div></div>'
+    ).join('') +
+    '</div>';
+
+  document.getElementById('conv-controls').style.display = 'none';
+}
+
+function conv_select(idx) {
+  conv_current = CONVERSATIONS[idx];
+  conv_mode = 'browse';
+  conv_showConversation();
+}
+
+function conv_showConversation() {
+  const c = conv_current;
+  const el = document.getElementById('conv-content');
+
+  el.innerHTML =
+    '<div class="conv-title">' + escHtml(c.title) + '</div>' +
+    '<div class="conv-scene">' + escHtml(c.scene) + '</div>' +
+    '<div class="conv-mode-toggle">' +
+    '<button class="conv-mode-btn ' + (conv_mode === 'browse' ? 'active' : '') + '" onclick="conv_setMode(\'browse\')">Browse</button>' +
+    '<button class="conv-mode-btn ' + (conv_mode === 'practice' ? 'active' : '') + '" onclick="conv_setMode(\'practice\')">Practice</button></div>' +
+    '<div class="conv-chat" id="conv-chat"></div>' +
+    '<div class="pl-keyboard" id="conv-keyboard" style="max-width:320px;margin:0 auto"></div>';
+
+  document.getElementById('conv-controls').style.display = '';
+  document.getElementById('conv-back-btn').style.display = '';
+
+  if (conv_mode === 'browse') conv_renderBrowse();
+  else conv_startPractice();
+}
+
+function conv_setMode(mode) {
+  conv_mode = mode;
+  conv_showConversation();
+}
+
+function conv_renderBrowse() {
+  const chat = document.getElementById('conv-chat');
+  const c = conv_current;
+  chat.innerHTML = c.lines.map((line, i) =>
+    '<div class="conv-bubble conv-bubble-' + line.speaker + '" style="animation-delay:' + (i * 0.12) + 's">' +
+    '<div>' + escHtml(line.pl) + '</div>' +
+    '<div class="conv-bubble-en">' + escHtml(line.en) + '</div></div>'
+  ).join('');
+  document.getElementById('conv-next-btn').style.display = 'none';
+  document.getElementById('conv-check-btn').style.display = 'none';
+  buildPlKeyboard('conv-keyboard', '');
+  document.getElementById('conv-keyboard').style.display = 'none';
+}
+
+function conv_startPractice() {
+  conv_lineIdx = 0;
+  conv_correct = 0;
+  conv_total = conv_current.lines.filter(l => l.speaker === 'you').length;
+  buildPlKeyboard('conv-keyboard', 'conv-input');
+  document.getElementById('conv-keyboard').style.display = '';
+  conv_renderPractice();
+}
+
+function conv_renderPractice() {
+  const chat = document.getElementById('conv-chat');
+  const c = conv_current;
+
+  if (conv_lineIdx >= c.lines.length) {
+    conv_showPracticeResult();
+    return;
+  }
+
+  let html = '';
+  for (let i = 0; i <= conv_lineIdx && i < c.lines.length; i++) {
+    const line = c.lines[i];
+    const isNew = (i === conv_lineIdx);
+    const animClass = isNew ? '' : ' no-anim';
+    if (line.speaker === 'other') {
+      html += '<div class="conv-bubble conv-bubble-other' + animClass + '"' + (isNew ? ' style="animation-delay:0.1s"' : '') + '>' +
+        '<div>' + escHtml(line.pl) + '</div>' +
+        '<div class="conv-bubble-en">' + escHtml(line.en) + '</div></div>';
+    } else if (i < conv_lineIdx) {
+      html += '<div class="conv-bubble conv-bubble-you no-anim">' +
+        '<div>' + escHtml(line.pl) + '</div></div>';
+    } else {
+      html += '<div class="conv-bubble conv-bubble-you input-mode">' +
+        '<div class="conv-bubble-en" style="margin-bottom:6px">' + escHtml(line.en) + '</div>' +
+        '<input type="text" class="conv-input" id="conv-input" placeholder="Type in Polish..." autocomplete="off">' +
+        '<div class="spell-feedback" id="conv-feedback" style="font-size:0.76rem;margin-top:4px"></div></div>';
+    }
+  }
+  chat.innerHTML = html;
+
+  // If current line is "other", auto-advance after showing
+  if (c.lines[conv_lineIdx].speaker === 'other') {
+    document.getElementById('conv-check-btn').style.display = 'none';
+    document.getElementById('conv-next-btn').style.display = '';
+    return;
+  }
+
+  const inp = document.getElementById('conv-input');
+  if (inp) {
+    inp.focus();
+    buildPlKeyboard('conv-keyboard', 'conv-input');
+  }
+  document.getElementById('conv-check-btn').style.display = '';
+  document.getElementById('conv-next-btn').style.display = 'none';
+}
+
+function conv_check() {
+  const c = conv_current;
+  if (!c || conv_lineIdx >= c.lines.length) return;
+  const line = c.lines[conv_lineIdx];
+  if (line.speaker !== 'you') return;
+
+  const inp = document.getElementById('conv-input');
+  if (!inp || inp.disabled) return;
+  const fb = document.getElementById('conv-feedback');
+
+  inp.disabled = true;
+  if (plEqual(inp.value, line.pl)) {
+    inp.className = 'conv-input correct anim-correct';
+    fb.textContent = 'Correct!';
+    fb.className = 'spell-feedback correct';
+    conv_correct++;
+    if (inp.value.trim().toLowerCase() !== line.pl.toLowerCase()) {
+      fb.textContent = 'Correct! Exact: ' + line.pl;
+    }
+  } else {
+    inp.className = 'conv-input incorrect anim-incorrect';
+    fb.textContent = line.pl;
+    fb.className = 'spell-feedback incorrect';
+  }
+  document.getElementById('conv-check-btn').style.display = 'none';
+  document.getElementById('conv-next-btn').style.display = '';
+}
+
+function conv_next() {
+  conv_lineIdx++;
+  conv_renderPractice();
+}
+
+function conv_showPracticeResult() {
+  const chat = document.getElementById('conv-chat');
+  const c = conv_current;
+  const pct = conv_total > 0 ? Math.round(conv_correct / conv_total * 100) : 100;
+  const heading = pct === 100 ? 'Perfect!' : pct >= 50 ? 'Good job!' : 'Keep practicing!';
+
+  let html = c.lines.map(line =>
+    '<div class="conv-bubble conv-bubble-' + line.speaker + ' no-anim">' +
+    '<div>' + escHtml(line.pl) + '</div>' +
+    '<div class="conv-bubble-en">' + escHtml(line.en) + '</div></div>'
+  ).join('');
+
+  html += '<div class="conv-result card-box" style="opacity:1">' +
+    '<h3 style="font-size:1.05rem;font-weight:600">' + heading + '</h3>' +
+    '<p style="color:var(--text-muted);font-size:0.82rem;margin-top:4px">' + conv_correct + '/' + conv_total + ' responses correct</p>' +
+    '<div style="display:flex;gap:8px;justify-content:center;margin-top:14px">' +
+    '<button class="btn" onclick="conv_setMode(\'practice\')">Try Again</button>' +
+    '<button class="btn btn-primary" onclick="conv_back()">More Conversations</button></div></div>';
+
+  chat.innerHTML = html;
+  document.getElementById('conv-check-btn').style.display = 'none';
+  document.getElementById('conv-next-btn').style.display = 'none';
+  document.getElementById('conv-keyboard').style.display = 'none';
+}
+
+function conv_back() {
+  conv_current = null;
+  conv_showSelector();
+}
+
 // ===================== PROGRESS PAGE =====================
 function renderProgress() {
   const srs = getSRS();
@@ -1783,8 +2114,34 @@ function renderProgress() {
     if (stats.daily[d]) weekNew += stats.daily[d].newWords;
   }
 
+  // Conversation readiness: what % of the top-500 Polish words does the user know?
+  const top500 = WORD_BANK ? (WORD_BANK.nouns.length + WORD_BANK.verbs.length + WORD_BANK.adjectives.length) : 0;
+  const knownWords = allWords.filter(w => srs[w.id] && srs[w.id].box >= 2).length;
+  const readinessPct = top500 > 0 ? Math.round(knownWords / top500 * 100) : 0;
+  document.getElementById('readiness-value').textContent = readinessPct + '%';
+  document.getElementById('readiness-label').textContent = knownWords + ' of ' + top500 + ' vocabulary words learned';
+  document.getElementById('readiness-fill').style.width = Math.min(100, readinessPct) + '%';
+
+  // Situation badges
+  const situations = [
+    { name: 'Greetings', words: ['cześć','dzień','dobry','widzenia','proszę','dziękuję'], threshold: 4 },
+    { name: 'Restaurant', words: ['jeść','pić','kawa','woda','chleb','obiad'], threshold: 3 },
+    { name: 'Shopping', words: ['kupować','pieniądze','sklep','duży','mały','drogi'], threshold: 3 },
+    { name: 'Directions', words: ['iść','dom','miasto','ulica','daleko','gdzie'], threshold: 3 },
+    { name: 'Social', words: ['kobieta','mężczyzna','przyjaciel','mówić','rozumieć','lubić'], threshold: 3 },
+    { name: 'Numbers', words: ['jeden','dwa','trzy','czas','dzień','rok'], threshold: 3 },
+  ];
+  const knownPl = new Set(allWords.filter(w => srs[w.id] && srs[w.id].box >= 2).map(w => w.pl.toLowerCase()));
+  document.getElementById('readiness-badges').innerHTML = situations.map(s => {
+    const known = s.words.filter(w => knownPl.has(w)).length;
+    const unlocked = known >= s.threshold;
+    return '<span class="badge ' + (unlocked ? 'unlocked' : 'locked') + '">' +
+      (unlocked ? '\u2713 ' : '\u{1F512} ') + s.name + '</span>';
+  }).join('');
+
+  const streakDisplay = streak > 0 ? '\u{1F525} ' + streak : '0';
   document.getElementById('prog-stats').innerHTML = [
-    { val: streak, lbl: 'Day Streak' },
+    { val: streakDisplay, lbl: 'Day Streak' },
     { val: weekNew, lbl: 'New This Week' },
     { val: totalReviewed + '/' + allWords.length, lbl: 'Words Seen' },
   ].map(s => `<div class="stat-card"><div class="val">${s.val}</div><div class="lbl">${s.lbl}</div></div>`).join('');
@@ -1934,6 +2291,13 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); conj_answered ? conj_next() : conj_check(); }
   } else if (currentMode === 'gender') {
     if (e.key === 'Enter') { e.preventDefault(); gen_answered ? gen_next() : gen_check(); }
+  } else if (currentMode === 'conversations') {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const inp = document.getElementById('conv-input');
+      if (inp && !inp.disabled) conv_check();
+      else conv_next();
+    }
   }
 });
 
