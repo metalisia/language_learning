@@ -5,8 +5,8 @@ const ASSETS = [
   '/polish/flashcards.html',
   '/italian/flashcards.html',
   '/manifest.json',
-  '/icon-192.svg',
-  '/icon-512.svg',
+  '/images/icon-192.svg',
+  '/images/icon-512.svg',
 ];
 
 // Install: pre-cache all assets
