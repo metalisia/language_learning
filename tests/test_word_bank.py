@@ -445,6 +445,59 @@ class TestExamples(unittest.TestCase):
                                     f"Example '{wid}' references adj index {idx} but only {a_count} adjectives exist")
 
 
+class TestClozeDataAvailability(unittest.TestCase):
+    """Test that enough data exists to generate meaningful cloze exercises."""
+
+    @classmethod
+    def setUpClass(cls):
+        with open(WORD_BANK_PATH, 'r', encoding='utf-8') as f:
+            cls.data = json.load(f)
+
+    def test_examples_for_cloze(self):
+        """Example sentences should contain forms of their target words (for vocabulary cloze)."""
+        examples = self.data.get('examples', {})
+        matchable = 0
+        for wid, ex in examples.items():
+            prefix = wid[0]
+            idx = int(wid[1:])
+            forms = []
+            if prefix == 'n' and idx < len(self.data['nouns']):
+                n = self.data['nouns'][idx]
+                forms = [n['pl'], n.get('nom_pl',''), n.get('acc_sg',''),
+                         n.get('acc_pl',''), n.get('gen_sg',''), n.get('gen_pl','')]
+            elif prefix == 'v' and idx < len(self.data['verbs']):
+                v = self.data['verbs'][idx]
+                forms = [v['pl']] + v.get('conj', [])
+            elif prefix == 'a' and idx < len(self.data['adjectives']):
+                a = self.data['adjectives'][idx]
+                forms = [a['pl']] + a.get('forms', [])
+            forms = [f for f in forms if f]
+            sentence = ex['pl'].lower()
+            if any(f.lower() in sentence for f in forms):
+                matchable += 1
+        # At least 50% of examples should have a matchable word form
+        self.assertGreater(matchable, len(examples) * 0.5,
+                           f"Only {matchable}/{len(examples)} examples have matchable word forms")
+
+    def test_verbs_have_conjugations_for_cloze(self):
+        """All verbs need conjugation data for conjugation cloze exercises."""
+        for i, verb in enumerate(self.data['verbs']):
+            with self.subTest(i=i, word=verb['pl']):
+                self.assertIn('conj', verb)
+                self.assertEqual(len(verb['conj']), 6)
+
+    def test_nouns_have_case_forms_for_cloze(self):
+        """Non-plural nouns need case forms for case cloze exercises."""
+        usable = 0
+        for noun in self.data['nouns']:
+            if noun['gender'] == 'pl':
+                continue
+            if noun.get('acc_sg') and noun.get('gen_sg'):
+                usable += 1
+        self.assertGreater(usable, 30,
+                           f"Only {usable} nouns have case forms for cloze exercises")
+
+
 class TestCrossValidation(unittest.TestCase):
     """Cross-validate data across different sections."""
 

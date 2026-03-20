@@ -460,6 +460,50 @@
   .conv-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
   .conv-result { text-align: center; margin-top: 20px; }
 
+  /* CLOZE */
+  .cloze-type-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.68rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 14px;
+  }
+  .cloze-type-vocab { background: var(--accent-light); color: var(--accent); }
+  .cloze-type-conj { background: #f3e8ff; color: #8b5cf6; }
+  [data-theme="dark"] .cloze-type-conj { background: #2d1f42; color: #a78bfa; }
+  .cloze-type-case { background: var(--warn-light); color: var(--warn); }
+  .cloze-sentence {
+    font-size: 1.35rem; font-weight: 500; line-height: 1.6; margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .cloze-gap {
+    display: inline-block; border-bottom: 3px solid var(--accent);
+    min-width: 70px; text-align: center; padding: 0 6px; margin: 0 2px;
+    color: var(--accent); font-weight: 600; transition: all 0.3s;
+  }
+  .cloze-gap.revealed-correct {
+    border-bottom-color: var(--correct); color: var(--correct);
+    background: var(--correct-light); border-radius: 4px; padding: 2px 8px;
+  }
+  .cloze-gap.revealed-incorrect {
+    border-bottom-color: var(--incorrect); color: var(--incorrect);
+    background: var(--incorrect-light); border-radius: 4px; padding: 2px 8px;
+    text-decoration: line-through;
+  }
+  .cloze-correction {
+    display: inline-block; color: var(--correct); font-weight: 600;
+    margin-left: 6px; font-size: 1.2rem;
+  }
+  .cloze-en { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+  .cloze-hint-text { font-size: 0.82rem; color: var(--text-muted); margin-top: 8px; }
+  .cloze-full { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; }
+  .cloze-full strong { color: var(--accent); font-weight: 600; }
+
+  /* STREAK BADGE */
+  .streak-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.78rem; font-weight: 600; color: var(--warn);
+    background: var(--warn-light); padding: 3px 10px; border-radius: 100px;
+  }
+  .streak-badge.inactive { color: var(--text-muted); background: transparent; }
+
   /* ANIMATIONS */
   @keyframes bubbleIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
   .conv-bubble { opacity: 0; animation-fill-mode: forwards; }
@@ -521,6 +565,7 @@
     .error-row { gap: 6px; }
     .results-card { padding: 24px 18px; }
     .keyboard-hints { display: none; }
+    .cloze-sentence { font-size: 1.1rem; }
     .conv-selector { grid-template-columns: 1fr; }
     .conv-bubble { max-width: 90%; }
     .conv-input { font-size: 0.82rem; }
@@ -533,6 +578,7 @@
   <a href="../index.html" style="text-decoration:none;color:var(--accent);font-size:1.1rem;margin-right:10px" title="Back to menu">&#8249;</a>
   <h1>Fiszki <span>/ Polish Trainer</span></h1>
   <div class="header-right">
+    <span class="streak-badge inactive" id="streak-badge" title="Day streak">0</span>
     <div class="stats" id="stats-bar">
       <div>Correct <strong id="stat-correct">0</strong></div>
       <div>Remaining <strong id="stat-remaining">0</strong></div>
@@ -726,6 +772,28 @@
   <button class="btn btn-primary" onclick="conv_next()" id="conv-next-btn" style="display:none">Continue</button>
 </div>
 
+<!-- CLOZE -->
+<div class="mode-section" id="mode-cloze">
+  <div class="card-box">
+    <div class="cloze-type-tag" id="cloze-tag">Vocabulary</div>
+    <div class="cloze-en" id="cloze-en">--</div>
+    <div class="cloze-sentence" id="cloze-sentence">--</div>
+    <div class="cloze-hint-text" id="cloze-hint-text"></div>
+    <div class="spell-input-row" style="margin-top:16px">
+      <input type="text" class="spell-input" id="cloze-input" placeholder="Type the missing word..." autocomplete="off">
+      <button class="btn btn-primary" onclick="cloze_check()" id="cloze-submit">Check</button>
+    </div>
+    <div class="pl-keyboard" id="cloze-keyboard"></div>
+    <div class="spell-feedback" id="cloze-feedback"></div>
+    <div class="cloze-full" id="cloze-full"></div>
+  </div>
+</div>
+<div class="controls" id="cloze-controls" style="display:none">
+  <button class="btn btn-hint" onclick="cloze_showHint()" id="cloze-hint-btn">Hint</button>
+  <button class="btn btn-skip" onclick="cloze_skip()" id="cloze-skip-btn">Skip</button>
+  <button class="btn btn-primary" onclick="cloze_next()" id="cloze-next-btn" style="display:none">Next</button>
+</div>
+
 <!-- PROGRESS -->
 <div class="mode-section progress-page" id="mode-progress">
   <div class="card-box" style="text-align:center;margin-bottom:20px" id="readiness-section">
@@ -910,7 +978,7 @@ let NOUN_GROUPS = { "All Nouns": null };
 const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
   ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
-  ["gender","Gender"],["conversations","Conversations"],["progress","Progress"],
+  ["gender","Gender"],["cloze","Cloze"],["conversations","Conversations"],["progress","Progress"],
 ];
 
 // ===================== STATE =====================
@@ -1116,7 +1184,7 @@ function switchMode(mode) {
   if (section) section.classList.add('active');
 
   // Hide all controls
-  ['fc','sp','mc','li','decl','conj','gen','conv'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen','conv','cloze'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1124,10 +1192,12 @@ function switchMode(mode) {
   // Show/hide non-progress UI
   const isProgress = mode === 'progress';
   const isConv = mode === 'conversations';
-  const hideGroups = isProgress || isConv || mode === 'conjugation' || mode === 'gender';
+  const isCloze = mode === 'cloze';
+  const hideGroups = isProgress || isConv || isCloze || mode === 'conjugation' || mode === 'gender';
   document.getElementById('group-bar').style.display = hideGroups ? 'none' : '';
   document.getElementById('progress-bar-wrap').style.display = (isProgress || isConv) ? 'none' : '';
   document.getElementById('stats-bar').style.display = (isProgress || isConv) ? 'none' : '';
+  document.getElementById('streak-badge').style.display = (isProgress || isConv) ? 'none' : '';
   document.getElementById('results').classList.remove('visible');
 
   const kb = document.getElementById('kb-hints');
@@ -1152,6 +1222,9 @@ function switchMode(mode) {
   } else if (mode === 'gender') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next';
     kb.style.display = '';
+  } else if (mode === 'cloze') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>Ctrl+H</kbd> hint';
+    kb.style.display = '';
   } else if (mode === 'conversations') {
     kb.innerHTML = '<kbd>Enter</kbd> check / continue';
     kb.style.display = '';
@@ -1160,6 +1233,7 @@ function switchMode(mode) {
   }
 
   if (isProgress) { renderProgress(); return; }
+  if (isCloze) { cloze_startRound(); return; }
   if (isConv) { conv_init(); return; }
   if (mode === 'conjugation') { conj_startRound(); return; }
   if (mode === 'gender') { gen_startRound(); return; }
@@ -1249,15 +1323,14 @@ function finishRound() {
   // Record stats
   const newWords = deck.filter(w => { const s = getSRS()[w.id]; return s && s.reviews === 1; }).length;
   recordSession(deck.length, correct, newWords);
-  // Update SRS for all words in this session
-  // (already done per-word in mark functions)
+  updateStreakBadge();
   showResults();
 }
 
 function showResults() {
   const section = document.getElementById('mode-' + currentMode);
   if (section) section.style.display = 'none';
-  ['fc','sp','mc','li','decl','conj','gen','conv'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen','conv','cloze'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1886,6 +1959,238 @@ function gen_next() {
   }
 }
 
+// ===================== CLOZE (FILL-IN-THE-BLANK) =====================
+let cloze_deck = [], cloze_current = 0, cloze_correct = 0, cloze_missed = [];
+let cloze_answered = false;
+
+function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function cloze_buildExercises() {
+  const exercises = [];
+
+  // Type 1: Vocabulary cloze from example sentences
+  Object.entries(EXAMPLES).forEach(([id, ex]) => {
+    const prefix = id[0];
+    const idx = parseInt(id.slice(1));
+    let allForms = [];
+    let enWord = '';
+    if (prefix === 'n' && idx < NOUNS.length) {
+      const n = NOUNS[idx];
+      allForms = [n[0], n[3], n[4], n[5], n[6], n[7]].filter(Boolean);
+      enWord = n[1];
+    } else if (prefix === 'v' && idx < VERBS.length) {
+      allForms = [VERBS[idx][0], ...(VERB_CONJ[idx] || [])];
+      enWord = VERBS[idx][1];
+    } else if (prefix === 'a' && idx < ADJECTIVES.length) {
+      allForms = [ADJECTIVES[idx][0], ...(ADJ_FORMS[idx] || [])];
+      enWord = ADJECTIVES[idx][1];
+    }
+    if (!allForms.length) return;
+
+    // Sort longest first so we match the most specific form
+    allForms.sort((a, b) => b.length - a.length);
+    for (const form of allForms) {
+      // Match the form as a whole word in the sentence
+      const re = new RegExp('(^|[\\s,;!?\\(])(' + escapeRegex(form) + ')([\\s,;.!?\\)]|$)', 'i');
+      const match = ex.pl.match(re);
+      if (match) {
+        const blanked = ex.pl.replace(re, '$1_BLANK_$3');
+        exercises.push({
+          type: 'vocab', answer: match[2], hint: enWord,
+          sentence_pl: blanked, sentence_en: ex.en, full_pl: ex.pl,
+          id: 'cz_' + id,
+        });
+        break;
+      }
+    }
+  });
+
+  // Type 2: Conjugation cloze
+  const conjCtx = [
+    { p: 0, subj: 'Ja', en: 'I' },
+    { p: 1, subj: 'Ty', en: 'You' },
+    { p: 2, subj: 'On', en: 'He' },
+    { p: 2, subj: 'Ona', en: 'She' },
+    { p: 3, subj: 'My', en: 'We' },
+    { p: 5, subj: 'Oni', en: 'They' },
+  ];
+  VERBS.forEach((v, vi) => {
+    const conj = VERB_CONJ[vi];
+    if (!conj) return;
+    // Pick 2 person forms per verb for variety
+    const picks = [conjCtx[vi % conjCtx.length], conjCtx[(vi + 3) % conjCtx.length]];
+    picks.forEach(ctx => {
+      const form = conj[ctx.p];
+      if (!form) return;
+      const enVerb = v[1].replace(/^to /, '');
+      exercises.push({
+        type: 'conj', answer: form,
+        hint: v[0] + ' (' + v[1] + ') \u2192 ' + ctx.subj.toLowerCase(),
+        sentence_pl: ctx.subj + ' _BLANK_ .',
+        sentence_en: ctx.en + ' ' + enVerb + '.',
+        full_pl: ctx.subj + ' ' + form + '.',
+        id: 'cz_cj_' + vi + '_' + ctx.p,
+      });
+    });
+  });
+
+  // Type 3: Case cloze (nouns after verbs/prepositions that govern specific cases)
+  // n = [pl, en, gender, nom_pl, acc_sg/acc_pl(for pl-only), acc_pl, gen_sg, gen_pl]
+  // Indices for regular nouns: 0=pl, 1=en, 2=gender, 3=nom_pl, 4=acc_sg, 5=acc_pl, 6=gen_sg, 7=gen_pl
+  const caseCtx = [
+    { tpl: 'Nie mam _BLANK_ .', en: "I don't have a/an {w}.", idx: 6, label: 'genitive sg.' },
+    { tpl: 'Szukam _BLANK_ .', en: "I'm looking for a/an {w}.", idx: 6, label: 'genitive sg.' },
+    { tpl: 'Widzę _BLANK_ .', en: 'I see a/an {w}.', idx: 4, label: 'accusative sg.' },
+    { tpl: 'Lubię _BLANK_ .', en: 'I like {w}.', idx: 4, label: 'accusative sg.' },
+    { tpl: 'Potrzebuję _BLANK_ .', en: 'I need a/an {w}.', idx: 6, label: 'genitive sg.' },
+    { tpl: 'Mam dużo _BLANK_ .', en: 'I have a lot of {w}.', idx: 7, label: 'genitive pl.' },
+  ];
+  NOUNS.forEach((n, ni) => {
+    if (n[2] === 'pl') return;
+    const ctx = caseCtx[ni % caseCtx.length];
+    const form = n[ctx.idx];
+    if (!form) return;
+    exercises.push({
+      type: 'case', answer: form,
+      hint: n[0] + ' \u2192 ' + ctx.label,
+      sentence_pl: ctx.tpl,
+      sentence_en: ctx.en.replace('{w}', n[1]),
+      full_pl: ctx.tpl.replace('_BLANK_', form),
+      id: 'cz_cs_' + ni + '_' + ctx.idx,
+    });
+  });
+
+  return exercises;
+}
+
+function cloze_renderSentence(text, isRevealed, wasCorrect, correctAnswer) {
+  if (!isRevealed) {
+    return text.replace('_BLANK_', '<span class="cloze-gap">?</span>');
+  }
+  if (wasCorrect) {
+    return text.replace('_BLANK_', '<span class="cloze-gap revealed-correct">' + escHtml(correctAnswer) + '</span>');
+  }
+  return text.replace('_BLANK_',
+    '<span class="cloze-gap revealed-incorrect">' + escHtml(correctAnswer) + '</span>' +
+    '<span class="cloze-correction">\u2192 ' + escHtml(correctAnswer) + '</span>');
+}
+
+function cloze_startRound() {
+  const all = cloze_buildExercises();
+  cloze_deck = shuffle(all).slice(0, 20);
+  cloze_current = 0; cloze_correct = 0; cloze_missed = [];
+  deck = cloze_deck; current = 0; correct = 0; missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-cloze').style.display = '';
+  document.getElementById('cloze-controls').style.display = '';
+  if (cloze_deck.length === 0) { showNoWords(); return; }
+  cloze_show();
+  updateProgress();
+}
+
+function cloze_show() {
+  cloze_answered = false;
+  const ex = cloze_deck[cloze_current];
+  const tagEl = document.getElementById('cloze-tag');
+  const typeLabels = { vocab: 'Vocabulary', conj: 'Conjugation', case: 'Case Form' };
+  const typeClasses = { vocab: 'cloze-type-vocab', conj: 'cloze-type-conj', case: 'cloze-type-case' };
+  tagEl.textContent = typeLabels[ex.type] || 'Fill in the blank';
+  tagEl.className = 'cloze-type-tag ' + (typeClasses[ex.type] || 'cloze-type-vocab');
+
+  document.getElementById('cloze-en').textContent = ex.sentence_en;
+  document.getElementById('cloze-sentence').innerHTML = cloze_renderSentence(ex.sentence_pl, false);
+  document.getElementById('cloze-hint-text').textContent = '';
+  document.getElementById('cloze-full').innerHTML = '';
+
+  const inp = document.getElementById('cloze-input');
+  inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
+  document.getElementById('cloze-submit').style.display = '';
+  document.getElementById('cloze-hint-btn').style.display = '';
+  document.getElementById('cloze-skip-btn').style.display = '';
+  document.getElementById('cloze-next-btn').style.display = 'none';
+  document.getElementById('cloze-feedback').textContent = '';
+  document.getElementById('cloze-feedback').className = 'spell-feedback';
+  buildPlKeyboard('cloze-keyboard', 'cloze-input');
+  inp.focus();
+}
+
+function cloze_check() {
+  if (cloze_answered || cloze_current >= cloze_deck.length) return;
+  cloze_answered = true;
+  const ex = cloze_deck[cloze_current];
+  const inp = document.getElementById('cloze-input');
+  inp.disabled = true;
+  document.getElementById('cloze-submit').style.display = 'none';
+  document.getElementById('cloze-hint-btn').style.display = 'none';
+  document.getElementById('cloze-skip-btn').style.display = 'none';
+  document.getElementById('cloze-next-btn').style.display = '';
+  const fb = document.getElementById('cloze-feedback');
+
+  const isCorrect = plEqual(inp.value, ex.answer);
+  if (isCorrect) {
+    inp.className = 'spell-input correct anim-correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    cloze_correct++; correct++;
+    document.getElementById('cloze-sentence').innerHTML = cloze_renderSentence(ex.sentence_pl, true, true, ex.answer);
+    if (inp.value.trim().toLowerCase() !== ex.answer.toLowerCase()) {
+      fb.textContent = 'Correct! Exact: ' + ex.answer;
+    }
+  } else {
+    inp.className = 'spell-input incorrect anim-incorrect';
+    fb.textContent = 'Answer: ' + ex.answer; fb.className = 'spell-feedback incorrect';
+    cloze_missed.push({ pl: ex.answer, en: ex.hint });
+    missed.push({ pl: ex.answer, en: ex.hint });
+    document.getElementById('cloze-sentence').innerHTML = cloze_renderSentence(ex.sentence_pl, true, false, ex.answer);
+    if (ex.type === 'conj') recordError('conjugation');
+    else if (ex.type === 'case') recordError('case_form');
+    else recordError(classifySpellingError(inp.value, ex.answer));
+  }
+  document.getElementById('cloze-full').innerHTML = '<strong>' + escHtml(ex.full_pl) + '</strong>';
+  current = cloze_current + 1;
+  updateProgress();
+}
+
+function cloze_skip() {
+  if (cloze_answered || cloze_current >= cloze_deck.length) return;
+  cloze_answered = true;
+  const ex = cloze_deck[cloze_current];
+  const inp = document.getElementById('cloze-input');
+  inp.disabled = true;
+  inp.className = 'spell-input incorrect';
+  document.getElementById('cloze-submit').style.display = 'none';
+  document.getElementById('cloze-hint-btn').style.display = 'none';
+  document.getElementById('cloze-skip-btn').style.display = 'none';
+  document.getElementById('cloze-next-btn').style.display = '';
+  document.getElementById('cloze-feedback').textContent = ex.answer;
+  document.getElementById('cloze-feedback').className = 'spell-feedback incorrect';
+  document.getElementById('cloze-sentence').innerHTML = cloze_renderSentence(ex.sentence_pl, true, false, ex.answer);
+  document.getElementById('cloze-full').innerHTML = '<strong>' + escHtml(ex.full_pl) + '</strong>';
+  cloze_missed.push({ pl: ex.answer, en: ex.hint });
+  missed.push({ pl: ex.answer, en: ex.hint });
+  recordError('vocabulary');
+  current = cloze_current + 1;
+  updateProgress();
+}
+
+function cloze_next() {
+  if (!cloze_answered) return;
+  cloze_current++;
+  current = cloze_current;
+  if (cloze_current >= cloze_deck.length) {
+    deck = cloze_deck;
+    finishRound();
+  } else {
+    cloze_show();
+    updateProgress();
+  }
+}
+
+function cloze_showHint() {
+  if (cloze_answered || cloze_current >= cloze_deck.length) return;
+  const ex = cloze_deck[cloze_current];
+  document.getElementById('cloze-hint-text').textContent = ex.hint;
+}
+
 // ===================== CONVERSATIONS =====================
 let CONVERSATIONS = [];
 let conv_current = null;
@@ -2291,6 +2596,9 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); conj_answered ? conj_next() : conj_check(); }
   } else if (currentMode === 'gender') {
     if (e.key === 'Enter') { e.preventDefault(); gen_answered ? gen_next() : gen_check(); }
+  } else if (currentMode === 'cloze') {
+    if (e.key === 'Enter') { e.preventDefault(); cloze_answered ? cloze_next() : cloze_check(); }
+    else if (e.key === 'h' && e.ctrlKey) { e.preventDefault(); cloze_showHint(); }
   } else if (currentMode === 'conversations') {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -2323,6 +2631,20 @@ document.getElementById('mode-nav').addEventListener('scroll', updateNavArrows);
 window.addEventListener('resize', updateNavArrows);
 setTimeout(updateNavArrows, 50);
 
+// ===================== STREAK BADGE =====================
+function updateStreakBadge() {
+  const stats = getStats();
+  const streak = stats.streak || 0;
+  const badge = document.getElementById('streak-badge');
+  if (streak > 0) {
+    badge.textContent = '\u{1F525} ' + streak;
+    badge.className = 'streak-badge';
+  } else {
+    badge.textContent = '\u2014';
+    badge.className = 'streak-badge inactive';
+  }
+}
+
 // ===================== INIT =====================
 initDark();
 
@@ -2332,6 +2654,7 @@ fetch('word_bank.json').then(r => r.json()).then(data => {
   buildModeNav();
   buildGroups();
   buildPlKeyboard('sp-keyboard', 'sp-input');
+  updateStreakBadge();
   switchMode('flashcard');
 }).catch(err => {
   console.error('Failed to load word bank:', err);
