@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Schede - Italian Language Trainer</title>
+<title>Fiszki - Polish Language Trainer</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -206,17 +206,17 @@
   .spell-feedback.incorrect { color: var(--incorrect); }
   .spell-answer { margin-top: 4px; font-size: 0.85rem; color: var(--text-muted); min-height: 1.2em; }
 
-  /* ITALIAN KEYBOARD */
-  .it-keyboard {
+  /* POLISH KEYBOARD */
+  .pl-keyboard {
     display: flex; gap: 4px; justify-content: center; margin-top: 10px; flex-wrap: wrap;
   }
-  .it-key {
+  .pl-key {
     width: 32px; height: 30px; border: 1px solid var(--border); border-radius: 6px;
     background: var(--card-bg); cursor: pointer; font-size: 0.85rem; color: var(--text);
     display: flex; align-items: center; justify-content: center; transition: all 0.1s;
     font-family: inherit;
   }
-  .it-key:hover { border-color: var(--accent); background: var(--accent-light); }
+  .pl-key:hover { border-color: var(--accent); background: var(--accent-light); }
 
   /* MULTIPLE CHOICE */
   .mc-direction { margin-bottom: 16px; display: flex; justify-content: center; gap: 6px; }
@@ -249,25 +249,25 @@
   .listen-btn:hover { border-color: var(--accent); background: var(--accent-light); transform: scale(1.05); }
   .listen-hint { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px; }
 
-  /* ARTICLES */
-  .art-grid {
+  /* DECLENSION */
+  .decl-grid {
     display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px;
     align-items: center; margin-top: 20px; text-align: left;
   }
-  .art-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-  .art-col-head { font-size: 0.7rem; color: var(--text-muted); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
-  .art-input {
+  .decl-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+  .decl-col-head { font-size: 0.7rem; color: var(--text-muted); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+  .decl-input {
     padding: 7px 10px; border: 2px solid var(--border); border-radius: 8px;
     font-size: 0.9rem; font-family: inherit; text-align: center; width: 100%;
     outline: none; transition: border-color 0.2s; background: var(--bg); color: var(--text);
   }
-  .art-input:focus { border-color: var(--accent); }
-  .art-input.correct { border-color: var(--correct); background: var(--correct-light); }
-  .art-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
-  .art-input.given { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
-  .art-input:disabled { opacity: 0.8; }
-  .art-cell { display: flex; flex-direction: column; }
-  .art-correction {
+  .decl-input:focus { border-color: var(--accent); }
+  .decl-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .decl-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .decl-input.given { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .decl-input:disabled { opacity: 0.8; }
+  .decl-cell { display: flex; flex-direction: column; }
+  .decl-correction {
     font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px;
   }
   .gender-picker { display: flex; gap: 6px; justify-content: center; margin: 16px 0 8px; }
@@ -412,15 +412,15 @@
     .card-face { padding: 24px; }
     .mc-options { grid-template-columns: 1fr; }
     .stat-cards { grid-template-columns: 1fr; }
-    .art-grid { gap: 5px; }
-    .art-input { font-size: 0.8rem; padding: 5px 6px; }
+    .decl-grid { gap: 5px; }
+    .decl-input { font-size: 0.8rem; padding: 5px 6px; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Schede <span>/ Italian Trainer</span></h1>
+  <h1>Fiszki <span>/ Polish Trainer</span></h1>
   <div class="header-right">
     <div class="stats" id="stats-bar">
       <div>Correct <strong id="stat-correct">0</strong></div>
@@ -451,7 +451,7 @@
   <div class="card-container" onclick="fc_flip()">
     <div class="card" id="fc-card">
       <div class="card-face card-front">
-        <div class="card-label">Italian</div>
+        <div class="card-label">Polish</div>
         <div class="card-word" id="fc-front">--</div>
         <div class="word-meta" id="fc-meta"></div>
         <div class="hint-text" id="fc-hint"></div>
@@ -474,13 +474,13 @@
 <!-- SPELLING -->
 <div class="mode-section" id="mode-spelling">
   <div class="card-box">
-    <div class="spell-prompt" id="sp-prompt">Translate to Italian:</div>
+    <div class="spell-prompt" id="sp-prompt">Translate to Polish:</div>
     <div class="card-word" id="sp-word">--</div>
     <div class="spell-input-row">
-      <input type="text" class="spell-input" id="sp-input" placeholder="Type in Italian..." autocomplete="off">
+      <input type="text" class="spell-input" id="sp-input" placeholder="Type in Polish..." autocomplete="off">
       <button class="btn btn-primary" onclick="sp_check()" id="sp-submit">Check</button>
     </div>
-    <div class="it-keyboard" id="sp-keyboard"></div>
+    <div class="pl-keyboard" id="sp-keyboard"></div>
     <div class="spell-feedback" id="sp-feedback"></div>
     <div class="spell-answer" id="sp-answer"></div>
   </div>
@@ -494,11 +494,11 @@
 <!-- MULTIPLE CHOICE -->
 <div class="mode-section" id="mode-multichoice">
   <div class="mc-direction">
-    <button class="mc-dir-btn active" id="mc-dir-pen" onclick="mc_setDir('ie')">Italian &rarr; English</button>
-    <button class="mc-dir-btn" id="mc-dir-enp" onclick="mc_setDir('ei')">English &rarr; Italian</button>
+    <button class="mc-dir-btn active" id="mc-dir-pen" onclick="mc_setDir('pe')">Polish &rarr; English</button>
+    <button class="mc-dir-btn" id="mc-dir-enp" onclick="mc_setDir('ep')">English &rarr; Polish</button>
   </div>
   <div class="card-box">
-    <div class="card-label" id="mc-label">Italian</div>
+    <div class="card-label" id="mc-label">Polish</div>
     <div class="card-word" id="mc-word">--</div>
     <div class="mc-options" id="mc-options"></div>
   </div>
@@ -525,53 +525,55 @@
   <button class="btn btn-primary" onclick="li_next()" id="li-next-btn" style="display:none">Next</button>
 </div>
 
-<!-- ARTICLES (replaces Polish Declension) -->
-<div class="mode-section" id="mode-articles">
-  <div class="card-box" id="art-card">
-    <div class="card-label">Give the articles for this noun</div>
-    <div class="card-word" id="art-word">--</div>
-    <div class="word-meta" id="art-en"></div>
-    <div class="gender-picker" id="art-gender">
-      <button class="gender-btn" data-g="m" onclick="art_pickGender(this)">m</button>
-      <button class="gender-btn" data-g="f" onclick="art_pickGender(this)">f</button>
+<!-- DECLENSION -->
+<div class="mode-section" id="mode-declension">
+  <div class="card-box" id="decl-card">
+    <div class="card-label">Decline this noun</div>
+    <div class="card-word" id="decl-word">--</div>
+    <div class="word-meta" id="decl-en"></div>
+    <div class="gender-picker" id="decl-gender">
+      <button class="gender-btn" data-g="m" onclick="decl_pickGender(this)">m</button>
+      <button class="gender-btn" data-g="f" onclick="decl_pickGender(this)">f</button>
+      <button class="gender-btn" data-g="n" onclick="decl_pickGender(this)">n</button>
     </div>
-    <div class="art-grid" id="art-grid">
-      <div class="art-label"></div><div class="art-col-head">Singular</div><div class="art-col-head">Plural</div>
-      <div class="art-label">Def.</div>
-      <div class="art-cell"><input class="art-input" id="a-def-sg" placeholder="il/la/l'..."></div>
-      <div class="art-cell"><input class="art-input" id="a-def-pl" placeholder="i/le/gli..."></div>
-      <div class="art-label">Indef.</div>
-      <div class="art-cell"><input class="art-input" id="a-indef-sg" placeholder="un/una..."></div>
-      <div class="art-cell"><input class="art-input" id="a-indef-pl" placeholder="dei/delle..."></div>
-      <div class="art-label">Plural</div>
-      <div class="art-cell"><input class="art-input given" id="a-noun-sg" disabled></div>
-      <div class="art-cell"><input class="art-input" id="a-noun-pl" placeholder="plural form"></div>
+    <div class="decl-grid" id="decl-grid">
+      <div class="decl-label"></div><div class="decl-col-head">Singular</div><div class="decl-col-head">Plural</div>
+      <div class="decl-label">Nom.</div>
+      <div class="decl-cell"><input class="decl-input given" id="d-nom-sg" disabled></div>
+      <div class="decl-cell"><input class="decl-input" id="d-nom-pl" placeholder="nom. pl."></div>
+      <div class="decl-label">Acc.</div>
+      <div class="decl-cell"><input class="decl-input" id="d-acc-sg" placeholder="acc. sg."></div>
+      <div class="decl-cell"><input class="decl-input" id="d-acc-pl" placeholder="acc. pl."></div>
+      <div class="decl-label">Gen.</div>
+      <div class="decl-cell"><input class="decl-input" id="d-gen-sg" placeholder="gen. sg."></div>
+      <div class="decl-cell"><input class="decl-input" id="d-gen-pl" placeholder="gen. pl."></div>
     </div>
+    <div class="pl-keyboard" id="decl-keyboard" style="margin-top:12px"></div>
   </div>
 </div>
-<div class="controls" id="art-controls" style="display:none">
-  <button class="btn btn-primary" onclick="art_check()" id="art-check-btn">Check</button>
-  <button class="btn btn-primary" onclick="art_next()" id="art-next-btn" style="display:none">Next</button>
+<div class="controls" id="decl-controls" style="display:none">
+  <button class="btn btn-primary" onclick="decl_check()" id="decl-check-btn">Check</button>
+  <button class="btn btn-primary" onclick="decl_next()" id="decl-next-btn" style="display:none">Next</button>
 </div>
 
 <!-- CONJUGATION -->
 <div class="mode-section" id="mode-conjugation">
   <div class="card-box" id="conj-card">
-    <div class="card-label">Conjugate this verb (presente indicativo)</div>
+    <div class="card-label">Conjugate this verb (present tense)</div>
     <div class="card-word" id="conj-word">--</div>
     <div class="word-meta" id="conj-en"></div>
     <div class="ipa-text" id="conj-ipa"></div>
     <div class="conj-grid" id="conj-grid">
-      <div class="conj-label">io</div><div class="conj-cell"><input class="conj-input" id="cj-0" placeholder="io..."></div>
-      <div class="conj-label">tu</div><div class="conj-cell"><input class="conj-input" id="cj-1" placeholder="tu..."></div>
-      <div class="conj-label">lui/lei</div><div class="conj-cell"><input class="conj-input" id="cj-2" placeholder="lui/lei..."></div>
-      <div class="conj-label">noi</div><div class="conj-cell"><input class="conj-input" id="cj-3" placeholder="noi..."></div>
-      <div class="conj-label">voi</div><div class="conj-cell"><input class="conj-input" id="cj-4" placeholder="voi..."></div>
-      <div class="conj-label">loro</div><div class="conj-cell"><input class="conj-input" id="cj-5" placeholder="loro..."></div>
+      <div class="conj-label">ja</div><div class="conj-cell"><input class="conj-input" id="cj-0" placeholder="ja..."></div>
+      <div class="conj-label">ty</div><div class="conj-cell"><input class="conj-input" id="cj-1" placeholder="ty..."></div>
+      <div class="conj-label">on/ona/ono</div><div class="conj-cell"><input class="conj-input" id="cj-2" placeholder="on/ona/ono..."></div>
+      <div class="conj-label">my</div><div class="conj-cell"><input class="conj-input" id="cj-3" placeholder="my..."></div>
+      <div class="conj-label">wy</div><div class="conj-cell"><input class="conj-input" id="cj-4" placeholder="wy..."></div>
+      <div class="conj-label">oni/one</div><div class="conj-cell"><input class="conj-input" id="cj-5" placeholder="oni/one..."></div>
     </div>
-    <div class="it-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
+    <div class="pl-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
     <details class="pron-guide">
-      <summary>Italian Pronunciation Guide</summary>
+      <summary>Polish Pronunciation Guide</summary>
       <table class="pron-table" id="pron-table"></table>
     </details>
   </div>
@@ -592,7 +594,7 @@
       <input type="text" class="spell-input" id="gen-input" placeholder="Type the correct form..." autocomplete="off">
       <button class="btn btn-primary" onclick="gen_check()" id="gen-submit">Check</button>
     </div>
-    <div class="it-keyboard" id="gen-keyboard" style="margin-top:8px"></div>
+    <div class="pl-keyboard" id="gen-keyboard" style="margin-top:8px"></div>
     <div class="spell-feedback" id="gen-feedback"></div>
     <div class="spell-answer" id="gen-answer"></div>
   </div>
@@ -648,267 +650,262 @@
 
 <script>
 // ===================== DATA =====================
-const IT_CHARS = ['à','è','é','ì','ò','ù'];
+const PL_CHARS = ['ą','ć','ę','ł','ń','ó','ś','ź','ż'];
 
-// Nouns: [it, en, gender, plural, def_sg, def_pl, indef_sg, indef_pl]
-// gender: "m","f"
-// def_sg = definite article singular, def_pl = definite article plural
-// indef_sg = indefinite article singular, indef_pl = partitive article plural
+// Nouns: [pl, en, gender, nom_pl, acc_sg, acc_pl, gen_sg, gen_pl]
+// gender: "m","f","n","pl" (plural-only)
+// For "pl" gender: [pl, en, "pl", nom, acc, gen] (all plural)
 const NOUNS = [
   // People
-  ["donna","woman","f","donne","la","le","una","delle"],
-  ["uomo","man","m","uomini","l'","gli","un","degli"],
-  ["bambino","child","m","bambini","il","i","un","dei"],
-  ["ragazza","girl","f","ragazze","la","le","una","delle"],
-  ["ragazzo","boy","m","ragazzi","il","i","un","dei"],
-  ["madre","mother","f","madri","la","le","una","delle"],
-  ["padre","father","m","padri","il","i","un","dei"],
-  ["sorella","sister","f","sorelle","la","le","una","delle"],
-  ["fratello","brother","m","fratelli","il","i","un","dei"],
-  ["amico","friend","m","amici","l'","gli","un","degli"],
+  ["kobieta","woman","f","kobiety","kobietę","kobiety","kobiety","kobiet"],
+  ["mężczyzna","man","m","mężczyźni","mężczyznę","mężczyzn","mężczyzny","mężczyzn"],
+  ["dziecko","child","n","dzieci","dziecko","dzieci","dziecka","dzieci"],
+  ["dziewczyna","girl","f","dziewczyny","dziewczynę","dziewczyny","dziewczyny","dziewczyn"],
+  ["chłopiec","boy","m","chłopcy","chłopca","chłopców","chłopca","chłopców"],
+  ["matka","mother","f","matki","matkę","matki","matki","matek"],
+  ["ojciec","father","m","ojcowie","ojca","ojców","ojca","ojców"],
+  ["siostra","sister","f","siostry","siostrę","siostry","siostry","sióstr"],
+  ["brat","brother","m","bracia","brata","braci","brata","braci"],
+  ["przyjaciel","friend","m","przyjaciele","przyjaciela","przyjaciół","przyjaciela","przyjaciół"],
   // Animals
-  ["cane","dog","m","cani","il","i","un","dei"],
-  ["gatto","cat","m","gatti","il","i","un","dei"],
-  ["uccello","bird","m","uccelli","l'","gli","un","degli"],
-  ["pesce","fish","m","pesci","il","i","un","dei"],
-  ["cavallo","horse","m","cavalli","il","i","un","dei"],
-  ["mucca","cow","f","mucche","la","le","una","delle"],
-  ["topo","mouse","m","topi","il","i","un","dei"],
-  ["farfalla","butterfly","f","farfalle","la","le","una","delle"],
-  ["lupo","wolf","m","lupi","il","i","un","dei"],
-  ["orso","bear","m","orsi","l'","gli","un","degli"],
+  ["pies","dog","m","psy","psa","psy","psa","psów"],
+  ["kot","cat","m","koty","kota","koty","kota","kotów"],
+  ["ptak","bird","m","ptaki","ptaka","ptaki","ptaka","ptaków"],
+  ["ryba","fish","f","ryby","rybę","ryby","ryby","ryb"],
+  ["koń","horse","m","konie","konia","konie","konia","koni"],
+  ["krowa","cow","f","krowy","krowę","krowy","krowy","krów"],
+  ["mysz","mouse","f","myszy","mysz","myszy","myszy","myszy"],
+  ["motyl","butterfly","m","motyle","motyla","motyle","motyla","motyli"],
+  ["wilk","wolf","m","wilki","wilka","wilki","wilka","wilków"],
+  ["niedźwiedź","bear","m","niedźwiedzie","niedźwiedzia","niedźwiedzie","niedźwiedzia","niedźwiedzi"],
   // Food
-  ["pane","bread","m","pani","il","i","un","dei"],
-  ["acqua","water","f","acque","l'","le","un'","delle"],
-  ["latte","milk","m","latti","il","i","un","dei"],
-  ["mela","apple","f","mele","la","le","una","delle"],
-  ["formaggio","cheese","m","formaggi","il","i","un","dei"],
-  ["carne","meat","f","carni","la","le","una","delle"],
-  ["tè","tea","m","tè","il","i","un","dei"],
-  ["caffè","coffee","m","caffè","il","i","un","dei"],
-  ["uovo","egg","m","uova","l'","le","un","delle"],
-  ["burro","butter","m","burri","il","i","un","dei"],
+  ["chleb","bread","m","chleby","chleb","chleby","chleba","chlebów"],
+  ["woda","water","f","wody","wodę","wody","wody","wód"],
+  ["mleko","milk","n","mleka","mleko","mleka","mleka","mlek"],
+  ["jabłko","apple","n","jabłka","jabłko","jabłka","jabłka","jabłek"],
+  ["ser","cheese","m","sery","ser","sery","sera","serów"],
+  ["mięso","meat","n","mięsa","mięso","mięsa","mięsa","mięs"],
+  ["herbata","tea","f","herbaty","herbatę","herbaty","herbaty","herbat"],
+  ["kawa","coffee","f","kawy","kawę","kawy","kawy","kaw"],
+  ["jajko","egg","n","jajka","jajko","jajka","jajka","jajek"],
+  ["masło","butter","n","masła","masło","masła","masła","maseł"],
   // Home
-  ["casa","house","f","case","la","le","una","delle"],
-  ["porta","door","f","porte","la","le","una","delle"],
-  ["finestra","window","f","finestre","la","le","una","delle"],
-  ["tavolo","table","m","tavoli","il","i","un","dei"],
-  ["sedia","chair","f","sedie","la","le","una","delle"],
-  ["letto","bed","m","letti","il","i","un","dei"],
-  ["cucina","kitchen","f","cucine","la","le","una","delle"],
-  ["bagno","bathroom","m","bagni","il","i","un","dei"],
-  ["chiave","key","f","chiavi","la","le","una","delle"],
-  ["scala","stairs","f","scale","la","le","una","delle"],
+  ["dom","house","m","domy","dom","domy","domu","domów"],
+  ["drzwi","door","pl","drzwi","drzwi","drzwi"],
+  ["okno","window","n","okna","okno","okna","okna","okien"],
+  ["stół","table","m","stoły","stół","stoły","stołu","stołów"],
+  ["krzesło","chair","n","krzesła","krzesło","krzesła","krzesła","krzeseł"],
+  ["łóżko","bed","n","łóżka","łóżko","łóżka","łóżka","łóżek"],
+  ["kuchnia","kitchen","f","kuchnie","kuchnię","kuchnie","kuchni","kuchni"],
+  ["łazienka","bathroom","f","łazienki","łazienkę","łazienki","łazienki","łazienek"],
+  ["klucz","key","m","klucze","klucz","klucze","klucza","kluczy"],
+  ["schody","stairs","pl","schody","schody","schodów"],
   // Nature
-  ["albero","tree","m","alberi","l'","gli","un","degli"],
-  ["fiore","flower","m","fiori","il","i","un","dei"],
-  ["sole","sun","m","soli","il","i","un","dei"],
-  ["luna","moon","f","lune","la","le","una","delle"],
-  ["stella","star","f","stelle","la","le","una","delle"],
-  ["cielo","sky","m","cieli","il","i","un","dei"],
-  ["pioggia","rain","f","piogge","la","le","una","delle"],
-  ["neve","snow","f","nevi","la","le","una","delle"],
-  ["montagna","mountain","f","montagne","la","le","una","delle"],
-  ["fiume","river","m","fiumi","il","i","un","dei"],
+  ["drzewo","tree","n","drzewa","drzewo","drzewa","drzewa","drzew"],
+  ["kwiat","flower","m","kwiaty","kwiat","kwiaty","kwiatu","kwiatów"],
+  ["słońce","sun","n","słońca","słońce","słońca","słońca","słońc"],
+  ["księżyc","moon","m","księżyce","księżyc","księżyce","księżyca","księżyców"],
+  ["gwiazda","star","f","gwiazdy","gwiazdę","gwiazdy","gwiazdy","gwiazd"],
+  ["niebo","sky","n","nieba","niebo","nieba","nieba","nieb"],
+  ["deszcz","rain","m","deszcze","deszcz","deszcze","deszczu","deszczów"],
+  ["śnieg","snow","m","śniegi","śnieg","śniegi","śniegu","śniegów"],
+  ["góra","mountain","f","góry","górę","góry","góry","gór"],
+  ["rzeka","river","f","rzeki","rzekę","rzeki","rzeki","rzek"],
   // Body
-  ["testa","head","f","teste","la","le","una","delle"],
-  ["mano","hand","f","mani","la","le","una","delle"],
-  ["gamba","leg","f","gambe","la","le","una","delle"],
-  ["occhio","eye","m","occhi","l'","gli","un","degli"],
-  ["orecchio","ear","m","orecchie","l'","le","un","delle"],
-  ["naso","nose","m","nasi","il","i","un","dei"],
-  ["bocca","mouth","f","bocche","la","le","una","delle"],
-  ["cuore","heart","m","cuori","il","i","un","dei"],
-  ["dito","finger","m","dita","il","le","un","delle"],
-  ["ginocchio","knee","m","ginocchia","il","le","un","delle"],
+  ["głowa","head","f","głowy","głowę","głowy","głowy","głów"],
+  ["ręka","hand","f","ręce","rękę","ręce","ręki","rąk"],
+  ["noga","leg","f","nogi","nogę","nogi","nogi","nóg"],
+  ["oko","eye","n","oczy","oko","oczy","oka","oczu"],
+  ["ucho","ear","n","uszy","ucho","uszy","ucha","uszu"],
+  ["nos","nose","m","nosy","nos","nosy","nosa","nosów"],
+  ["usta","mouth","pl","usta","usta","ust"],
+  ["serce","heart","n","serca","serce","serca","serca","serc"],
+  ["palec","finger","m","palce","palec","palce","palca","palców"],
+  ["kolano","knee","n","kolana","kolano","kolana","kolana","kolan"],
   // Objects
-  ["libro","book","m","libri","il","i","un","dei"],
-  ["telefono","phone","m","telefoni","il","i","un","dei"],
-  ["macchina","car","f","macchine","la","le","una","delle"],
-  ["orologio","watch","m","orologi","l'","gli","un","degli"],
-  ["borsa","bag","f","borse","la","le","una","delle"],
-  ["soldi","money","m","soldi","i","i","dei","dei"],
-  ["lettera","letter","f","lettere","la","le","una","delle"],
-  ["mappa","map","f","mappe","la","le","una","delle"],
-  ["ombrello","umbrella","m","ombrelli","l'","gli","un","degli"],
-  ["occhiali","glasses","m","occhiali","gli","gli","degli","degli"],
+  ["książka","book","f","książki","książkę","książki","książki","książek"],
+  ["telefon","phone","m","telefony","telefon","telefony","telefonu","telefonów"],
+  ["samochód","car","m","samochody","samochód","samochody","samochodu","samochodów"],
+  ["zegarek","watch","m","zegarki","zegarek","zegarki","zegarka","zegarków"],
+  ["torba","bag","f","torby","torbę","torby","torby","toreb"],
+  ["pieniądze","money","pl","pieniądze","pieniądze","pieniędzy"],
+  ["list","letter","m","listy","list","listy","listu","listów"],
+  ["mapa","map","f","mapy","mapę","mapy","mapy","map"],
+  ["parasol","umbrella","m","parasole","parasol","parasole","parasola","parasoli"],
+  ["okulary","glasses","pl","okulary","okulary","okularów"],
   // Places
-  ["città","city","f","città","la","le","una","delle"],
-  ["strada","street","f","strade","la","le","una","delle"],
-  ["negozio","shop","m","negozi","il","i","un","dei"],
-  ["scuola","school","f","scuole","la","le","una","delle"],
-  ["ospedale","hospital","m","ospedali","l'","gli","un","degli"],
-  ["chiesa","church","f","chiese","la","le","una","delle"],
-  ["ponte","bridge","m","ponti","il","i","un","dei"],
-  ["parco","park","m","parchi","il","i","un","dei"],
-  ["aeroporto","airport","m","aeroporti","l'","gli","un","degli"],
-  ["spiaggia","beach","f","spiagge","la","le","una","delle"],
+  ["miasto","city","n","miasta","miasto","miasta","miasta","miast"],
+  ["ulica","street","f","ulice","ulicę","ulice","ulicy","ulic"],
+  ["sklep","shop","m","sklepy","sklep","sklepy","sklepu","sklepów"],
+  ["szkoła","school","f","szkoły","szkołę","szkoły","szkoły","szkół"],
+  ["szpital","hospital","m","szpitale","szpital","szpitale","szpitala","szpitali"],
+  ["kościół","church","m","kościoły","kościół","kościoły","kościoła","kościołów"],
+  ["most","bridge","m","mosty","most","mosty","mostu","mostów"],
+  ["park","park","m","parki","park","parki","parku","parków"],
+  ["lotnisko","airport","n","lotniska","lotnisko","lotniska","lotniska","lotnisk"],
+  ["plaża","beach","f","plaże","plażę","plaże","plaży","plaż"],
   // Concepts
-  ["tempo","time","m","tempi","il","i","un","dei"],
-  ["giorno","day","m","giorni","il","i","un","dei"],
-  ["notte","night","f","notti","la","le","una","delle"],
-  ["anno","year","m","anni","l'","gli","un","degli"],
-  ["inizio","beginning","m","inizi","l'","gli","un","degli"],
-  ["fine","end","f","fini","la","le","una","delle"],
-  ["strada","road","f","strade","la","le","una","delle"],
-  ["lavoro","work","m","lavori","il","i","un","dei"],
-  ["domanda","question","f","domande","la","le","una","delle"],
-  ["risposta","answer","f","risposte","la","le","una","delle"],
+  ["czas","time","m","czasy","czas","czasy","czasu","czasów"],
+  ["dzień","day","m","dni","dzień","dni","dnia","dni"],
+  ["noc","night","f","noce","noc","noce","nocy","nocy"],
+  ["rok","year","m","lata","rok","lata","roku","lat"],
+  ["początek","beginning","m","początki","początek","początki","początku","początków"],
+  ["koniec","end","m","końce","koniec","końce","końca","końców"],
+  ["droga","road","f","drogi","drogę","drogi","drogi","dróg"],
+  ["praca","work","f","prace","pracę","prace","pracy","prac"],
+  ["pytanie","question","n","pytania","pytanie","pytania","pytania","pytań"],
+  ["odpowiedź","answer","f","odpowiedzi","odpowiedź","odpowiedzi","odpowiedzi","odpowiedzi"],
   // Misc
-  ["scarpe","shoes","f","scarpe","le","le","delle","delle"],
-  ["camicia","shirt","f","camicie","la","le","una","delle"],
-  ["cappello","hat","m","cappelli","il","i","un","dei"],
-  ["luce","light","f","luci","la","le","una","delle"],
-  ["fuoco","fire","m","fuochi","il","i","un","dei"],
-  ["ghiaccio","ice","m","ghiacci","il","i","un","dei"],
-  ["vento","wind","m","venti","il","i","un","dei"],
-  ["pietra","stone","f","pietre","la","le","una","delle"],
-  ["nuvola","cloud","f","nuvole","la","le","una","delle"],
-  ["sogno","dream","m","sogni","il","i","un","dei"],
+  ["buty","shoes","pl","buty","buty","butów"],
+  ["koszula","shirt","f","koszule","koszulę","koszule","koszuli","koszul"],
+  ["kapelusz","hat","m","kapelusze","kapelusz","kapelusze","kapelusza","kapeluszy"],
+  ["światło","light","n","światła","światło","światła","światła","świateł"],
+  ["ogień","fire","m","ognie","ogień","ognie","ognia","ogni"],
+  ["lód","ice","m","lody","lód","lody","lodu","lodów"],
+  ["wiatr","wind","m","wiatry","wiatr","wiatry","wiatru","wiatrów"],
+  ["kamień","stone","m","kamienie","kamień","kamienie","kamienia","kamieni"],
+  ["chmura","cloud","f","chmury","chmurę","chmury","chmury","chmur"],
+  ["sen","dream","m","sny","sen","sny","snu","snów"],
 ];
 
-// Verbs: [it, en]
+// Verbs: [pl, en]
 const VERBS = [
-  ["essere","to be"],["avere","to have"],["mangiare","to eat"],["bere","to drink"],
-  ["andare","to go"],["venire","to come"],["fare","to do"],["parlare","to speak"],
-  ["vedere","to see"],["sentire","to hear"],["volere","to want"],["potere","to be able"],
-  ["dovere","to have to"],["sapere","to know (fact)"],["conoscere","to know (person)"],["piacere","to like"],
-  ["amare","to love"],["leggere","to read"],["scrivere","to write"],["comprare","to buy"],
-  ["lavorare","to work"],["imparare","to learn"],["vivere","to live"],["dormire","to sleep"],
-  ["cucinare","to cook"],["pensare","to think"],["chiedere","to ask"],["rispondere","to answer"],
-  ["dare","to give"],["prendere","to take"],
+  ["być","to be"],["mieć","to have"],["jeść","to eat"],["pić","to drink"],
+  ["iść","to go (on foot)"],["jechać","to go (by vehicle)"],["robić","to do"],["mówić","to speak"],
+  ["widzieć","to see"],["słyszeć","to hear"],["chcieć","to want"],["móc","to be able"],
+  ["musieć","to have to"],["wiedzieć","to know (fact)"],["znać","to know (person)"],["lubić","to like"],
+  ["kochać","to love"],["czytać","to read"],["pisać","to write"],["kupować","to buy"],
+  ["pracować","to work"],["uczyć się","to learn"],["mieszkać","to live"],["spać","to sleep"],
+  ["gotować","to cook"],["myśleć","to think"],["pytać","to ask"],["odpowiadać","to answer"],
+  ["dawać","to give"],["brać","to take"],
 ];
 
-// Adjectives: [it, en]
+// Adjectives: [pl, en]
 const ADJECTIVES = [
-  ["grande","big"],["piccolo","small"],["buono","good"],["cattivo","bad"],
-  ["nuovo","new"],["vecchio","old"],["bello","beautiful"],["brutto","ugly"],
-  ["veloce","fast"],["lento","slow"],["caldo","hot"],["freddo","cold"],
-  ["caro","expensive"],["economico","cheap"],["facile","easy"],["difficile","difficult"],
-  ["alto","tall"],["basso","short"],["pesante","heavy"],["leggero","light (weight)"],
+  ["duży","big"],["mały","small"],["dobry","good"],["zły","bad"],
+  ["nowy","new"],["stary","old"],["piękny","beautiful"],["brzydki","ugly"],
+  ["szybki","fast"],["wolny","slow"],["gorący","hot"],["zimny","cold"],
+  ["drogi","expensive"],["tani","cheap"],["łatwy","easy"],["trudny","difficult"],
+  ["wysoki","tall"],["niski","short"],["ciężki","heavy"],["lekki","light (weight)"],
 ];
 
-// Verb conjugations (presente indicativo): [io, tu, lui/lei, noi, voi, loro]
+// Verb conjugations (present tense): [ja, ty, on/ona/ono, my, wy, oni/one]
 const VERB_CONJ = [
-  ["sono","sei","è","siamo","siete","sono"],
-  ["ho","hai","ha","abbiamo","avete","hanno"],
-  ["mangio","mangi","mangia","mangiamo","mangiate","mangiano"],
-  ["bevo","bevi","beve","beviamo","bevete","bevono"],
-  ["vado","vai","va","andiamo","andate","vanno"],
-  ["vengo","vieni","viene","veniamo","venite","vengono"],
-  ["faccio","fai","fa","facciamo","fate","fanno"],
-  ["parlo","parli","parla","parliamo","parlate","parlano"],
-  ["vedo","vedi","vede","vediamo","vedete","vedono"],
-  ["sento","senti","sente","sentiamo","sentite","sentono"],
-  ["voglio","vuoi","vuole","vogliamo","volete","vogliono"],
-  ["posso","puoi","può","possiamo","potete","possono"],
-  ["devo","devi","deve","dobbiamo","dovete","devono"],
-  ["so","sai","sa","sappiamo","sapete","sanno"],
-  ["conosco","conosci","conosce","conosciamo","conoscete","conoscono"],
-  ["piaccio","piaci","piace","piacciamo","piacete","piacciono"],
-  ["amo","ami","ama","amiamo","amate","amano"],
-  ["leggo","leggi","legge","leggiamo","leggete","leggono"],
-  ["scrivo","scrivi","scrive","scriviamo","scrivete","scrivono"],
-  ["compro","compri","compra","compriamo","comprate","comprano"],
-  ["lavoro","lavori","lavora","lavoriamo","lavorate","lavorano"],
-  ["imparo","impari","impara","impariamo","imparate","imparano"],
-  ["vivo","vivi","vive","viviamo","vivete","vivono"],
-  ["dormo","dormi","dorme","dormiamo","dormite","dormono"],
-  ["cucino","cucini","cucina","cuciniamo","cucinate","cucinano"],
-  ["penso","pensi","pensa","pensiamo","pensate","pensano"],
-  ["chiedo","chiedi","chiede","chiediamo","chiedete","chiedono"],
-  ["rispondo","rispondi","risponde","rispondiamo","rispondete","rispondono"],
-  ["do","dai","dà","diamo","date","danno"],
-  ["prendo","prendi","prende","prendiamo","prendete","prendono"],
+  ["jestem","jesteś","jest","jesteśmy","jesteście","są"],
+  ["mam","masz","ma","mamy","macie","mają"],
+  ["jem","jesz","je","jemy","jecie","jedzą"],
+  ["piję","pijesz","pije","pijemy","pijecie","piją"],
+  ["idę","idziesz","idzie","idziemy","idziecie","idą"],
+  ["jadę","jedziesz","jedzie","jedziemy","jedziecie","jadą"],
+  ["robię","robisz","robi","robimy","robicie","robią"],
+  ["mówię","mówisz","mówi","mówimy","mówicie","mówią"],
+  ["widzę","widzisz","widzi","widzimy","widzicie","widzą"],
+  ["słyszę","słyszysz","słyszy","słyszymy","słyszycie","słyszą"],
+  ["chcę","chcesz","chce","chcemy","chcecie","chcą"],
+  ["mogę","możesz","może","możemy","możecie","mogą"],
+  ["muszę","musisz","musi","musimy","musicie","muszą"],
+  ["wiem","wiesz","wie","wiemy","wiecie","wiedzą"],
+  ["znam","znasz","zna","znamy","znacie","znają"],
+  ["lubię","lubisz","lubi","lubimy","lubicie","lubią"],
+  ["kocham","kochasz","kocha","kochamy","kochacie","kochają"],
+  ["czytam","czytasz","czyta","czytamy","czytacie","czytają"],
+  ["piszę","piszesz","pisze","piszemy","piszecie","piszą"],
+  ["kupuję","kupujesz","kupuje","kupujemy","kupujecie","kupują"],
+  ["pracuję","pracujesz","pracuje","pracujemy","pracujecie","pracują"],
+  ["uczę się","uczysz się","uczy się","uczymy się","uczycie się","uczą się"],
+  ["mieszkam","mieszkasz","mieszka","mieszkamy","mieszkacie","mieszkają"],
+  ["śpię","śpisz","śpi","śpimy","śpicie","śpią"],
+  ["gotuję","gotujesz","gotuje","gotujemy","gotujecie","gotują"],
+  ["myślę","myślisz","myśli","myślimy","myślicie","myślą"],
+  ["pytam","pytasz","pyta","pytamy","pytacie","pytają"],
+  ["odpowiadam","odpowiadasz","odpowiada","odpowiadamy","odpowiadacie","odpowiadają"],
+  ["daję","dajesz","daje","dajemy","dajecie","dają"],
+  ["biorę","bierzesz","bierze","bierzemy","bierzecie","biorą"],
 ];
-const CONJ_LABELS = ["io","tu","lui/lei","noi","voi","loro"];
+const CONJ_LABELS = ["ja","ty","on/ona/ono","my","wy","oni/one"];
 
 // Verb IPA transcriptions
 const VERB_IPA = [
-  "/ˈɛssere/","/aˈvere/","/manˈdʒare/","/ˈbere/","/anˈdare/","/veˈnire/",
-  "/ˈfare/","/parˈlare/","/veˈdere/","/senˈtire/","/voˈlere/","/poˈtere/",
-  "/doˈvere/","/saˈpere/","/koˈnoʃʃere/","/pjaˈtʃere/","/aˈmare/","/ˈlɛddʒere/",
-  "/ˈskrivere/","/komˈprare/","/lavoˈrare/","/impaˈrare/","/ˈvivere/",
-  "/dorˈmire/","/kutʃiˈnare/","/penˈsare/","/ˈkjɛdere/","/risˈpondere/",
-  "/ˈdare/","/ˈprɛndere/",
+  "/bɨtɕ/","/mjɛtɕ/","/jɛɕtɕ/","/pitɕ/","/iɕtɕ/","/ˈjɛxatɕ/",
+  "/ˈrɔbitɕ/","/ˈmuvitɕ/","/ˈviʥɛtɕ/","/ˈswɨʂɛtɕ/","/ˈxʨɛtɕ/","/mutɕ/",
+  "/ˈmuɕɛtɕ/","/ˈvjɛʥɛtɕ/","/znatɕ/","/ˈlubitɕ/","/ˈkɔxatɕ/","/ˈʧɨtatɕ/",
+  "/ˈpisatɕ/","/kuˈpɔvatɕ/","/praˈʦɔvatɕ/","/ˈuʧɨtɕ ɕɛ/","/ˈmjɛʂkatɕ/",
+  "/spatɕ/","/ɡɔˈtɔvatɕ/","/ˈmɨɕlɛtɕ/","/ˈpɨtatɕ/","/ɔtpɔˈvjadatɕ/",
+  "/ˈdavatɕ/","/bratɕ/",
 ];
 
-// Adjective forms: [masculine_sg, feminine_sg, masculine_pl, feminine_pl]
+// Adjective forms: [masculine, feminine, neuter]
 const ADJ_FORMS = [
-  ["grande","grande","grandi","grandi"],["piccolo","piccola","piccoli","piccole"],
-  ["buono","buona","buoni","buone"],["cattivo","cattiva","cattivi","cattive"],
-  ["nuovo","nuova","nuovi","nuove"],["vecchio","vecchia","vecchi","vecchie"],
-  ["bello","bella","belli","belle"],["brutto","brutta","brutti","brutte"],
-  ["veloce","veloce","veloci","veloci"],["lento","lenta","lenti","lente"],
-  ["caldo","calda","caldi","calde"],["freddo","fredda","freddi","fredde"],
-  ["caro","cara","cari","care"],["economico","economica","economici","economiche"],
-  ["facile","facile","facili","facili"],["difficile","difficile","difficili","difficili"],
-  ["alto","alta","alti","alte"],["basso","bassa","bassi","basse"],
-  ["pesante","pesante","pesanti","pesanti"],["leggero","leggera","leggeri","leggere"],
+  ["duży","duża","duże"],["mały","mała","małe"],["dobry","dobra","dobre"],["zły","zła","złe"],
+  ["nowy","nowa","nowe"],["stary","stara","stare"],["piękny","piękna","piękne"],["brzydki","brzydka","brzydkie"],
+  ["szybki","szybka","szybkie"],["wolny","wolna","wolne"],["gorący","gorąca","gorące"],["zimny","zimna","zimne"],
+  ["drogi","droga","drogie"],["tani","tania","tanie"],["łatwy","łatwa","łatwe"],["trudny","trudna","trudne"],
+  ["wysoki","wysoka","wysokie"],["niski","niska","niskie"],["ciężki","ciężka","ciężkie"],["lekki","lekka","lekkie"],
 ];
 
-// Verb past tense (passato prossimo): [masc_sg, fem_sg, masc_pl, fem_pl, auxiliary]
-// auxiliary: "essere" or "avere"
+// Verb past tense: [masc_1sg, fem_1sg, masc_3sg, fem_3sg, neut_3sg]
 const VERB_PAST = [
-  ["stato","stata","stati","state","essere"],
-  ["avuto","avuta","avuti","avute","avere"],
-  ["mangiato","mangiata","mangiati","mangiate","avere"],
-  ["bevuto","bevuta","bevuti","bevute","avere"],
-  ["andato","andata","andati","andate","essere"],
-  ["venuto","venuta","venuti","venute","essere"],
-  ["fatto","fatta","fatti","fatte","avere"],
-  ["parlato","parlata","parlati","parlate","avere"],
-  ["visto","vista","visti","viste","avere"],
-  ["sentito","sentita","sentiti","sentite","avere"],
-  ["voluto","voluta","voluti","volute","avere"],
-  ["potuto","potuta","potuti","potute","avere"],
-  ["dovuto","dovuta","dovuti","dovute","avere"],
-  ["saputo","saputa","saputi","sapute","avere"],
-  ["conosciuto","conosciuta","conosciuti","conosciute","avere"],
-  ["piaciuto","piaciuta","piaciuti","piaciute","essere"],
-  ["amato","amata","amati","amate","avere"],
-  ["letto","letta","letti","lette","avere"],
-  ["scritto","scritta","scritti","scritte","avere"],
-  ["comprato","comprata","comprati","comprate","avere"],
-  ["lavorato","lavorata","lavorati","lavorate","avere"],
-  ["imparato","imparata","imparati","imparate","avere"],
-  ["vissuto","vissuta","vissuti","vissute","essere"],
-  ["dormito","dormita","dormiti","dormite","avere"],
-  ["cucinato","cucinata","cucinati","cucinate","avere"],
-  ["pensato","pensata","pensati","pensate","avere"],
-  ["chiesto","chiesta","chiesti","chieste","avere"],
-  ["risposto","risposta","risposti","risposte","avere"],
-  ["dato","data","dati","date","avere"],
-  ["preso","presa","presi","prese","avere"],
+  ["byłem","byłam","był","była","było"],
+  ["miałem","miałam","miał","miała","miało"],
+  ["jadłem","jadłam","jadł","jadła","jadło"],
+  ["piłem","piłam","pił","piła","piło"],
+  ["szedłem","szłam","szedł","szła","szło"],
+  ["jechałem","jechałam","jechał","jechała","jechało"],
+  ["robiłem","robiłam","robił","robiła","robiło"],
+  ["mówiłem","mówiłam","mówił","mówiła","mówiło"],
+  ["widziałem","widziałam","widział","widziała","widziało"],
+  ["słyszałem","słyszałam","słyszał","słyszała","słyszało"],
+  ["chciałem","chciałam","chciał","chciała","chciało"],
+  ["mogłem","mogłam","mógł","mogła","mogło"],
+  ["musiałem","musiałam","musiał","musiała","musiało"],
+  ["wiedziałem","wiedziałam","wiedział","wiedziała","wiedziało"],
+  ["znałem","znałam","znał","znała","znało"],
+  ["lubiłem","lubiłam","lubił","lubiła","lubiło"],
+  ["kochałem","kochałam","kochał","kochała","kochało"],
+  ["czytałem","czytałam","czytał","czytała","czytało"],
+  ["pisałem","pisałam","pisał","pisała","pisało"],
+  ["kupowałem","kupowałam","kupował","kupowała","kupowało"],
+  ["pracowałem","pracowałam","pracował","pracowała","pracowało"],
+  ["uczyłem się","uczyłam się","uczył się","uczyła się","uczyło się"],
+  ["mieszkałem","mieszkałam","mieszkał","mieszkała","mieszkało"],
+  ["spałem","spałam","spał","spała","spało"],
+  ["gotowałem","gotowałam","gotował","gotowała","gotowało"],
+  ["myślałem","myślałam","myślał","myślała","myślało"],
+  ["pytałem","pytałam","pytał","pytała","pytało"],
+  ["odpowiadałem","odpowiadałam","odpowiadał","odpowiadała","odpowiadało"],
+  ["dawałem","dawałam","dawał","dawała","dawało"],
+  ["brałem","brałam","brał","brała","brało"],
 ];
 
 // Example nouns for gender-aware adjective practice
 const GENDER_NOUNS = [
-  {it:"libro",en:"book",g:"m"},{it:"gatto",en:"cat",g:"m"},{it:"cane",en:"dog",g:"m"},
-  {it:"tavolo",en:"table",g:"m"},{it:"treno",en:"train",g:"m"},
-  {it:"donna",en:"woman",g:"f"},{it:"casa",en:"house",g:"f"},{it:"scuola",en:"school",g:"f"},
-  {it:"sedia",en:"chair",g:"f"},{it:"notte",en:"night",g:"f"},
+  {pl:"dom",en:"house",g:"m"},{pl:"kot",en:"cat",g:"m"},{pl:"pies",en:"dog",g:"m"},
+  {pl:"stół",en:"table",g:"m"},{pl:"samochód",en:"car",g:"m"},
+  {pl:"kobieta",en:"woman",g:"f"},{pl:"kawa",en:"coffee",g:"f"},{pl:"książka",en:"book",g:"f"},
+  {pl:"szkoła",en:"school",g:"f"},{pl:"noc",en:"night",g:"f"},
+  {pl:"dziecko",en:"child",g:"n"},{pl:"okno",en:"window",g:"n"},{pl:"mleko",en:"milk",g:"n"},
+  {pl:"miasto",en:"city",g:"n"},{pl:"jajko",en:"egg",g:"n"},
 ];
 
-// Italian pronunciation guide for English speakers
+// Polish pronunciation guide for English speakers
 const PRONUNCIATION_GUIDE = [
-  {sound:"à",ipa:"/a/",desc:"Open 'a' as in 'father'. The accent marks stress position."},
-  {sound:"è",ipa:"/ɛ/",desc:"Open 'e' as in 'bed'. Used in stressed syllables."},
-  {sound:"é",ipa:"/e/",desc:"Closed 'e' as in 'they' (without the glide)."},
-  {sound:"ì",ipa:"/i/",desc:"Like 'ee' in 'see'. The accent marks stress."},
-  {sound:"ò",ipa:"/ɔ/",desc:"Open 'o' as in British 'hot'. Used in stressed syllables."},
-  {sound:"ù",ipa:"/u/",desc:"Like 'oo' in 'food'. The accent marks stress."},
-  {sound:"c (before e/i)",ipa:"/tʃ/",desc:"Like 'ch' in 'church'. 'Cena' = 'chena'."},
-  {sound:"c (before a/o/u)",ipa:"/k/",desc:"Like 'k' in 'cat'. 'Casa' = 'kasa'."},
-  {sound:"ch",ipa:"/k/",desc:"Always hard 'k' sound. 'Chi' = 'ki', 'che' = 'ke'."},
-  {sound:"g (before e/i)",ipa:"/dʒ/",desc:"Like 'j' in 'jump'. 'Gelato' = 'jelato'."},
-  {sound:"g (before a/o/u)",ipa:"/ɡ/",desc:"Like 'g' in 'go'. 'Gatto' = 'gatto'."},
-  {sound:"gh",ipa:"/ɡ/",desc:"Always hard 'g'. 'Ghiaccio' = 'giattcho'."},
-  {sound:"gl (before i)",ipa:"/ʎ/",desc:"Like 'lli' in 'million'. 'Figlio' = 'fee-lyo'."},
-  {sound:"gn",ipa:"/ɲ/",desc:"Like 'ny' in 'canyon'. 'Gnocchi' = 'nyokki'."},
-  {sound:"sc (before e/i)",ipa:"/ʃ/",desc:"Like 'sh' in 'ship'. 'Pesce' = 'peshe'."},
-  {sound:"z",ipa:"/ts/ or /dz/",desc:"Either 'ts' as in 'pizza' or 'dz' as in 'zero'."},
-  {sound:"double consonants",ipa:"(lengthened)",desc:"Hold the sound longer: 'anno' vs 'ano', 'palla' vs 'pala'."},
+  {sound:"ą",ipa:"/ɔ̃/",desc:"Nasal 'o', like French 'on'. Before b/p becomes 'om'."},
+  {sound:"ć",ipa:"/tɕ/",desc:"Soft 'ch', like 'cheese' but softer. Tongue touches palate."},
+  {sound:"ę",ipa:"/ɛ̃/",desc:"Nasal 'e', like French 'in'. At word end often just /ɛ/."},
+  {sound:"ł",ipa:"/w/",desc:"Like English 'w'. 'Łóżko' sounds like 'woosh-ko'."},
+  {sound:"ń",ipa:"/ɲ/",desc:"Like 'ny' in 'canyon'. Soft nasal n."},
+  {sound:"ó",ipa:"/u/",desc:"Same sound as 'u'. 'Góra' sounds like 'goora'."},
+  {sound:"ś",ipa:"/ɕ/",desc:"Soft 'sh', tongue near palate. Softer than 'sz'."},
+  {sound:"ź",ipa:"/ʑ/",desc:"Soft 'zh', voiced version of ś."},
+  {sound:"ż/rz",ipa:"/ʐ/",desc:"Hard 'zh', like 'pleasure'. ż and rz sound the same."},
+  {sound:"sz",ipa:"/ʂ/",desc:"Hard 'sh', like English 'sh' in 'ship'."},
+  {sound:"cz",ipa:"/ʈʂ/",desc:"Hard 'ch', like English 'ch' in 'church'."},
+  {sound:"dz",ipa:"/dz/",desc:"Like 'ds' in 'beds'."},
+  {sound:"dź",ipa:"/dʑ/",desc:"Soft 'j', like 'jeans' but softer."},
+  {sound:"dż",ipa:"/dʐ/",desc:"Hard 'j', like English 'j' in 'judge'."},
+  {sound:"ch/h",ipa:"/x/",desc:"Like Scottish 'loch'. ch and h sound the same."},
+  {sound:"w",ipa:"/v/",desc:"Like English 'v'. 'Woda' sounds like 'voda'."},
+  {sound:"y",ipa:"/ɨ/",desc:"Between 'i' and 'u'. Like 'i' in 'bit' but further back."},
 ];
 
 const NOUN_GROUPS = {
@@ -919,7 +916,7 @@ const NOUN_GROUPS = {
 
 const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
-  ["listening","Listening"],["articles","Articles"],["conjugation","Conjugation"],
+  ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
   ["gender","Gender"],["progress","Progress"],
 ];
 
@@ -927,8 +924,8 @@ const MODES = [
 let deck = [], current = 0, correct = 0, missed = [];
 let currentMode = "flashcard";
 let activeGroup = "All Nouns";
-let mc_dir = "ie", fc_flipped = false, sp_answered = false, mc_answered = false;
-let li_answered = false, art_answered = false, art_genderPick = null;
+let mc_dir = "pe", fc_flipped = false, sp_answered = false, mc_answered = false;
+let li_answered = false, decl_answered = false, decl_genderPick = null;
 let lastFocusedInput = null;
 let conj_answered = false, gen_answered = false;
 let gen_deck = [], gen_current = 0, gen_correct = 0, gen_missed = [];
@@ -937,9 +934,9 @@ let gen_deck = [], gen_current = 0, gen_correct = 0, gen_missed = [];
 const BOX_INTERVALS = [0, 1, 2, 4, 8, 16]; // days per box (box 0 unused)
 
 function getSRS() {
-  try { return JSON.parse(localStorage.getItem('schede_srs')) || {}; } catch { return {}; }
+  try { return JSON.parse(localStorage.getItem('fiszki_srs')) || {}; } catch { return {}; }
 }
-function saveSRS(data) { localStorage.setItem('schede_srs', JSON.stringify(data)); }
+function saveSRS(data) { localStorage.setItem('fiszki_srs', JSON.stringify(data)); }
 
 function getWordSRS(id) {
   const srs = getSRS();
@@ -974,10 +971,10 @@ function wordId(type, idx) { return type[0] + idx; }
 
 // ===================== DAILY STATS =====================
 function getStats() {
-  try { return JSON.parse(localStorage.getItem('schede_stats')) || { daily: {}, streak: 0, lastActive: null }; }
+  try { return JSON.parse(localStorage.getItem('fiszki_stats')) || { daily: {}, streak: 0, lastActive: null }; }
   catch { return { daily: {}, streak: 0, lastActive: null }; }
 }
-function saveStats(s) { localStorage.setItem('schede_stats', JSON.stringify(s)); }
+function saveStats(s) { localStorage.setItem('fiszki_stats', JSON.stringify(s)); }
 
 function recordSession(reviewed, numCorrect, newWords) {
   const s = getStats();
@@ -1000,10 +997,10 @@ function recordSession(reviewed, numCorrect, newWords) {
 
 // ===================== ERROR PATTERNS =====================
 function getErrors() {
-  try { return JSON.parse(localStorage.getItem('schede_errors')) || { accents:0, gender:0, articles:0, conjugation:0, vocabulary:0 }; }
-  catch { return { accents:0, gender:0, articles:0, conjugation:0, vocabulary:0 }; }
+  try { return JSON.parse(localStorage.getItem('fiszki_errors')) || { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
+  catch { return { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
 }
-function saveErrors(e) { localStorage.setItem('schede_errors', JSON.stringify(e)); }
+function saveErrors(e) { localStorage.setItem('fiszki_errors', JSON.stringify(e)); }
 
 function recordError(category) {
   const e = getErrors();
@@ -1013,7 +1010,7 @@ function recordError(category) {
 
 function classifySpellingError(userAnswer, correctAnswer) {
   if (!userAnswer.trim()) return 'vocabulary';
-  if (normalize(userAnswer) === normalize(correctAnswer) && userAnswer.trim().toLowerCase() !== correctAnswer.toLowerCase()) return 'accents';
+  if (normalize(userAnswer) === normalize(correctAnswer) && userAnswer.trim().toLowerCase() !== correctAnswer.toLowerCase()) return 'diacritics';
   return 'vocabulary';
 }
 
@@ -1030,29 +1027,29 @@ function escHtml(s) { const d = document.createElement('div'); d.textContent = s
 
 function normalize(s) {
   return s.toLowerCase().trim()
-    .replace(/à/g,'a').replace(/è/g,'e').replace(/é/g,'e').replace(/ì/g,'i')
-    .replace(/ò/g,'o').replace(/ù/g,'u');
+    .replace(/ą/g,'a').replace(/ć/g,'c').replace(/ę/g,'e').replace(/ł/g,'l')
+    .replace(/ń/g,'n').replace(/ó/g,'o').replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z');
 }
 
-function itEqual(a, b) { return normalize(a) === normalize(b); }
+function plEqual(a, b) { return normalize(a) === normalize(b); }
 
 function getAllWords() {
   const words = [];
-  NOUNS.forEach((n, i) => words.push({ it: n[0], en: n[1], type: 'noun', idx: i, id: 'n'+i, gender: n[2] }));
-  VERBS.forEach((v, i) => words.push({ it: v[0], en: v[1], type: 'verb', idx: i, id: 'v'+i }));
-  ADJECTIVES.forEach((a, i) => words.push({ it: a[0], en: a[1], type: 'adj', idx: i, id: 'a'+i }));
+  NOUNS.forEach((n, i) => words.push({ pl: n[0], en: n[1], type: 'noun', idx: i, id: 'n'+i, gender: n[2] }));
+  VERBS.forEach((v, i) => words.push({ pl: v[0], en: v[1], type: 'verb', idx: i, id: 'v'+i }));
+  ADJECTIVES.forEach((a, i) => words.push({ pl: a[0], en: a[1], type: 'adj', idx: i, id: 'a'+i }));
   return words;
 }
 
 function getGroupWords() {
-  if (activeGroup === 'Verbs') return VERBS.map((v,i) => ({ it:v[0], en:v[1], type:'verb', idx:i, id:'v'+i }));
-  if (activeGroup === 'Adjectives') return ADJECTIVES.map((a,i) => ({ it:a[0], en:a[1], type:'adj', idx:i, id:'a'+i }));
+  if (activeGroup === 'Verbs') return VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i }));
+  if (activeGroup === 'Adjectives') return ADJECTIVES.map((a,i) => ({ pl:a[0], en:a[1], type:'adj', idx:i, id:'a'+i }));
   if (activeGroup === 'Smart Review') return getSmartReviewWords();
   const range = NOUN_GROUPS[activeGroup];
   const src = range ? NOUNS.slice(range[0], range[1]+1) : NOUNS;
   return src.map((n, i) => {
     const realIdx = range ? range[0]+i : i;
-    return { it: n[0], en: n[1], type: 'noun', idx: realIdx, id: 'n'+realIdx, gender: n[2] };
+    return { pl: n[0], en: n[1], type: 'noun', idx: realIdx, id: 'n'+realIdx, gender: n[2] };
   });
 }
 
@@ -1061,10 +1058,10 @@ function getSmartReviewWords() {
   return all.filter(w => isWordDue(w.id));
 }
 
-function buildItKeyboard(containerId, targetInputId) {
+function buildPlKeyboard(containerId, targetInputId) {
   const el = document.getElementById(containerId);
-  el.innerHTML = IT_CHARS.map(c =>
-    `<button class="it-key" onmousedown="event.preventDefault()" onclick="insertChar('${targetInputId}','${c}')">${c}</button>`
+  el.innerHTML = PL_CHARS.map(c =>
+    `<button class="pl-key" onmousedown="event.preventDefault()" onclick="insertChar('${targetInputId}','${c}')">${c}</button>`
   ).join('');
 }
 
@@ -1077,9 +1074,9 @@ function insertChar(inputId, ch) {
   inp.focus();
 }
 
-// Track last focused input
+// Track last focused declension input
 document.addEventListener('focusin', (e) => {
-  if (e.target.classList && (e.target.classList.contains('art-input') || e.target.classList.contains('conj-input')) && !e.target.disabled) {
+  if (e.target.classList && (e.target.classList.contains('decl-input') || e.target.classList.contains('conj-input')) && !e.target.disabled) {
     lastFocusedInput = e.target.id;
   }
 });
@@ -1089,11 +1086,11 @@ function toggleDark() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
   document.getElementById('dark-btn').innerHTML = isDark ? '&#9790;' : '&#9788;';
-  localStorage.setItem('schede_dark', isDark ? '' : 'dark');
+  localStorage.setItem('fiszki_dark', isDark ? '' : 'dark');
 }
 
 function initDark() {
-  const pref = localStorage.getItem('schede_dark');
+  const pref = localStorage.getItem('fiszki_dark');
   if (pref === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
     document.getElementById('dark-btn').innerHTML = '&#9788;';
@@ -1109,7 +1106,7 @@ function switchMode(mode) {
   if (section) section.classList.add('active');
 
   // Hide all controls
-  ['fc','sp','mc','li','art','conj','gen'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1135,7 +1132,7 @@ function switchMode(mode) {
   } else if (mode === 'listening') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>R</kbd> replay';
     kb.style.display = '';
-  } else if (mode === 'articles') {
+  } else if (mode === 'declension') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next';
     kb.style.display = '';
   } else if (mode === 'conjugation') {
@@ -1163,7 +1160,7 @@ function buildModeNav() {
 
 function buildGroups() {
   const el = document.getElementById('groups');
-  const groups = currentMode === 'articles'
+  const groups = currentMode === 'declension'
     ? Object.keys(NOUN_GROUPS).concat(['Smart Review'])
     : Object.keys(NOUN_GROUPS).concat(['Verbs','Adjectives','Smart Review']);
   el.innerHTML = groups.map(name =>
@@ -1176,8 +1173,9 @@ function selectGroup(name) { activeGroup = name; buildGroups(); startRound(); }
 // ===================== ROUND MANAGEMENT =====================
 function startRound(wordList) {
   const words = wordList || getGroupWords();
-  if (currentMode === 'articles') {
-    deck = shuffle(words.filter(w => w.type === 'noun'));
+  if (currentMode === 'declension') {
+    // Only regular nouns for declension
+    deck = shuffle(words.filter(w => w.type === 'noun' && NOUNS[w.idx][2] !== 'pl'));
   } else {
     deck = shuffle([...words]);
   }
@@ -1192,7 +1190,7 @@ function startRound(wordList) {
   }
 
   // Show relevant controls
-  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',articles:'art',conjugation:'conj',gender:'gen'}[currentMode];
+  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',declension:'decl',conjugation:'conj',gender:'gen'}[currentMode];
   if (ctrlId) document.getElementById(ctrlId + '-controls').style.display = '';
 
   showCurrent();
@@ -1204,7 +1202,7 @@ function showCurrent() {
   else if (currentMode === 'spelling') sp_show();
   else if (currentMode === 'multichoice') mc_show();
   else if (currentMode === 'listening') li_show();
-  else if (currentMode === 'articles') art_show();
+  else if (currentMode === 'declension') decl_show();
   updateProgress();
 }
 
@@ -1225,15 +1223,18 @@ function updateProgress() {
 }
 
 function finishRound() {
+  // Record stats
   const newWords = deck.filter(w => { const s = getSRS()[w.id]; return s && s.reviews === 1; }).length;
   recordSession(deck.length, correct, newWords);
+  // Update SRS for all words in this session
+  // (already done per-word in mark functions)
   showResults();
 }
 
 function showResults() {
   const section = document.getElementById('mode-' + currentMode);
   if (section) section.style.display = 'none';
-  ['fc','sp','mc','li','art','conj','gen'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1245,7 +1246,7 @@ function showResults() {
   setTimeout(() => { circ.style.strokeDashoffset = 326.7 - 326.7 * pct / 100; }, 50);
   document.getElementById('score-label').textContent = pct + '%';
   document.getElementById('results-heading').textContent =
-    pct === 100 ? 'Perfetto!' : pct >= 70 ? 'Ottimo!' : 'Continua a praticare';
+    pct === 100 ? 'Perfect!' : pct >= 70 ? 'Great job!' : 'Keep practicing';
   document.getElementById('results-text').textContent =
     `You got ${correct} out of ${total} correct.`;
   document.getElementById('btn-retry').style.display = missed.length ? '' : 'none';
@@ -1254,7 +1255,7 @@ function showResults() {
   if (missed.length) {
     missedSec.style.display = '';
     missedEl.innerHTML = missed.map(w =>
-      `<div class="missed-item"><span>${escHtml(w.it || w.pl || '')}</span><span>${escHtml(w.en)}</span></div>`
+      `<div class="missed-item"><span>${escHtml(w.pl)}</span><span>${escHtml(w.en)}</span></div>`
     ).join('');
   } else { missedSec.style.display = 'none'; }
   document.getElementById('results').classList.add('visible');
@@ -1275,11 +1276,11 @@ function fc_show() {
   const w = deck[current];
   document.getElementById('fc-card').classList.remove('flipped');
   fc_flipped = false;
-  document.getElementById('fc-front').textContent = w.it;
+  document.getElementById('fc-front').textContent = w.pl;
   document.getElementById('fc-back').textContent = w.en;
   document.getElementById('fc-hint').textContent = '';
   const meta = [];
-  if (w.type === 'noun') meta.push(`noun (${w.gender})`);
+  if (w.type === 'noun') meta.push(w.gender === 'pl' ? 'noun (plural only)' : `noun (${w.gender})`);
   else if (w.type === 'verb') { meta.push('verb'); if (VERB_IPA[w.idx]) meta.push(VERB_IPA[w.idx]); }
   else if (w.type === 'adj') meta.push('adjective');
   document.getElementById('fc-meta').textContent = meta.join(' ');
@@ -1314,10 +1315,10 @@ function sp_show() {
   const inp = document.getElementById('sp-input');
   inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
   document.getElementById('sp-word').textContent = w.en;
-  let prompt = w.type === 'verb' ? 'Translate this verb to Italian:' :
-    w.type === 'adj' ? 'Translate this adjective to Italian:' : 'Translate to Italian:';
+  let prompt = w.type === 'verb' ? 'Translate this verb to Polish:' :
+    w.type === 'adj' ? 'Translate this adjective to Polish:' : 'Translate to Polish:';
   if (w.type === 'noun' && w.gender) {
-    const genderHint = {m:'masculine',f:'feminine'}[w.gender];
+    const genderHint = w.gender === 'pl' ? 'plural-only' : {m:'masculine',f:'feminine',n:'neuter'}[w.gender];
     prompt += ` (${genderHint})`;
   }
   document.getElementById('sp-prompt').textContent = prompt;
@@ -1327,7 +1328,7 @@ function sp_show() {
   document.getElementById('sp-submit').style.display = '';
   document.getElementById('sp-next-btn').style.display = 'none';
   document.getElementById('sp-giveup-btn').style.display = '';
-  buildItKeyboard('sp-keyboard', 'sp-input');
+  buildPlKeyboard('sp-keyboard', 'sp-input');
   inp.focus();
 }
 
@@ -1343,7 +1344,7 @@ function sp_giveUp() {
   document.getElementById('sp-next-btn').style.display = '';
   const fb = document.getElementById('sp-feedback');
   fb.textContent = 'Answer:'; fb.className = 'spell-feedback incorrect';
-  document.getElementById('sp-answer').textContent = w.it;
+  document.getElementById('sp-answer').textContent = w.pl;
   recordError('vocabulary');
   markWord(w, false);
   updateProgress();
@@ -1361,18 +1362,18 @@ function sp_check() {
   const fb = document.getElementById('sp-feedback');
   const ans = document.getElementById('sp-answer');
 
-  if (itEqual(inp.value, w.it)) {
+  if (plEqual(inp.value, w.pl)) {
     inp.className = 'spell-input correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
-    if (inp.value.trim().toLowerCase() !== w.it.toLowerCase()) {
-      ans.textContent = 'Exact spelling: ' + w.it;
+    if (inp.value.trim().toLowerCase() !== w.pl.toLowerCase()) {
+      ans.textContent = 'Exact spelling: ' + w.pl;
     }
     markWord(w, true);
   } else {
     inp.className = 'spell-input incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
-    ans.textContent = 'Answer: ' + w.it;
-    recordError(classifySpellingError(inp.value, w.it));
+    ans.textContent = 'Answer: ' + w.pl;
+    recordError(classifySpellingError(inp.value, w.pl));
     markWord(w, false);
   }
   updateProgress();
@@ -1383,7 +1384,7 @@ function sp_next() { if (!sp_answered) return; current++; showCurrent(); }
 function sp_showHint() {
   if (sp_answered || current >= deck.length) return;
   const w = deck[current];
-  const h = w.it[0] + w.it.slice(1).replace(/[a-zàèéìòù]/gi,' _');
+  const h = w.pl[0] + w.pl.slice(1).replace(/[a-ząćęłńóśźż]/gi,' _');
   document.getElementById('sp-feedback').textContent = h;
   document.getElementById('sp-feedback').className = 'spell-feedback';
 }
@@ -1391,8 +1392,8 @@ function sp_showHint() {
 // ===================== MULTIPLE CHOICE =====================
 function mc_setDir(d) {
   mc_dir = d;
-  document.getElementById('mc-dir-pen').classList.toggle('active', d === 'ie');
-  document.getElementById('mc-dir-enp').classList.toggle('active', d === 'ei');
+  document.getElementById('mc-dir-pen').classList.toggle('active', d === 'pe');
+  document.getElementById('mc-dir-enp').classList.toggle('active', d === 'ep');
   startRound();
 }
 
@@ -1400,9 +1401,9 @@ function mc_show() {
   mc_answered = false;
   document.getElementById('mc-next-btn').style.display = 'none';
   const w = deck[current];
-  const qField = mc_dir === 'ie' ? 'it' : 'en';
-  const aField = mc_dir === 'ie' ? 'en' : 'it';
-  document.getElementById('mc-label').textContent = mc_dir === 'ie' ? 'Italian' : 'English';
+  const qField = mc_dir === 'pe' ? 'pl' : 'en';
+  const aField = mc_dir === 'pe' ? 'en' : 'pl';
+  document.getElementById('mc-label').textContent = mc_dir === 'pe' ? 'Polish' : 'English';
   document.getElementById('mc-word').textContent = w[qField];
 
   const correctAns = w[aField];
@@ -1419,7 +1420,7 @@ function mc_pick(btn) {
   if (mc_answered) return;
   mc_answered = true;
   const w = deck[current];
-  const aField = mc_dir === 'ie' ? 'en' : 'it';
+  const aField = mc_dir === 'pe' ? 'en' : 'pl';
   const correctAns = w[aField];
 
   document.querySelectorAll('.mc-option').forEach(b => {
@@ -1441,7 +1442,7 @@ function li_speak(text) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'it-IT'; u.rate = 0.85;
+  u.lang = 'pl-PL'; u.rate = 0.85;
   speechSynthesis.speak(u);
 }
 
@@ -1456,11 +1457,11 @@ function li_show() {
   document.getElementById('li-submit').style.display = '';
   document.getElementById('li-next-btn').style.display = 'none';
   inp.focus();
-  setTimeout(() => li_speak(w.it), 300);
+  setTimeout(() => li_speak(w.pl), 300);
 }
 
 function li_play() {
-  if (current < deck.length) li_speak(deck[current].it);
+  if (current < deck.length) li_speak(deck[current].pl);
 }
 
 function li_check() {
@@ -1485,12 +1486,12 @@ function li_check() {
   if (accepted.some(a => userAns === a)) {
     inp.className = 'spell-input correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
-    ans.textContent = w.it + ' = ' + w.en;
+    ans.textContent = w.pl + ' = ' + w.en;
     markWord(w, true);
   } else {
     inp.className = 'spell-input incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
-    ans.textContent = w.it + ' = ' + w.en;
+    ans.textContent = w.pl + ' = ' + w.en;
     recordError('vocabulary');
     markWord(w, false);
   }
@@ -1506,97 +1507,103 @@ function li_showHint() {
   document.getElementById('li-feedback').className = 'spell-feedback';
 }
 
-// ===================== ARTICLES (Italian equivalent of Declension) =====================
-function art_show() {
-  art_answered = false;
-  art_genderPick = null;
+// ===================== DECLENSION =====================
+function decl_show() {
+  decl_answered = false;
+  decl_genderPick = null;
   const w = deck[current];
   const n = NOUNS[w.idx];
 
-  document.getElementById('art-word').textContent = n[0];
-  document.getElementById('art-en').textContent = '(' + n[1] + ')';
-  document.getElementById('a-noun-sg').value = n[0];
+  document.getElementById('decl-word').textContent = n[0];
+  document.getElementById('decl-en').textContent = '(' + n[1] + ')';
+  document.getElementById('d-nom-sg').value = n[0];
 
   // Reset gender buttons
-  document.querySelectorAll('#art-gender .gender-btn').forEach(b => {
+  document.querySelectorAll('#decl-gender .gender-btn').forEach(b => {
     b.className = 'gender-btn'; b.style.pointerEvents = '';
   });
 
   // Reset inputs
-  ['a-def-sg','a-def-pl','a-indef-sg','a-indef-pl','a-noun-pl'].forEach(id => {
+  ['d-nom-pl','d-acc-sg','d-acc-pl','d-gen-sg','d-gen-pl'].forEach(id => {
     const inp = document.getElementById(id);
-    inp.value = ''; inp.className = 'art-input'; inp.disabled = false;
+    inp.value = ''; inp.className = 'decl-input'; inp.disabled = false;
+    // Remove any correction labels
     const cell = inp.parentElement;
-    const corr = cell.querySelector('.art-correction');
+    const corr = cell.querySelector('.decl-correction');
     if (corr) corr.remove();
   });
 
-  document.getElementById('art-check-btn').style.display = '';
-  document.getElementById('art-next-btn').style.display = 'none';
+  document.getElementById('decl-check-btn').style.display = '';
+  document.getElementById('decl-next-btn').style.display = 'none';
+  buildPlKeyboard('decl-keyboard', 'd-nom-pl');
+
+  // Update keyboard target on focus
+  document.querySelectorAll('#decl-grid .decl-input:not(:disabled)').forEach(inp => {
+    inp.onfocus = () => buildPlKeyboard('decl-keyboard', inp.id);
+  });
 }
 
-function art_pickGender(btn) {
-  if (art_answered) return;
-  document.querySelectorAll('#art-gender .gender-btn').forEach(b => b.classList.remove('selected'));
+function decl_pickGender(btn) {
+  if (decl_answered) return;
+  document.querySelectorAll('#decl-gender .gender-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  art_genderPick = btn.dataset.g;
+  decl_genderPick = btn.dataset.g;
 }
 
-function art_check() {
-  if (art_answered) return;
-  art_answered = true;
+function decl_check() {
+  if (decl_answered) return;
+  decl_answered = true;
   const w = deck[current];
   const n = NOUNS[w.idx];
-  // n = [it, en, gender, plural, def_sg, def_pl, indef_sg, indef_pl]
+  // n = [pl, en, gender, nom_pl, acc_sg, acc_pl, gen_sg, gen_pl]
   const answers = {
     'gender': n[2],
-    'a-def-sg': n[4],
-    'a-def-pl': n[5],
-    'a-indef-sg': n[6],
-    'a-indef-pl': n[7],
-    'a-noun-pl': n[3],
+    'd-nom-pl': n[3],
+    'd-acc-sg': n[4],
+    'd-acc-pl': n[5],
+    'd-gen-sg': n[6],
+    'd-gen-pl': n[7],
   };
 
   let allCorrect = true;
 
   // Check gender
-  document.querySelectorAll('#art-gender .gender-btn').forEach(b => {
+  document.querySelectorAll('#decl-gender .gender-btn').forEach(b => {
     b.classList.add('disabled');
     if (b.dataset.g === answers.gender) b.classList.add('correct');
-    else if (b.dataset.g === art_genderPick && art_genderPick !== answers.gender) b.classList.add('incorrect');
+    else if (b.dataset.g === decl_genderPick && decl_genderPick !== answers.gender) b.classList.add('incorrect');
   });
-  if (art_genderPick !== answers.gender) { allCorrect = false; recordError('gender'); }
+  if (decl_genderPick !== answers.gender) { allCorrect = false; recordError('gender'); }
 
-  // Check article/plural inputs
-  ['a-def-sg','a-def-pl','a-indef-sg','a-indef-pl','a-noun-pl'].forEach(id => {
+  // Check case inputs
+  ['d-nom-pl','d-acc-sg','d-acc-pl','d-gen-sg','d-gen-pl'].forEach(id => {
     const inp = document.getElementById(id);
     inp.disabled = true;
     const correct = answers[id];
-    if (inp.value.trim().toLowerCase() === correct.toLowerCase()) {
+    if (plEqual(inp.value, correct)) {
       inp.classList.add('correct');
     } else {
       inp.classList.add('incorrect');
       allCorrect = false;
-      if (id === 'a-noun-pl') recordError('vocabulary');
-      else recordError('articles');
+      recordError(classifySpellingError(inp.value, correct) === 'diacritics' ? 'diacritics' : 'case_form');
       const corr = document.createElement('div');
-      corr.className = 'art-correction';
+      corr.className = 'decl-correction';
       corr.textContent = correct;
       inp.parentElement.appendChild(corr);
     }
   });
 
   markWord(w, allCorrect);
-  document.getElementById('art-check-btn').style.display = 'none';
-  document.getElementById('art-next-btn').style.display = '';
+  document.getElementById('decl-check-btn').style.display = 'none';
+  document.getElementById('decl-next-btn').style.display = '';
   updateProgress();
 }
 
-function art_next() { if (!art_answered) return; current++; showCurrent(); }
+function decl_next() { if (!decl_answered) return; current++; showCurrent(); }
 
 // ===================== CONJUGATION =====================
 function conj_startRound() {
-  deck = shuffle(VERBS.map((v,i) => ({ it:v[0], en:v[1], type:'verb', idx:i, id:'v'+i })));
+  deck = shuffle(VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i })));
   current = 0; correct = 0; missed = [];
   document.getElementById('results').classList.remove('visible');
   document.getElementById('mode-conjugation').style.display = '';
@@ -1623,7 +1630,7 @@ function conj_show() {
   }
   document.getElementById('conj-check-btn').style.display = '';
   document.getElementById('conj-next-btn').style.display = 'none';
-  buildItKeyboard('conj-keyboard', 'cj-0');
+  buildPlKeyboard('conj-keyboard', 'cj-0');
 
   // Build pronunciation guide table
   const tbl = document.getElementById('pron-table');
@@ -1631,7 +1638,7 @@ function conj_show() {
     PRONUNCIATION_GUIDE.map(p => `<tr><td>${p.sound}</td><td>${p.ipa}</td><td>${p.desc}</td></tr>`).join('');
 
   document.querySelectorAll('#conj-grid .conj-input').forEach(inp => {
-    inp.onfocus = () => buildItKeyboard('conj-keyboard', inp.id);
+    inp.onfocus = () => buildPlKeyboard('conj-keyboard', inp.id);
   });
   document.getElementById('cj-0').focus();
 }
@@ -1646,12 +1653,12 @@ function conj_check() {
   for (let i = 0; i < 6; i++) {
     const inp = document.getElementById('cj-' + i);
     inp.disabled = true;
-    if (itEqual(inp.value, forms[i])) {
+    if (plEqual(inp.value, forms[i])) {
       inp.classList.add('correct');
     } else {
       inp.classList.add('incorrect');
       allCorrect = false;
-      if (classifySpellingError(inp.value, forms[i]) === 'accents') recordError('accents');
+      if (classifySpellingError(inp.value, forms[i]) === 'diacritics') recordError('diacritics');
       else recordError('conjugation');
       const corr = document.createElement('div');
       corr.className = 'conj-correction';
@@ -1676,74 +1683,73 @@ function gen_buildExercises() {
   ADJ_FORMS.forEach((forms, ai) => {
     const adj = ADJECTIVES[ai];
     GENDER_NOUNS.forEach(noun => {
-      const fi = noun.g === 'm' ? 0 : 1; // masc_sg or fem_sg
-      const genderName = noun.g === 'm' ? 'masculine' : 'feminine';
+      const gi = noun.g === 'm' ? 0 : noun.g === 'f' ? 1 : 2;
+      const genderName = noun.g === 'm' ? 'masculine' : noun.g === 'f' ? 'feminine' : 'neuter';
       exercises.push({
         type: 'adj',
-        prompt: `${noun.it} _____`,
+        prompt: `_____ ${noun.pl}`,
         hint: `<strong>${adj[1]}</strong> ${noun.en} (${genderName})`,
-        hintWord: `${forms[0]} (masc. singular)`,
-        answer: forms[fi],
-        display: `${noun.it} ${forms[fi]}`,
-        id: 'ga_' + ai + '_' + noun.it,
+        hintWord: `${forms[0]} (masc. nominative)`,
+        answer: forms[gi],
+        display: `${forms[gi]} ${noun.pl}`,
+        id: 'ga_' + ai + '_' + noun.pl,
       });
     });
   });
 
-  // Type 2: Passato prossimo with correct past participle agreement
+  // Type 2: Past tense 1st person (male/female speaker)
   VERB_PAST.forEach((forms, vi) => {
     const verb = VERBS[vi];
-    const aux = forms[4]; // "essere" or "avere"
-    if (aux === 'essere') {
-      // With essere, past participle agrees with subject
-      exercises.push({
-        type: 'past',
-        prompt: `Lui è _____.`,
-        hint: `He <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
-        hintWord: `${verb[0]} (infinitive)`,
-        answer: forms[0],
-        display: `Lui è ${forms[0]}.`,
-        id: 'gp_m_' + vi,
-      });
-      exercises.push({
-        type: 'past',
-        prompt: `Lei è _____.`,
-        hint: `She <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
-        hintWord: `${verb[0]} (infinitive)`,
-        answer: forms[1],
-        display: `Lei è ${forms[1]}.`,
-        id: 'gp_f_' + vi,
-      });
-      exercises.push({
-        type: 'past',
-        prompt: `Loro sono _____.`,
-        hint: `They (m.) <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
-        hintWord: `${verb[0]} (infinitive)`,
-        answer: forms[2],
-        display: `Loro sono ${forms[2]}.`,
-        id: 'gp_mpl_' + vi,
-      });
-      exercises.push({
-        type: 'past',
-        prompt: `Loro sono _____.`,
-        hint: `They (f.) <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
-        hintWord: `${verb[0]} (infinitive)`,
-        answer: forms[3],
-        display: `Loro sono ${forms[3]}.`,
-        id: 'gp_fpl_' + vi,
-      });
-    } else {
-      // With avere, typically invariable (masculine singular)
-      exercises.push({
-        type: 'past',
-        prompt: `Io ho _____.`,
-        hint: `I <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`,
-        hintWord: `${verb[0]} (infinitive)`,
-        answer: forms[0],
-        display: `Io ho ${forms[0]}.`,
-        id: 'gp_avere_' + vi,
-      });
-    }
+    exercises.push({
+      type: 'past',
+      prompt: `Ja _____. (male speaker)`,
+      hint: `I <strong>${verb[1].replace('to ','')}</strong> (past, male)`,
+      hintWord: `${verb[0]} (infinitive)`,
+      answer: forms[0],
+      display: `Ja ${forms[0]}.`,
+      id: 'gp_m1_' + vi,
+    });
+    exercises.push({
+      type: 'past',
+      prompt: `Ja _____. (female speaker)`,
+      hint: `I <strong>${verb[1].replace('to ','')}</strong> (past, female)`,
+      hintWord: `${verb[0]} (infinitive)`,
+      answer: forms[1],
+      display: `Ja ${forms[1]}.`,
+      id: 'gp_f1_' + vi,
+    });
+  });
+
+  // Type 3: Past tense 3rd person (he/she/it)
+  VERB_PAST.forEach((forms, vi) => {
+    const verb = VERBS[vi];
+    exercises.push({
+      type: 'past',
+      prompt: `On _____.`,
+      hint: `He <strong>${verb[1].replace('to ','')}</strong> (past)`,
+      hintWord: `${verb[0]} (infinitive)`,
+      answer: forms[2],
+      display: `On ${forms[2]}.`,
+      id: 'gp_m3_' + vi,
+    });
+    exercises.push({
+      type: 'past',
+      prompt: `Ona _____.`,
+      hint: `She <strong>${verb[1].replace('to ','')}</strong> (past)`,
+      hintWord: `${verb[0]} (infinitive)`,
+      answer: forms[3],
+      display: `Ona ${forms[3]}.`,
+      id: 'gp_f3_' + vi,
+    });
+    exercises.push({
+      type: 'past',
+      prompt: `Ono _____.`,
+      hint: `It <strong>${verb[1].replace('to ','')}</strong> (past)`,
+      hintWord: `${verb[0]} (infinitive)`,
+      answer: forms[4],
+      display: `Ono ${forms[4]}.`,
+      id: 'gp_n3_' + vi,
+    });
   });
 
   return exercises;
@@ -1751,11 +1757,12 @@ function gen_buildExercises() {
 
 function gen_startRound() {
   const all = gen_buildExercises();
-  gen_deck = shuffle(all).slice(0, 20);
+  gen_deck = shuffle(all).slice(0, 20); // Pick 20 random exercises per round
   gen_current = 0; gen_correct = 0; gen_missed = [];
   document.getElementById('results').classList.remove('visible');
   document.getElementById('mode-gender').style.display = '';
   document.getElementById('gen-controls').style.display = '';
+  // Update progress bar for gender mode
   deck = gen_deck; current = 0; correct = 0; missed = [];
   gen_show();
   updateProgress();
@@ -1765,7 +1772,7 @@ function gen_show() {
   gen_answered = false;
   const ex = gen_deck[gen_current];
   const tag = document.getElementById('gen-tag');
-  tag.textContent = ex.type === 'adj' ? 'Adjective Agreement' : 'Passato Prossimo';
+  tag.textContent = ex.type === 'adj' ? 'Adjective Agreement' : 'Past Tense Gender';
   tag.className = 'gen-type-tag ' + (ex.type === 'adj' ? 'gen-type-adj' : 'gen-type-past');
 
   document.getElementById('gen-prompt').textContent = 'Fill in the correct form:';
@@ -1780,7 +1787,7 @@ function gen_show() {
   document.getElementById('gen-feedback').textContent = '';
   document.getElementById('gen-feedback').className = 'spell-feedback';
   document.getElementById('gen-answer').textContent = '';
-  buildItKeyboard('gen-keyboard', 'gen-input');
+  buildPlKeyboard('gen-keyboard', 'gen-input');
   inp.focus();
 }
 
@@ -1805,7 +1812,7 @@ function gen_check() {
   const fb = document.getElementById('gen-feedback');
   const ans = document.getElementById('gen-answer');
 
-  if (itEqual(inp.value, ex.answer)) {
+  if (plEqual(inp.value, ex.answer)) {
     inp.className = 'spell-input correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     if (inp.value.trim().toLowerCase() !== ex.answer.toLowerCase()) {
@@ -1816,9 +1823,10 @@ function gen_check() {
     inp.className = 'spell-input incorrect';
     fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
     ans.textContent = 'Answer: ' + ex.display;
-    gen_missed.push({ it: ex.answer, en: ex.hint });
-    missed.push({ it: ex.answer, en: ex.hint });
-    if (classifySpellingError(inp.value, ex.answer) === 'accents') recordError('accents');
+    gen_missed.push({ pl: ex.answer, en: ex.hint });
+    missed.push({ pl: ex.answer, en: ex.hint });
+    // Classify the error
+    if (classifySpellingError(inp.value, ex.answer) === 'diacritics') recordError('diacritics');
     else recordError('gender');
   }
   current = gen_current + 1;
@@ -1845,10 +1853,14 @@ function renderProgress() {
   const allWords = getAllWords();
   const today = new Date();
 
+  // Stats cards
   const totalReviewed = allWords.filter(w => srs[w.id] && srs[w.id].reviews > 0).length;
+  const mastered = allWords.filter(w => srs[w.id] && srs[w.id].box >= 4).length;
   const streak = stats.streak || 0;
   const todayStr = today.toISOString().slice(0,10);
+  const todayStats = stats.daily[todayStr] || { reviewed: 0, correct: 0, newWords: 0 };
 
+  // Words learned this week
   let weekNew = 0;
   for (let i = 0; i < 7; i++) {
     const d = new Date(today - i * 86400000).toISOString().slice(0,10);
@@ -1895,9 +1907,9 @@ function renderProgress() {
   // Error pattern analysis
   const errors = getErrors();
   const errorCategories = [
-    { key: 'accents', label: 'Accents', color: '#f59e0b', desc: 'Missing or wrong Italian accent marks' },
-    { key: 'gender', label: 'Gender', color: '#ec4899', desc: 'Wrong masculine/feminine form' },
-    { key: 'articles', label: 'Articles', color: '#8b5cf6', desc: 'Wrong definite/indefinite article' },
+    { key: 'diacritics', label: 'Diacritics', color: '#f59e0b', desc: 'Missing or wrong Polish special characters' },
+    { key: 'gender', label: 'Gender', color: '#ec4899', desc: 'Wrong masculine/feminine/neuter form' },
+    { key: 'case_form', label: 'Case Forms', color: '#8b5cf6', desc: 'Wrong noun declension' },
     { key: 'conjugation', label: 'Conjugation', color: '#06b6d4', desc: 'Wrong verb form' },
     { key: 'vocabulary', label: 'Vocabulary', color: '#ef4444', desc: 'Wrong word or meaning' },
   ];
@@ -1929,7 +1941,7 @@ function renderProgress() {
       errorCategories.filter(c => (errors[c.key] || 0) > 0).sort((a,b) => (errors[b.key]||0) - (errors[a.key]||0))
         .slice(0,2).map(c => `<strong>${c.label}:</strong> ${c.desc}`).join(' &bull; ') +
       '</div>' +
-      '<div style="margin-top:10px"><button class="btn btn-sm" onclick="if(confirm(\'Reset error stats?\')){saveErrors({accents:0,gender:0,articles:0,conjugation:0,vocabulary:0});renderProgress();}">Reset Error Stats</button></div>';
+      '<div style="margin-top:10px"><button class="btn btn-sm" onclick="if(confirm(\'Reset error stats?\')){saveErrors({diacritics:0,gender:0,case_form:0,conjugation:0,vocabulary:0});renderProgress();}">Reset Error Stats</button></div>';
   } else {
     errSec.style.display = '';
     errSec.innerHTML = '<h3 class="chart-section" style="margin-bottom:0;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Error Patterns</h3>' +
@@ -1948,7 +1960,7 @@ function renderProgress() {
   if (weak.length) {
     weakSec.style.display = '';
     weakEl.innerHTML = weak.map(w =>
-      `<div class="weak-word-item"><span>${escHtml(w.it)} <span style="color:var(--text-muted)">- ${escHtml(w.en)}</span></span><span class="weak-rate">${w.rate}% (${w.reviews} reviews)</span></div>`
+      `<div class="weak-word-item"><span>${escHtml(w.pl)} <span style="color:var(--text-muted)">- ${escHtml(w.en)}</span></span><span class="weak-rate">${w.rate}% (${w.reviews} reviews)</span></div>`
     ).join('');
   } else {
     weakSec.style.display = '';
@@ -1959,7 +1971,7 @@ function renderProgress() {
 // ===================== KEYBOARD =====================
 document.addEventListener('keydown', (e) => {
   const inInput = ['sp-input','li-input'].includes(document.activeElement?.id) ||
-    document.activeElement?.classList.contains('art-input');
+    document.activeElement?.classList.contains('decl-input');
 
   if (currentMode === 'flashcard') {
     if (e.key === ' ') { e.preventDefault(); fc_flip(); }
@@ -1978,8 +1990,8 @@ document.addEventListener('keydown', (e) => {
   } else if (currentMode === 'listening') {
     if (e.key === 'Enter') { e.preventDefault(); li_answered ? li_next() : li_check(); }
     else if ((e.key === 'r' || e.key === 'R') && !inInput) li_play();
-  } else if (currentMode === 'articles') {
-    if (e.key === 'Enter') { e.preventDefault(); art_answered ? art_next() : art_check(); }
+  } else if (currentMode === 'declension') {
+    if (e.key === 'Enter') { e.preventDefault(); decl_answered ? decl_next() : decl_check(); }
   } else if (currentMode === 'conjugation') {
     if (e.key === 'Enter') { e.preventDefault(); conj_answered ? conj_next() : conj_check(); }
   } else if (currentMode === 'gender') {
@@ -1987,7 +1999,9 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// Declension keyboard: insert char into last focused decl input
 const origInsertChar = window.insertChar;
+// Already handled by insertChar function above
 
 // ===================== NAV SCROLL =====================
 function scrollNav(dir) {
@@ -2011,7 +2025,7 @@ setTimeout(updateNavArrows, 50);
 initDark();
 buildModeNav();
 buildGroups();
-buildItKeyboard('sp-keyboard', 'sp-input');
+buildPlKeyboard('sp-keyboard', 'sp-input');
 switchMode('flashcard');
 </script>
 </body>
