@@ -95,4 +95,29 @@ After completing a round, a results screen shows:
 
 ## Usage
 
+### Desktop
+
 Open `flashcards.html` in any modern browser. No server or build step required.
+
+### Mobile (PWA)
+
+The app is a Progressive Web App — install it on your phone for offline access:
+
+1. Start a local server from the `language_learning/` root:
+   ```
+   cd ~/language_learning
+   python3 -m http.server 8000
+   ```
+   Or host the files on any static web server.
+
+2. Open the URL on your phone (e.g. `http://<your-ip>:8000`)
+
+3. You'll see a language selector — pick Polish or Italian
+
+4. **Install to home screen:**
+   - **Android (Chrome):** Tap the menu (three dots) > "Add to Home Screen" or "Install app"
+   - **iOS (Safari):** Tap the share button > "Add to Home Screen"
+
+5. The app now works like a native app — own icon, no browser bar, fully offline
+
+All your progress is saved in the browser's localStorage and persists across sessions.

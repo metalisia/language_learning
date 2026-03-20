@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Trainer</title>
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icon-192.svg">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --text: #1a1a1a;
+    --text-muted: #888;
+    --border: #dde1e8;
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+    --radius: 16px;
+  }
+
+  [data-theme="dark"] {
+    --bg: #111318;
+    --card-bg: #1a1d24;
+    --accent: #5b8def;
+    --accent-hover: #7da5f7;
+    --text: #e4e6ea;
+    --text-muted: #777d8a;
+    --border: #2a2e38;
+    --shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, color 0.3s;
+    padding: 24px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 36px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .lang-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .lang-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+
+  [data-theme="dark"] .lang-card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+
+  .flag {
+    font-size: 3rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .lang-info {
+    text-align: left;
+  }
+
+  .lang-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .lang-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .lang-arrow {
+    margin-left: auto;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .lang-card:hover .lang-arrow {
+    color: var(--accent);
+  }
+
+  .dark-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+
+  .dark-toggle:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .install-hint {
+    margin-top: 32px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<button class="dark-toggle" onclick="toggleDark()" id="dark-btn" title="Toggle dark mode">&#9790;</button>
+
+<div class="container">
+  <h1>Language Trainer</h1>
+  <p class="subtitle">Choose a language to practice</p>
+
+  <div class="cards">
+    <a class="lang-card" href="polish/flashcards.html">
+      <span class="flag">&#x1F1F5;&#x1F1F1;</span>
+      <div class="lang-info">
+        <div class="lang-name">Polish</div>
+        <div class="lang-desc">Fiszki &mdash; vocabulary, conjugation, declension &amp; more</div>
+      </div>
+      <span class="lang-arrow">&#8250;</span>
+    </a>
+
+    <a class="lang-card" href="italian/flashcards.html">
+      <span class="flag">&#x1F1EE;&#x1F1F9;</span>
+      <div class="lang-info">
+        <div class="lang-name">Italian</div>
+        <div class="lang-desc">Schede &mdash; vocabulary, articles, conjugation &amp; more</div>
+      </div>
+      <span class="lang-arrow">&#8250;</span>
+    </a>
+  </div>
+
+  <p class="install-hint" id="install-hint" style="display:none">
+    Tip: Add to your home screen for offline access
+  </p>
+</div>
+
+<script>
+  function toggleDark() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+    document.getElementById('dark-btn').innerHTML = isDark ? '&#9790;' : '&#9788;';
+    localStorage.setItem('lang_trainer_dark', isDark ? '' : 'dark');
+  }
+
+  // Init dark mode (check both keys for consistency with sub-apps)
+  const pref = localStorage.getItem('lang_trainer_dark') ||
+               localStorage.getItem('fiszki_dark') ||
+               localStorage.getItem('schede_dark');
+  if (pref === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('dark-btn').innerHTML = '&#9788;';
+  }
+
+  // Show install hint on mobile if not in standalone mode
+  if (/Android|iPhone|iPad/i.test(navigator.userAgent) && !window.matchMedia('(display-mode: standalone)').matches) {
+    document.getElementById('install-hint').style.display = '';
+  }
+
+  // Register service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
