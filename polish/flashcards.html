@@ -638,6 +638,10 @@
     <div class="mastery-bar" id="mastery-bar"></div>
     <div class="mastery-legend" id="mastery-legend"></div>
   </div>
+  <div class="chart-section card-box" id="cefr-section">
+    <h3>CEFR Level Progress</h3>
+    <div id="cefr-progress"></div>
+  </div>
   <div class="weak-words-section card-box" id="weak-section">
     <h3>Weak Words</h3>
     <div id="weak-list"></div>
@@ -676,200 +680,23 @@
 <script>
 // ===================== DATA =====================
 const PL_CHARS = ['ą','ć','ę','ł','ń','ó','ś','ź','ż'];
+const CEFR_LEVELS = ['A1','A2','B1','B2'];
+let WORD_BANK = null; // loaded from word_bank.json
 
-// Nouns: [pl, en, gender, nom_pl, acc_sg, acc_pl, gen_sg, gen_pl]
-// gender: "m","f","n","pl" (plural-only)
-// For "pl" gender: [pl, en, "pl", nom, acc, gen] (all plural)
-const NOUNS = [
-  // People
-  ["kobieta","woman","f","kobiety","kobietę","kobiety","kobiety","kobiet"],
-  ["mężczyzna","man","m","mężczyźni","mężczyznę","mężczyzn","mężczyzny","mężczyzn"],
-  ["dziecko","child","n","dzieci","dziecko","dzieci","dziecka","dzieci"],
-  ["dziewczyna","girl","f","dziewczyny","dziewczynę","dziewczyny","dziewczyny","dziewczyn"],
-  ["chłopiec","boy","m","chłopcy","chłopca","chłopców","chłopca","chłopców"],
-  ["matka","mother","f","matki","matkę","matki","matki","matek"],
-  ["ojciec","father","m","ojcowie","ojca","ojców","ojca","ojców"],
-  ["siostra","sister","f","siostry","siostrę","siostry","siostry","sióstr"],
-  ["brat","brother","m","bracia","brata","braci","brata","braci"],
-  ["przyjaciel","friend","m","przyjaciele","przyjaciela","przyjaciół","przyjaciela","przyjaciół"],
-  // Animals
-  ["pies","dog","m","psy","psa","psy","psa","psów"],
-  ["kot","cat","m","koty","kota","koty","kota","kotów"],
-  ["ptak","bird","m","ptaki","ptaka","ptaki","ptaka","ptaków"],
-  ["ryba","fish","f","ryby","rybę","ryby","ryby","ryb"],
-  ["koń","horse","m","konie","konia","konie","konia","koni"],
-  ["krowa","cow","f","krowy","krowę","krowy","krowy","krów"],
-  ["mysz","mouse","f","myszy","mysz","myszy","myszy","myszy"],
-  ["motyl","butterfly","m","motyle","motyla","motyle","motyla","motyli"],
-  ["wilk","wolf","m","wilki","wilka","wilki","wilka","wilków"],
-  ["niedźwiedź","bear","m","niedźwiedzie","niedźwiedzia","niedźwiedzie","niedźwiedzia","niedźwiedzi"],
-  // Food
-  ["chleb","bread","m","chleby","chleb","chleby","chleba","chlebów"],
-  ["woda","water","f","wody","wodę","wody","wody","wód"],
-  ["mleko","milk","n","mleka","mleko","mleka","mleka","mlek"],
-  ["jabłko","apple","n","jabłka","jabłko","jabłka","jabłka","jabłek"],
-  ["ser","cheese","m","sery","ser","sery","sera","serów"],
-  ["mięso","meat","n","mięsa","mięso","mięsa","mięsa","mięs"],
-  ["herbata","tea","f","herbaty","herbatę","herbaty","herbaty","herbat"],
-  ["kawa","coffee","f","kawy","kawę","kawy","kawy","kaw"],
-  ["jajko","egg","n","jajka","jajko","jajka","jajka","jajek"],
-  ["masło","butter","n","masła","masło","masła","masła","maseł"],
-  // Home
-  ["dom","house","m","domy","dom","domy","domu","domów"],
-  ["drzwi","door","pl","drzwi","drzwi","drzwi"],
-  ["okno","window","n","okna","okno","okna","okna","okien"],
-  ["stół","table","m","stoły","stół","stoły","stołu","stołów"],
-  ["krzesło","chair","n","krzesła","krzesło","krzesła","krzesła","krzeseł"],
-  ["łóżko","bed","n","łóżka","łóżko","łóżka","łóżka","łóżek"],
-  ["kuchnia","kitchen","f","kuchnie","kuchnię","kuchnie","kuchni","kuchni"],
-  ["łazienka","bathroom","f","łazienki","łazienkę","łazienki","łazienki","łazienek"],
-  ["klucz","key","m","klucze","klucz","klucze","klucza","kluczy"],
-  ["schody","stairs","pl","schody","schody","schodów"],
-  // Nature
-  ["drzewo","tree","n","drzewa","drzewo","drzewa","drzewa","drzew"],
-  ["kwiat","flower","m","kwiaty","kwiat","kwiaty","kwiatu","kwiatów"],
-  ["słońce","sun","n","słońca","słońce","słońca","słońca","słońc"],
-  ["księżyc","moon","m","księżyce","księżyc","księżyce","księżyca","księżyców"],
-  ["gwiazda","star","f","gwiazdy","gwiazdę","gwiazdy","gwiazdy","gwiazd"],
-  ["niebo","sky","n","nieba","niebo","nieba","nieba","nieb"],
-  ["deszcz","rain","m","deszcze","deszcz","deszcze","deszczu","deszczów"],
-  ["śnieg","snow","m","śniegi","śnieg","śniegi","śniegu","śniegów"],
-  ["góra","mountain","f","góry","górę","góry","góry","gór"],
-  ["rzeka","river","f","rzeki","rzekę","rzeki","rzeki","rzek"],
-  // Body
-  ["głowa","head","f","głowy","głowę","głowy","głowy","głów"],
-  ["ręka","hand","f","ręce","rękę","ręce","ręki","rąk"],
-  ["noga","leg","f","nogi","nogę","nogi","nogi","nóg"],
-  ["oko","eye","n","oczy","oko","oczy","oka","oczu"],
-  ["ucho","ear","n","uszy","ucho","uszy","ucha","uszu"],
-  ["nos","nose","m","nosy","nos","nosy","nosa","nosów"],
-  ["usta","mouth","pl","usta","usta","ust"],
-  ["serce","heart","n","serca","serce","serca","serca","serc"],
-  ["palec","finger","m","palce","palec","palce","palca","palców"],
-  ["kolano","knee","n","kolana","kolano","kolana","kolana","kolan"],
-  // Objects
-  ["książka","book","f","książki","książkę","książki","książki","książek"],
-  ["telefon","phone","m","telefony","telefon","telefony","telefonu","telefonów"],
-  ["samochód","car","m","samochody","samochód","samochody","samochodu","samochodów"],
-  ["zegarek","watch","m","zegarki","zegarek","zegarki","zegarka","zegarków"],
-  ["torba","bag","f","torby","torbę","torby","torby","toreb"],
-  ["pieniądze","money","pl","pieniądze","pieniądze","pieniędzy"],
-  ["list","letter","m","listy","list","listy","listu","listów"],
-  ["mapa","map","f","mapy","mapę","mapy","mapy","map"],
-  ["parasol","umbrella","m","parasole","parasol","parasole","parasola","parasoli"],
-  ["okulary","glasses","pl","okulary","okulary","okularów"],
-  // Places
-  ["miasto","city","n","miasta","miasto","miasta","miasta","miast"],
-  ["ulica","street","f","ulice","ulicę","ulice","ulicy","ulic"],
-  ["sklep","shop","m","sklepy","sklep","sklepy","sklepu","sklepów"],
-  ["szkoła","school","f","szkoły","szkołę","szkoły","szkoły","szkół"],
-  ["szpital","hospital","m","szpitale","szpital","szpitale","szpitala","szpitali"],
-  ["kościół","church","m","kościoły","kościół","kościoły","kościoła","kościołów"],
-  ["most","bridge","m","mosty","most","mosty","mostu","mostów"],
-  ["park","park","m","parki","park","parki","parku","parków"],
-  ["lotnisko","airport","n","lotniska","lotnisko","lotniska","lotniska","lotnisk"],
-  ["plaża","beach","f","plaże","plażę","plaże","plaży","plaż"],
-  // Concepts
-  ["czas","time","m","czasy","czas","czasy","czasu","czasów"],
-  ["dzień","day","m","dni","dzień","dni","dnia","dni"],
-  ["noc","night","f","noce","noc","noce","nocy","nocy"],
-  ["rok","year","m","lata","rok","lata","roku","lat"],
-  ["początek","beginning","m","początki","początek","początki","początku","początków"],
-  ["koniec","end","m","końce","koniec","końce","końca","końców"],
-  ["droga","road","f","drogi","drogę","drogi","drogi","dróg"],
-  ["praca","work","f","prace","pracę","prace","pracy","prac"],
-  ["pytanie","question","n","pytania","pytanie","pytania","pytania","pytań"],
-  ["odpowiedź","answer","f","odpowiedzi","odpowiedź","odpowiedzi","odpowiedzi","odpowiedzi"],
-  // Misc
-  ["buty","shoes","pl","buty","buty","butów"],
-  ["koszula","shirt","f","koszule","koszulę","koszule","koszuli","koszul"],
-  ["kapelusz","hat","m","kapelusze","kapelusz","kapelusze","kapelusza","kapeluszy"],
-  ["światło","light","n","światła","światło","światła","światła","świateł"],
-  ["ogień","fire","m","ognie","ogień","ognie","ognia","ogni"],
-  ["lód","ice","m","lody","lód","lody","lodu","lodów"],
-  ["wiatr","wind","m","wiatry","wiatr","wiatry","wiatru","wiatrów"],
-  ["kamień","stone","m","kamienie","kamień","kamienie","kamienia","kamieni"],
-  ["chmura","cloud","f","chmury","chmurę","chmury","chmury","chmur"],
-  ["sen","dream","m","sny","sen","sny","snu","snów"],
-];
+// These arrays are populated from word_bank.json at init
+let NOUNS = [];
+let VERBS = [];
+let ADJECTIVES = [];
+let VERB_CONJ = [];
+let VERB_IPA = [];
+let VERB_PAST = [];
+let ADJ_FORMS = [];
+let NOUN_LEVELS = [];
+let VERB_LEVELS = [];
+let ADJ_LEVELS = [];
 
-// Verbs: [pl, en]
-const VERBS = [
-  ["być","to be"],["mieć","to have"],["jeść","to eat"],["pić","to drink"],
-  ["iść","to go (on foot)"],["jechać","to go (by vehicle)"],["robić","to do"],["mówić","to speak"],
-  ["widzieć","to see"],["słyszeć","to hear"],["chcieć","to want"],["móc","to be able"],
-  ["musieć","to have to"],["wiedzieć","to know (fact)"],["znać","to know (person)"],["lubić","to like"],
-  ["kochać","to love"],["czytać","to read"],["pisać","to write"],["kupować","to buy"],
-  ["pracować","to work"],["uczyć się","to learn"],["mieszkać","to live"],["spać","to sleep"],
-  ["gotować","to cook"],["myśleć","to think"],["pytać","to ask"],["odpowiadać","to answer"],
-  ["dawać","to give"],["brać","to take"],
-];
-
-// Adjectives: [pl, en]
-const ADJECTIVES = [
-  ["duży","big"],["mały","small"],["dobry","good"],["zły","bad"],
-  ["nowy","new"],["stary","old"],["piękny","beautiful"],["brzydki","ugly"],
-  ["szybki","fast"],["wolny","slow"],["gorący","hot"],["zimny","cold"],
-  ["drogi","expensive"],["tani","cheap"],["łatwy","easy"],["trudny","difficult"],
-  ["wysoki","tall"],["niski","short"],["ciężki","heavy"],["lekki","light (weight)"],
-];
-
-// Verb conjugations (present tense): [ja, ty, on/ona/ono, my, wy, oni/one]
-const VERB_CONJ = [
-  ["jestem","jesteś","jest","jesteśmy","jesteście","są"],
-  ["mam","masz","ma","mamy","macie","mają"],
-  ["jem","jesz","je","jemy","jecie","jedzą"],
-  ["piję","pijesz","pije","pijemy","pijecie","piją"],
-  ["idę","idziesz","idzie","idziemy","idziecie","idą"],
-  ["jadę","jedziesz","jedzie","jedziemy","jedziecie","jadą"],
-  ["robię","robisz","robi","robimy","robicie","robią"],
-  ["mówię","mówisz","mówi","mówimy","mówicie","mówią"],
-  ["widzę","widzisz","widzi","widzimy","widzicie","widzą"],
-  ["słyszę","słyszysz","słyszy","słyszymy","słyszycie","słyszą"],
-  ["chcę","chcesz","chce","chcemy","chcecie","chcą"],
-  ["mogę","możesz","może","możemy","możecie","mogą"],
-  ["muszę","musisz","musi","musimy","musicie","muszą"],
-  ["wiem","wiesz","wie","wiemy","wiecie","wiedzą"],
-  ["znam","znasz","zna","znamy","znacie","znają"],
-  ["lubię","lubisz","lubi","lubimy","lubicie","lubią"],
-  ["kocham","kochasz","kocha","kochamy","kochacie","kochają"],
-  ["czytam","czytasz","czyta","czytamy","czytacie","czytają"],
-  ["piszę","piszesz","pisze","piszemy","piszecie","piszą"],
-  ["kupuję","kupujesz","kupuje","kupujemy","kupujecie","kupują"],
-  ["pracuję","pracujesz","pracuje","pracujemy","pracujecie","pracują"],
-  ["uczę się","uczysz się","uczy się","uczymy się","uczycie się","uczą się"],
-  ["mieszkam","mieszkasz","mieszka","mieszkamy","mieszkacie","mieszkają"],
-  ["śpię","śpisz","śpi","śpimy","śpicie","śpią"],
-  ["gotuję","gotujesz","gotuje","gotujemy","gotujecie","gotują"],
-  ["myślę","myślisz","myśli","myślimy","myślicie","myślą"],
-  ["pytam","pytasz","pyta","pytamy","pytacie","pytają"],
-  ["odpowiadam","odpowiadasz","odpowiada","odpowiadamy","odpowiadacie","odpowiadają"],
-  ["daję","dajesz","daje","dajemy","dajecie","dają"],
-  ["biorę","bierzesz","bierze","bierzemy","bierzecie","biorą"],
-];
-const CONJ_LABELS = ["ja","ty","on/ona/ono","my","wy","oni/one"];
-
-// Verb IPA transcriptions
-const VERB_IPA = [
-  "/bɨtɕ/","/mjɛtɕ/","/jɛɕtɕ/","/pitɕ/","/iɕtɕ/","/ˈjɛxatɕ/",
-  "/ˈrɔbitɕ/","/ˈmuvitɕ/","/ˈviʥɛtɕ/","/ˈswɨʂɛtɕ/","/ˈxʨɛtɕ/","/mutɕ/",
-  "/ˈmuɕɛtɕ/","/ˈvjɛʥɛtɕ/","/znatɕ/","/ˈlubitɕ/","/ˈkɔxatɕ/","/ˈʧɨtatɕ/",
-  "/ˈpisatɕ/","/kuˈpɔvatɕ/","/praˈʦɔvatɕ/","/ˈuʧɨtɕ ɕɛ/","/ˈmjɛʂkatɕ/",
-  "/spatɕ/","/ɡɔˈtɔvatɕ/","/ˈmɨɕlɛtɕ/","/ˈpɨtatɕ/","/ɔtpɔˈvjadatɕ/",
-  "/ˈdavatɕ/","/bratɕ/",
-];
-
-// Adjective forms: [masculine, feminine, neuter]
-const ADJ_FORMS = [
-  ["duży","duża","duże"],["mały","mała","małe"],["dobry","dobra","dobre"],["zły","zła","złe"],
-  ["nowy","nowa","nowe"],["stary","stara","stare"],["piękny","piękna","piękne"],["brzydki","brzydka","brzydkie"],
-  ["szybki","szybka","szybkie"],["wolny","wolna","wolne"],["gorący","gorąca","gorące"],["zimny","zimna","zimne"],
-  ["drogi","droga","drogie"],["tani","tania","tanie"],["łatwy","łatwa","łatwe"],["trudny","trudna","trudne"],
-  ["wysoki","wysoka","wysokie"],["niski","niska","niskie"],["ciężki","ciężka","ciężkie"],["lekki","lekka","lekkie"],
-];
-
-// Verb past tense: [masc_1sg, fem_1sg, masc_3sg, fem_3sg, neut_3sg]
-const VERB_PAST = [
+// Legacy past tense data for existing 30 verbs (gender mode exercises)
+const VERB_PAST_DATA = [
   ["byłem","byłam","był","była","było"],
   ["miałem","miałam","miał","miała","miało"],
   ["jadłem","jadłam","jadł","jadła","jadło"],
@@ -902,6 +729,40 @@ const VERB_PAST = [
   ["brałem","brałam","brał","brała","brało"],
 ];
 
+function loadWordBank(data) {
+  WORD_BANK = data;
+  // Build NOUNS array: [pl, en, gender, nom_pl, acc_sg, acc_pl, gen_sg, gen_pl]
+  NOUNS = data.nouns.map(n => {
+    if (n.gender === 'pl') return [n.pl, n.en, 'pl', n.nom_pl, n.acc_pl, n.gen_pl];
+    return [n.pl, n.en, n.gender, n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl];
+  });
+  NOUN_LEVELS = data.nouns.map(n => n.level);
+
+  // Build VERBS array: [pl, en]
+  VERBS = data.verbs.map(v => [v.pl, v.en]);
+  VERB_CONJ = data.verbs.map(v => v.conj);
+  VERB_IPA = data.verbs.map(v => v.ipa);
+  VERB_LEVELS = data.verbs.map(v => v.level);
+  // Past tense: use legacy data for first 30, empty for new verbs
+  VERB_PAST = data.verbs.map((v, i) => i < VERB_PAST_DATA.length ? VERB_PAST_DATA[i] : null);
+
+  // Build ADJECTIVES array: [pl, en]
+  ADJECTIVES = data.adjectives.map(a => [a.pl, a.en]);
+  ADJ_FORMS = data.adjectives.map(a => a.forms);
+  ADJ_LEVELS = data.adjectives.map(a => a.level);
+
+  // Rebuild noun groups dynamically (store arrays of indices for non-contiguous groups)
+  const groupMap = {};
+  data.nouns.forEach((n, i) => {
+    if (!groupMap[n.group]) groupMap[n.group] = [];
+    groupMap[n.group].push(i);
+  });
+  NOUN_GROUPS = { "All Nouns": null };
+  Object.keys(groupMap).forEach(g => { NOUN_GROUPS[g] = groupMap[g]; });
+}
+
+const CONJ_LABELS = ["ja","ty","on/ona/ono","my","wy","oni/one"];
+
 // Example nouns for gender-aware adjective practice
 const GENDER_NOUNS = [
   {pl:"dom",en:"house",g:"m"},{pl:"kot",en:"cat",g:"m"},{pl:"pies",en:"dog",g:"m"},
@@ -933,11 +794,7 @@ const PRONUNCIATION_GUIDE = [
   {sound:"y",ipa:"/ɨ/",desc:"Between 'i' and 'u'. Like 'i' in 'bit' but further back."},
 ];
 
-const NOUN_GROUPS = {
-  "All Nouns": null, "People": [0,9], "Animals": [10,19], "Food": [20,29],
-  "Home": [30,39], "Nature": [40,49], "Body": [50,59], "Objects": [60,69],
-  "Places": [70,79], "Concepts": [80,89], "Misc": [90,99],
-};
+let NOUN_GROUPS = { "All Nouns": null };
 
 const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
@@ -1066,24 +923,33 @@ function normalize(s) {
 
 function plEqual(a, b) { return normalize(a) === normalize(b); }
 
+let activeLevel = null; // null = all levels
+
 function getAllWords() {
   const words = [];
-  NOUNS.forEach((n, i) => words.push({ pl: n[0], en: n[1], type: 'noun', idx: i, id: 'n'+i, gender: n[2] }));
-  VERBS.forEach((v, i) => words.push({ pl: v[0], en: v[1], type: 'verb', idx: i, id: 'v'+i }));
-  ADJECTIVES.forEach((a, i) => words.push({ pl: a[0], en: a[1], type: 'adj', idx: i, id: 'a'+i }));
+  NOUNS.forEach((n, i) => words.push({ pl: n[0], en: n[1], type: 'noun', idx: i, id: 'n'+i, gender: n[2], level: NOUN_LEVELS[i] }));
+  VERBS.forEach((v, i) => words.push({ pl: v[0], en: v[1], type: 'verb', idx: i, id: 'v'+i, level: VERB_LEVELS[i] }));
+  ADJECTIVES.forEach((a, i) => words.push({ pl: a[0], en: a[1], type: 'adj', idx: i, id: 'a'+i, level: ADJ_LEVELS[i] }));
   return words;
 }
 
+function filterByLevel(words) {
+  if (!activeLevel) return words;
+  return words.filter(w => w.level === activeLevel);
+}
+
 function getGroupWords() {
-  if (activeGroup === 'Verbs') return VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i }));
-  if (activeGroup === 'Adjectives') return ADJECTIVES.map((a,i) => ({ pl:a[0], en:a[1], type:'adj', idx:i, id:'a'+i }));
-  if (activeGroup === 'Smart Review') return getSmartReviewWords();
-  const range = NOUN_GROUPS[activeGroup];
-  const src = range ? NOUNS.slice(range[0], range[1]+1) : NOUNS;
-  return src.map((n, i) => {
-    const realIdx = range ? range[0]+i : i;
-    return { pl: n[0], en: n[1], type: 'noun', idx: realIdx, id: 'n'+realIdx, gender: n[2] };
-  });
+  let words;
+  if (activeGroup === 'Verbs') words = VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i, level: VERB_LEVELS[i] }));
+  else if (activeGroup === 'Adjectives') words = ADJECTIVES.map((a,i) => ({ pl:a[0], en:a[1], type:'adj', idx:i, id:'a'+i, level: ADJ_LEVELS[i] }));
+  else if (activeGroup === 'Smart Review') words = getSmartReviewWords();
+  else {
+    const indices = NOUN_GROUPS[activeGroup];
+    words = indices
+      ? indices.map(i => ({ pl: NOUNS[i][0], en: NOUNS[i][1], type: 'noun', idx: i, id: 'n'+i, gender: NOUNS[i][2], level: NOUN_LEVELS[i] }))
+      : NOUNS.map((n, i) => ({ pl: n[0], en: n[1], type: 'noun', idx: i, id: 'n'+i, gender: n[2], level: NOUN_LEVELS[i] }));
+  }
+  return filterByLevel(words);
 }
 
 function getSmartReviewWords() {
@@ -1196,12 +1062,20 @@ function buildGroups() {
   const groups = currentMode === 'declension'
     ? Object.keys(NOUN_GROUPS).concat(['Smart Review'])
     : Object.keys(NOUN_GROUPS).concat(['Verbs','Adjectives','Smart Review']);
-  el.innerHTML = groups.map(name =>
+  let html = groups.map(name =>
     `<button class="group-btn${name === activeGroup ? ' active' : ''}" onclick="selectGroup('${name}')">${name}</button>`
   ).join('');
+  // CEFR level filter
+  html += '<span style="display:inline-block;width:100%;height:0"></span>';
+  html += `<button class="group-btn${!activeLevel ? ' active' : ''}" onclick="selectLevel(null)" style="font-size:0.7rem">All Levels</button>`;
+  CEFR_LEVELS.forEach(l => {
+    html += `<button class="group-btn${activeLevel === l ? ' active' : ''}" onclick="selectLevel('${l}')" style="font-size:0.7rem">${l}</button>`;
+  });
+  el.innerHTML = html;
 }
 
 function selectGroup(name) { activeGroup = name; buildGroups(); startRound(); }
+function selectLevel(level) { activeLevel = level; buildGroups(); startRound(); }
 
 // ===================== ROUND MANAGEMENT =====================
 function startRound(wordList) {
@@ -1642,7 +1516,8 @@ function decl_next() { if (!decl_answered) return; current++; showCurrent(); }
 
 // ===================== CONJUGATION =====================
 function conj_startRound() {
-  deck = shuffle(VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i })));
+  let verbWords = VERBS.map((v,i) => ({ pl:v[0], en:v[1], type:'verb', idx:i, id:'v'+i, level: VERB_LEVELS[i] }));
+  deck = shuffle(filterByLevel(verbWords));
   current = 0; correct = 0; missed = [];
   document.getElementById('results').classList.remove('visible');
   document.getElementById('mode-conjugation').style.display = '';
@@ -1738,6 +1613,7 @@ function gen_buildExercises() {
 
   // Type 2: Past tense 1st person (male/female speaker)
   VERB_PAST.forEach((forms, vi) => {
+    if (!forms) return; // skip verbs without past tense data
     const verb = VERBS[vi];
     exercises.push({
       type: 'past',
@@ -1761,6 +1637,7 @@ function gen_buildExercises() {
 
   // Type 3: Past tense 3rd person (he/she/it)
   VERB_PAST.forEach((forms, vi) => {
+    if (!forms) return; // skip verbs without past tense data
     const verb = VERBS[vi];
     exercises.push({
       type: 'past',
@@ -1943,6 +1820,28 @@ function renderProgress() {
     `<div class="mastery-legend-item"><div class="mastery-dot" style="background:${boxColors[i]}"></div>${l}: ${boxes[i]}</div>`
   ).join('');
 
+  // CEFR level progress
+  const cefrColors = { A1: '#10b981', A2: '#3b82f6', B1: '#8b5cf6', B2: '#f59e0b' };
+  const cefrEl = document.getElementById('cefr-progress');
+  cefrEl.innerHTML = CEFR_LEVELS.map(level => {
+    const levelWords = allWords.filter(w => w.level === level);
+    if (levelWords.length === 0) return '';
+    const seen = levelWords.filter(w => srs[w.id] && srs[w.id].reviews > 0).length;
+    const mastered = levelWords.filter(w => srs[w.id] && srs[w.id].box >= 4).length;
+    const pct = Math.round(seen / levelWords.length * 100);
+    const masteredPct = Math.round(mastered / levelWords.length * 100);
+    return `<div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:4px">
+        <span style="font-weight:600;color:${cefrColors[level]}">${level}</span>
+        <span style="color:var(--text-muted)">${seen}/${levelWords.length} seen · ${mastered} mastered</span>
+      </div>
+      <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden;display:flex">
+        <div style="width:${masteredPct}%;background:${cefrColors[level]};border-radius:4px;transition:width 0.5s"></div>
+        <div style="width:${pct - masteredPct}%;background:${cefrColors[level]}44;transition:width 0.5s"></div>
+      </div>
+    </div>`;
+  }).join('');
+
   // Error pattern analysis
   const errors = getErrors();
   const errorCategories = [
@@ -2062,10 +1961,18 @@ setTimeout(updateNavArrows, 50);
 
 // ===================== INIT =====================
 initDark();
-buildModeNav();
-buildGroups();
-buildPlKeyboard('sp-keyboard', 'sp-input');
-switchMode('flashcard');
+
+// Load word bank then init UI
+fetch('word_bank.json').then(r => r.json()).then(data => {
+  loadWordBank(data);
+  buildModeNav();
+  buildGroups();
+  buildPlKeyboard('sp-keyboard', 'sp-input');
+  switchMode('flashcard');
+}).catch(err => {
+  console.error('Failed to load word bank:', err);
+  document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#dc2626"><h2>Failed to load word bank</h2><p>Make sure word_bank.json is available.</p></div>';
+});
 </script>
 </body>
 </html>

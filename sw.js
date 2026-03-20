@@ -1,8 +1,9 @@
-const CACHE_NAME = 'linguo-v1';
+const CACHE_NAME = 'linguo-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/polish/flashcards.html',
+  '/polish/word_bank.json',
   '/italian/flashcards.html',
   '/manifest.json',
   '/images/icon-192.svg',
