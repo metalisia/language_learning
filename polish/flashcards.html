@@ -406,18 +406,35 @@
   .error-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; display: flex; align-items: center; padding-left: 6px; font-size: 0.68rem; color: #fff; font-weight: 600; }
   .error-count { width: 30px; font-size: 0.78rem; color: var(--text-muted); }
 
+  html, body { overflow-x: hidden; }
+
   @media (max-width: 600px) {
-    header { padding: 14px 18px 0; flex-direction: column; gap: 6px; }
-    .mode-nav-wrap { padding: 10px 18px 0; }
-    .mode-nav { gap: 0; }
-    .group-selector, .progress-wrap, .controls, .results { padding-left: 18px; padding-right: 18px; }
-    .mode-section { padding: 0 18px; }
+    header { padding: 14px 18px 0; flex-direction: column; gap: 6px; align-items: stretch; }
+    header h1 { font-size: 1.05rem; text-align: center; }
+    .header-right { justify-content: center; gap: 12px; }
+    .stats { gap: 10px; font-size: 0.75rem; }
+    .mode-nav-wrap { padding: 10px 12px 0; }
+    .mode-nav { gap: 0; overflow-x: auto; }
+    .mode-tab { padding: 9px 12px; font-size: 0.75rem; }
+    .group-selector, .progress-wrap, .controls, .results { padding-left: 14px; padding-right: 14px; }
+    .mode-section { padding: 0 14px; }
+    .card-container { aspect-ratio: 5 / 3; }
     .card-word { font-size: 1.5rem; }
-    .card-face { padding: 24px; }
+    .card-face { padding: 20px; }
+    .card-box { padding: 20px; }
+    .spell-input-row { flex-direction: column; align-items: center; }
+    .spell-input { width: 100%; max-width: 280px; }
     .mc-options { grid-template-columns: 1fr; }
     .stat-cards { grid-template-columns: 1fr; }
     .decl-grid { gap: 5px; }
     .decl-input { font-size: 0.8rem; padding: 5px 6px; }
+    .decl-label { font-size: 0.7rem; }
+    .conj-label { font-size: 0.75rem; padding-right: 4px; }
+    .conj-input { font-size: 0.8rem; padding: 5px 6px; }
+    .error-label { width: 70px; font-size: 0.7rem; }
+    .error-row { gap: 6px; }
+    .results-card { padding: 24px 18px; }
+    .keyboard-hints { display: none; }
   }
 </style>
 </head>
@@ -624,6 +641,9 @@
   <div class="weak-words-section card-box" id="weak-section">
     <h3>Weak Words</h3>
     <div id="weak-list"></div>
+  </div>
+  <div style="text-align:center;margin-top:24px">
+    <button class="btn" style="color:var(--incorrect);border-color:var(--incorrect)" onclick="resetProgress()">Reset All Progress</button>
   </div>
 </div>
 
@@ -1006,6 +1026,14 @@ function getErrors() {
   catch { return { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
 }
 function saveErrors(e) { localStorage.setItem('fiszki_errors', JSON.stringify(e)); }
+
+function resetProgress() {
+  if (!confirm('This will erase all your progress, streaks, and stats. Are you sure?')) return;
+  localStorage.removeItem('fiszki_srs');
+  localStorage.removeItem('fiszki_stats');
+  localStorage.removeItem('fiszki_errors');
+  location.reload();
+}
 
 function recordError(category) {
   const e = getErrors();
@@ -1488,10 +1516,16 @@ function li_check() {
     accepted.push(noParen);
     if (noParen.startsWith('to ')) accepted.push(noParen.slice(3));
   }
+  const typedPolish = normalize(inp.value) === normalize(w.pl);
   if (accepted.some(a => userAns === a)) {
     inp.className = 'spell-input correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     ans.textContent = w.pl + ' = ' + w.en;
+    markWord(w, true);
+  } else if (typedPolish) {
+    inp.className = 'spell-input correct';
+    fb.textContent = 'You typed the Polish word — the English meaning is:'; fb.className = 'spell-feedback';
+    ans.textContent = w.en;
     markWord(w, true);
   } else {
     inp.className = 'spell-input incorrect';
