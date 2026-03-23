@@ -782,6 +782,95 @@
     border-radius: 5px; transition: width 0.5s;
   }
 
+  /* READER MODE */
+  .reader-container {
+    max-width: 640px; margin: 0 auto; padding: 0 8px;
+  }
+  .reader-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+  }
+  .reader-title {
+    font-size: 1.1rem; font-weight: 600;
+  }
+  .reader-title-pl {
+    font-size: 0.82rem; color: var(--text-muted); font-weight: 400;
+  }
+  .reader-density-wrap {
+    display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted);
+  }
+  .reader-density-wrap input[type="range"] {
+    width: 120px; accent-color: var(--accent);
+  }
+  .reader-chapter-nav {
+    display: flex; gap: 8px; align-items: center; margin-bottom: 18px;
+  }
+  .reader-chapter-btn {
+    padding: 5px 14px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.78rem;
+    color: var(--text-muted); transition: all 0.15s; font-family: inherit;
+  }
+  .reader-chapter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .reader-chapter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .reader-chapter-btn:disabled { opacity: 0.4; cursor: default; }
+  .reader-body {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 24px; box-shadow: var(--shadow); line-height: 1.85;
+    font-size: 1.05rem;
+  }
+  .reader-paragraph { margin-bottom: 18px; }
+  .reader-paragraph:last-child { margin-bottom: 0; }
+  .reader-chunk {
+    cursor: pointer; transition: all 0.15s; border-radius: 3px;
+    padding: 1px 2px; position: relative;
+  }
+  .reader-chunk:hover { background: var(--accent-light); }
+  .reader-chunk.chunk-pl-known {
+    color: var(--accent); font-weight: 500;
+  }
+  .reader-chunk.chunk-pl-function {
+    color: var(--correct); font-weight: 500;
+  }
+  .reader-chunk.chunk-pl-inferred {
+    color: var(--accent); font-style: italic;
+  }
+  .reader-chunk.chunk-pl-i1 {
+    color: var(--warn); font-weight: 500;
+    border-bottom: 2px dotted var(--warn);
+  }
+  .reader-chunk.chunk-en {
+    color: var(--text);
+  }
+  .reader-chunk .reader-tooltip {
+    display: none; position: absolute; bottom: 100%; left: 50%;
+    transform: translateX(-50%); background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12); z-index: 10; color: var(--text-muted);
+    pointer-events: none;
+  }
+  .reader-chunk:hover .reader-tooltip { display: block; }
+  .reader-ood-panel {
+    margin-top: 16px; background: var(--warn-light); border: 1px solid var(--warn);
+    border-radius: var(--radius); padding: 14px 18px;
+  }
+  .reader-ood-title {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--warn); font-weight: 600; margin-bottom: 8px;
+  }
+  .reader-ood-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .reader-ood-word {
+    padding: 4px 12px; border: 1px solid var(--warn); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.8rem;
+    color: var(--text); transition: all 0.15s; font-family: inherit;
+  }
+  .reader-ood-word:hover { background: var(--warn); color: #fff; }
+  .reader-ood-word.added { background: var(--correct-light); border-color: var(--correct); color: var(--correct); cursor: default; }
+  .reader-stats {
+    margin-top: 14px; font-size: 0.78rem; color: var(--text-muted);
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .reader-stats strong { color: var(--text); }
+
 </style>
 </head>
 <body>
@@ -1089,6 +1178,28 @@
   <button class="btn btn-primary" onclick="phrase_action()" id="phrase-action-btn">Next</button>
 </div>
 
+<!-- READER -->
+<div class="mode-section" id="mode-reader" style="max-width:700px">
+  <div class="reader-container">
+    <div class="reader-header">
+      <div>
+        <div class="reader-title" id="reader-book-title"></div>
+        <div class="reader-title-pl" id="reader-book-title-pl"></div>
+      </div>
+      <div class="reader-density-wrap">
+        <span>EN</span>
+        <input type="range" min="0" max="100" value="50" id="reader-density" oninput="reader_setDensity(this.value)">
+        <span>PL</span>
+        <span id="reader-density-label">50%</span>
+      </div>
+    </div>
+    <div class="reader-chapter-nav" id="reader-chapter-nav"></div>
+    <div class="reader-body" id="reader-body"></div>
+    <div id="reader-ood-panel"></div>
+    <div class="reader-stats" id="reader-stats"></div>
+  </div>
+</div>
+
 <!-- LEVEL UP POPUP -->
 <div class="levelup-overlay" id="levelup-overlay" onclick="closeLevelUp()">
   <div class="levelup-card" id="levelup-card" onclick="event.stopPropagation()">
@@ -1284,7 +1395,7 @@ const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
   ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
   ["gender","Gender"],["cloze","Cloze"],["numbers","Numbers"],["sentences","Sentence Builder"],
-  ["speed","Speed Round"],["phrases","Survival Phrases"],["conversations","Conversations"],["progress","Progress"],
+  ["speed","Speed Round"],["phrases","Survival Phrases"],["conversations","Conversations"],["reader","Reader"],["progress","Progress"],
 ];
 
 // ===================== STATE =====================
@@ -1504,11 +1615,12 @@ function switchMode(mode) {
   const isProgress = mode === 'progress';
   const isConv = mode === 'conversations';
   const isCloze = mode === 'cloze';
-  const hideGroups = isProgress || isConv || isCloze || mode === 'conjugation' || mode === 'gender' || mode === 'numbers' || mode === 'sentences' || mode === 'speed' || mode === 'phrases';
+  const isReader = mode === 'reader';
+  const hideGroups = isProgress || isConv || isCloze || isReader || mode === 'conjugation' || mode === 'gender' || mode === 'numbers' || mode === 'sentences' || mode === 'speed' || mode === 'phrases';
   document.getElementById('group-bar').style.display = hideGroups ? 'none' : '';
-  document.getElementById('progress-bar-wrap').style.display = (isProgress || isConv || mode === 'speed' || mode === 'phrases') ? 'none' : '';
-  document.getElementById('stats-bar').style.display = (isProgress || isConv || mode === 'speed') ? 'none' : '';
-  document.getElementById('streak-badge').style.display = (isProgress || isConv) ? 'none' : '';
+  document.getElementById('progress-bar-wrap').style.display = (isProgress || isConv || isReader || mode === 'speed' || mode === 'phrases') ? 'none' : '';
+  document.getElementById('stats-bar').style.display = (isProgress || isConv || isReader || mode === 'speed') ? 'none' : '';
+  document.getElementById('streak-badge').style.display = (isProgress || isConv || isReader) ? 'none' : '';
   document.getElementById('results').classList.remove('visible');
 
   const kb = document.getElementById('kb-hints');
@@ -1551,6 +1663,9 @@ function switchMode(mode) {
   } else if (mode === 'conversations') {
     kb.innerHTML = '<kbd>Enter</kbd> check / continue';
     kb.style.display = '';
+  } else if (mode === 'reader') {
+    kb.innerHTML = 'Click any word to reveal translation';
+    kb.style.display = '';
   } else {
     kb.style.display = 'none';
   }
@@ -1564,6 +1679,7 @@ function switchMode(mode) {
   if (mode === 'sentences') { sb_startRound(); return; }
   if (mode === 'speed') { speed_init(); return; }
   if (mode === 'phrases') { phrase_init(); return; }
+  if (mode === 'reader') { reader_init(); return; }
   startRound();
 }
 
@@ -3840,6 +3956,369 @@ function phrase_showResults() {
     '<div class="card-box"><h3 style="font-size:1.05rem;font-weight:600;margin-bottom:8px">Phrases Complete!</h3>' +
     '<p style="color:var(--text-muted);font-size:0.85rem">Great job practicing survival phrases.</p>' +
     '<button class="btn btn-primary" onclick="phrase_setMode(\'quiz\')" style="margin-top:14px">Try Again</button></div>';
+}
+
+// ===================== READER MODE =====================
+let reader_book = null;
+let reader_chapter = 0;
+let reader_density = 0.5;
+let reader_knowledge = null;
+let reader_freqList = {};
+let reader_freqLoaded = false;
+
+function reader_init() {
+  // Load frequency list if not loaded
+  if (!reader_freqLoaded) {
+    fetch('hermit_dave_top_500_pl.txt').then(r => r.text()).then(text => {
+      text.trim().split('\n').forEach((line, idx) => {
+        const parts = line.trim().split(/\s+/);
+        if (parts.length >= 2) {
+          reader_freqList[parts[0].toLowerCase()] = idx + 1; // rank: 1 = most common
+        }
+      });
+      reader_freqLoaded = true;
+      reader_loadBook();
+    });
+  } else {
+    reader_loadBook();
+  }
+}
+
+function reader_loadBook() {
+  if (reader_book) {
+    reader_buildKnowledge();
+    reader_renderPage();
+    return;
+  }
+  fetch('sample_book.json').then(r => r.json()).then(book => {
+    reader_book = book;
+    reader_buildKnowledge();
+    reader_renderPage();
+  });
+}
+
+function reader_buildKnowledge() {
+  const srs = getSRS();
+  const known = new Map(); // lemma -> confidence
+
+  // Process nouns: all case forms are known if base word is known
+  if (WORD_BANK && WORD_BANK.nouns) {
+    WORD_BANK.nouns.forEach((n, i) => {
+      const s = srs['n' + i];
+      if (!s || s.reviews === 0) return;
+      const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
+      known.set(n.pl.toLowerCase(), conf);
+      // All case forms map back to same confidence
+      [n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(form => {
+        if (form) known.set(form.toLowerCase(), conf);
+      });
+    });
+  }
+
+  // Process verbs: ONLY present tense conjugation forms (not past/future)
+  if (WORD_BANK && WORD_BANK.verbs) {
+    WORD_BANK.verbs.forEach((v, i) => {
+      const s = srs['v' + i];
+      if (!s || s.reviews === 0) return;
+      const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
+      known.set(v.pl.toLowerCase(), conf); // infinitive
+      if (v.conj) {
+        v.conj.forEach(form => {
+          if (form) known.set(form.toLowerCase(), conf);
+        });
+      }
+    });
+  }
+
+  // Process adjectives: all gender forms are known
+  if (WORD_BANK && WORD_BANK.adjectives) {
+    WORD_BANK.adjectives.forEach((a, i) => {
+      const s = srs['a' + i];
+      if (!s || s.reviews === 0) return;
+      const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
+      known.set(a.pl.toLowerCase(), conf);
+      if (a.forms) {
+        Object.values(a.forms).forEach(form => {
+          if (form) known.set(form.toLowerCase(), conf);
+        });
+      }
+    });
+  }
+
+  // Infer frequency tier: median rank of known words in frequency list
+  const knownRanks = [];
+  for (const [lemma] of known) {
+    if (reader_freqList[lemma]) knownRanks.push(reader_freqList[lemma]);
+  }
+  knownRanks.sort((a, b) => a - b);
+  const medianRank = knownRanks.length > 0 ? knownRanks[Math.floor(knownRanks.length / 2)] : 30;
+
+  // Function words: top 50 in frequency list
+  const functionWords = new Set();
+  for (const [word, rank] of Object.entries(reader_freqList)) {
+    if (rank <= 50) functionWords.add(word);
+  }
+
+  reader_knowledge = { known, medianRank, functionWords };
+}
+
+function reader_getChunkConfidence(chunk) {
+  if (!chunk.lemmas || chunk.lemmas.length === 0) return { confidence: 1.0, type: 'proper' };
+
+  const k = reader_knowledge;
+  let minConf = Infinity;
+  let knownCount = 0;
+  let unknownLemmas = [];
+
+  for (const lemma of chunk.lemmas) {
+    const l = lemma.toLowerCase();
+
+    // 1. Check word bank knowledge (direct or inflected form)
+    if (k.known.has(l)) {
+      const conf = k.known.get(l);
+      minConf = Math.min(minConf, conf);
+      knownCount++;
+      continue;
+    }
+
+    // 2. Check function words (top 50 frequency) - strategy F: swap these first
+    if (k.functionWords.has(l)) {
+      minConf = Math.min(minConf, 0.9);
+      knownCount++;
+      continue;
+    }
+
+    // 3. Check frequency-inferred knowledge (rank <= user's median)
+    if (reader_freqList[l] && reader_freqList[l] <= k.medianRank) {
+      minConf = Math.min(minConf, 0.5);
+      knownCount++;
+      continue;
+    }
+
+    // Unknown
+    unknownLemmas.push(l);
+  }
+
+  if (unknownLemmas.length === 0) {
+    if (minConf === Infinity) minConf = 1.0;
+    return { confidence: minConf, type: 'known' };
+  }
+
+  // i+1 candidate: mostly known with exactly 1 unknown lemma
+  if (knownCount > 0 && unknownLemmas.length === 1) {
+    return { confidence: 0.3, type: 'i-plus-one', unknownLemmas };
+  }
+
+  return { confidence: 0.0, type: 'unknown', unknownLemmas };
+}
+
+function reader_shouldShowPl(chunkInfo, sentenceUnknownRatio, isI1Pick) {
+  if (chunkInfo.type === 'proper') return true;
+  if (isI1Pick) return true;
+
+  const threshold = 1.0 - reader_density;
+
+  // Sentence-level difficulty: if > 30% unknown, raise threshold
+  let adjusted = threshold;
+  if (sentenceUnknownRatio > 0.3) {
+    adjusted = Math.min(1.0, threshold + 0.2);
+  }
+
+  return chunkInfo.confidence >= adjusted;
+}
+
+function reader_renderPage() {
+  if (!reader_book || !reader_knowledge) return;
+
+  const book = reader_book;
+  const chapter = book.chapters[reader_chapter];
+
+  // Header
+  document.getElementById('reader-book-title').textContent = book.title;
+  document.getElementById('reader-book-title-pl').textContent = book.title_pl;
+
+  // Chapter nav
+  const navEl = document.getElementById('reader-chapter-nav');
+  navEl.innerHTML = book.chapters.map((ch, i) =>
+    `<button class="reader-chapter-btn${i === reader_chapter ? ' active' : ''}" onclick="reader_goChapter(${i})">${ch.title}</button>`
+  ).join('');
+
+  // Render body
+  const bodyEl = document.getElementById('reader-body');
+  let html = '';
+  let totalChunks = 0, plChunks = 0, i1Chunks = 0;
+  const oodWords = []; // OOD words for flashcard panel
+
+  for (const para of chapter.paragraphs) {
+    html += '<div class="reader-paragraph">';
+
+    for (const sent of para.sentences) {
+      // First pass: compute chunk infos and sentence difficulty
+      const chunkInfos = sent.chunks.map(c => ({
+        chunk: c,
+        info: reader_getChunkConfidence(c)
+      }));
+
+      const unknownCount = chunkInfos.filter(ci => ci.info.type === 'unknown' || ci.info.type === 'i-plus-one').length;
+      const sentenceUnknownRatio = unknownCount / (chunkInfos.length || 1);
+
+      // i+1 sprinkling: pick at most 1 i+1 candidate per sentence
+      let i1PickIdx = -1;
+      const i1Candidates = [];
+      chunkInfos.forEach((ci, idx) => {
+        if (ci.info.type === 'i-plus-one') i1Candidates.push(idx);
+      });
+      if (i1Candidates.length > 0 && sentenceUnknownRatio <= 0.4) {
+        i1PickIdx = i1Candidates[Math.floor(Math.random() * i1Candidates.length)];
+      }
+
+      // Second pass: render chunks
+      for (let ci = 0; ci < chunkInfos.length; ci++) {
+        const { chunk, info } = chunkInfos[ci];
+        const isI1Pick = ci === i1PickIdx;
+        const showPl = reader_shouldShowPl(info, sentenceUnknownRatio, isI1Pick);
+
+        totalChunks++;
+
+        if (showPl && info.type !== 'proper') {
+          plChunks++;
+          let cssClass = 'chunk-pl-known';
+          if (info.type === 'i-plus-one' || isI1Pick) {
+            cssClass = 'chunk-pl-i1';
+            i1Chunks++;
+            // Collect OOD words for flashcard panel
+            if (info.unknownLemmas) {
+              info.unknownLemmas.forEach(ul => {
+                if (!oodWords.find(w => w.lemma === ul)) {
+                  oodWords.push({ lemma: ul, en: chunk.en, pl: chunk.pl });
+                }
+              });
+            }
+          } else if (info.confidence >= 0.85) {
+            cssClass = 'chunk-pl-function';
+          } else if (info.confidence <= 0.5) {
+            cssClass = 'chunk-pl-inferred';
+          }
+
+          html += `<span class="reader-chunk ${cssClass}" data-en="${escHtml(chunk.en)}" data-pl="${escHtml(chunk.pl)}" onclick="reader_tap(this, 'pl')">`;
+          html += escHtml(chunk.pl);
+          html += `<span class="reader-tooltip">${escHtml(chunk.en)}</span>`;
+          html += '</span> ';
+        } else if (info.type === 'proper') {
+          html += `<span class="reader-chunk chunk-en">${escHtml(chunk.en)}</span> `;
+        } else {
+          html += `<span class="reader-chunk chunk-en" data-en="${escHtml(chunk.en)}" data-pl="${escHtml(chunk.pl)}" onclick="reader_tap(this, 'en')">`;
+          html += escHtml(chunk.en);
+          html += `<span class="reader-tooltip">${escHtml(chunk.pl)}</span>`;
+          html += '</span> ';
+        }
+      }
+    }
+
+    html += '</div>';
+  }
+
+  bodyEl.innerHTML = html;
+
+  // OOD panel: only show i+1 words for flashcard capture
+  const oodPanel = document.getElementById('reader-ood-panel');
+  if (oodWords.length > 0) {
+    let oodHtml = '<div class="reader-ood-panel"><div class="reader-ood-title">New words to learn</div><div class="reader-ood-list">';
+    oodWords.forEach((w, i) => {
+      oodHtml += `<button class="reader-ood-word" id="ood-${i}" onclick="reader_addToReview('${escHtml(w.lemma)}', '${escHtml(w.en)}', this)">${escHtml(w.lemma)} (${escHtml(w.en)})</button>`;
+    });
+    oodHtml += '</div></div>';
+    oodPanel.innerHTML = oodHtml;
+  } else {
+    oodPanel.innerHTML = '';
+  }
+
+  // Stats
+  const statsEl = document.getElementById('reader-stats');
+  const plPct = totalChunks > 0 ? Math.round(plChunks / totalChunks * 100) : 0;
+  const knownWords = reader_knowledge.known.size;
+  statsEl.innerHTML = `<span>Polish: <strong>${plPct}%</strong> of text</span>` +
+    `<span>Known words: <strong>${knownWords}</strong></span>` +
+    `<span>New words: <strong>${i1Chunks}</strong></span>` +
+    `<span>Freq. tier: <strong>top ${reader_knowledge.medianRank}</strong></span>`;
+}
+
+function reader_tap(el, currentLang) {
+  // Toggle between showing PL and EN text
+  const en = el.dataset.en;
+  const pl = el.dataset.pl;
+  if (!en || !pl) return;
+
+  if (currentLang === 'pl') {
+    // Currently showing Polish, flip to English
+    el.childNodes[0].textContent = en;
+    el.querySelector('.reader-tooltip').textContent = pl;
+    el.onclick = () => reader_tap(el, 'en');
+  } else {
+    // Currently showing English, flip to Polish
+    el.childNodes[0].textContent = pl;
+    el.querySelector('.reader-tooltip').textContent = en;
+    el.onclick = () => reader_tap(el, 'pl');
+  }
+}
+
+function reader_addToReview(lemma, en, btnEl) {
+  // Find the word in word_bank and add to SRS, or create a lightweight entry
+  let found = false;
+
+  if (WORD_BANK) {
+    // Check nouns
+    WORD_BANK.nouns.forEach((n, i) => {
+      if (n.pl.toLowerCase() === lemma.toLowerCase()) {
+        const id = 'n' + i;
+        const srs = getSRS();
+        if (!srs[id]) {
+          srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: new Date().toISOString().slice(0,10) };
+          saveSRS(srs);
+        }
+        found = true;
+      }
+    });
+    // Check verbs
+    if (!found) WORD_BANK.verbs.forEach((v, i) => {
+      if (v.pl.toLowerCase() === lemma.toLowerCase()) {
+        const id = 'v' + i;
+        const srs = getSRS();
+        if (!srs[id]) {
+          srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: new Date().toISOString().slice(0,10) };
+          saveSRS(srs);
+        }
+        found = true;
+      }
+    });
+    // Check adjectives
+    if (!found) WORD_BANK.adjectives.forEach((a, i) => {
+      if (a.pl.toLowerCase() === lemma.toLowerCase()) {
+        const id = 'a' + i;
+        const srs = getSRS();
+        if (!srs[id]) {
+          srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: new Date().toISOString().slice(0,10) };
+          saveSRS(srs);
+        }
+        found = true;
+      }
+    });
+  }
+
+  btnEl.classList.add('added');
+  btnEl.textContent = lemma + ' - added!';
+  btnEl.onclick = null;
+}
+
+function reader_goChapter(idx) {
+  reader_chapter = idx;
+  reader_renderPage();
+}
+
+function reader_setDensity(val) {
+  reader_density = parseInt(val) / 100;
+  document.getElementById('reader-density-label').textContent = val + '%';
+  reader_renderPage();
 }
 
 // ===================== INIT =====================
