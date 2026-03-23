@@ -603,7 +603,274 @@
     .conv-selector { grid-template-columns: 1fr; }
     .conv-bubble { max-width: 90%; }
     .conv-input { font-size: 0.82rem; }
+    .sb-tile { padding: 6px 12px; font-size: 0.82rem; }
+    .sb-answer-area { padding: 8px; min-height: 44px; }
+    .speed-options { grid-template-columns: 1fr; }
+    .phrase-cats { gap: 4px; }
+    .phrase-cat-btn { font-size: 0.7rem; padding: 4px 10px; }
+    .xp-badge { font-size: 0.68rem; padding: 2px 8px; }
   }
+
+  /* XP BAR */
+  .xp-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; font-weight: 600; color: var(--accent);
+    background: var(--accent-light); padding: 3px 10px; border-radius: 100px;
+    cursor: pointer; position: relative;
+  }
+  .xp-badge .xp-level { font-weight: 700; }
+  .xp-mini-bar {
+    width: 40px; height: 4px; background: var(--border); border-radius: 2px;
+    overflow: hidden; display: inline-block; vertical-align: middle;
+  }
+  .xp-mini-fill {
+    height: 100%; background: var(--accent); border-radius: 2px;
+    transition: width 0.4s;
+  }
+
+  /* LEVEL UP POPUP */
+  .levelup-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .levelup-overlay.show { opacity: 1; pointer-events: auto; }
+  .levelup-card {
+    background: var(--card-bg); border-radius: 16px; padding: 40px 48px;
+    text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative; overflow: hidden;
+  }
+  .levelup-overlay.show .levelup-card { transform: scale(1); }
+  .levelup-card h2 { font-size: 1.4rem; margin-bottom: 8px; }
+  .levelup-card .level-name { font-size: 1.8rem; font-weight: 700; color: var(--accent); margin: 8px 0; }
+  .levelup-card p { color: var(--text-muted); font-size: 0.9rem; }
+
+  /* Confetti */
+  .confetti-piece {
+    position: absolute; width: 8px; height: 8px; border-radius: 2px;
+    animation: confettiFall 1.5s ease-out forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+  }
+
+  /* NUMBERS MODE */
+  .num-type-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 0.68rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 14px;
+    background: var(--accent-light); color: var(--accent);
+  }
+
+  /* SENTENCE BUILDER */
+  .sb-english { font-size: 0.88rem; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+  .sb-answer-area {
+    min-height: 56px; border: 2px dashed var(--border); border-radius: var(--radius);
+    padding: 10px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px;
+    align-items: center; justify-content: center; transition: border-color 0.2s;
+  }
+  .sb-answer-area.correct { border-color: var(--correct); background: var(--correct-light); }
+  .sb-answer-area.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .sb-tiles {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin-bottom: 16px; min-height: 44px;
+  }
+  .sb-tile {
+    padding: 8px 16px; border: 2px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.88rem;
+    font-weight: 500; color: var(--text); transition: all 0.2s;
+    user-select: none; font-family: inherit;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  }
+  .sb-tile:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  .sb-tile:active { transform: scale(0.95); }
+  .sb-tile.placed {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .sb-tile.placed:hover { background: var(--accent-hover); }
+  .sb-tile.hidden { opacity: 0.3; pointer-events: none; transform: scale(0.9); }
+  .sb-grammar { font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; font-style: italic; }
+
+  /* SPEED ROUND */
+  .speed-timer-wrap {
+    width: 100px; height: 100px; margin: 0 auto 16px; position: relative;
+  }
+  .speed-timer-wrap svg { transform: rotate(-90deg); }
+  .speed-timer-bg { stroke: var(--border); }
+  .speed-timer-fill { stroke: var(--accent); transition: stroke-dashoffset 0.5s linear; }
+  .speed-timer-label {
+    position: absolute; inset: 0; display: flex; align-items: center;
+    justify-content: center; font-size: 1.6rem; font-weight: 700;
+  }
+  .speed-combo {
+    font-size: 1.3rem; font-weight: 700; color: var(--warn);
+    transition: transform 0.2s; display: inline-block;
+  }
+  .speed-combo.pulse { animation: comboPulse 0.3s ease; }
+  @keyframes comboPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  .speed-options {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px;
+  }
+  .speed-option {
+    padding: 14px 18px; border: 2px solid var(--border); border-radius: var(--radius);
+    background: var(--card-bg); cursor: pointer; font-size: 1rem; text-align: center;
+    transition: all 0.15s; font-family: inherit; font-weight: 500; color: var(--text);
+  }
+  .speed-option:hover:not(.disabled) { border-color: var(--accent); background: var(--accent-light); }
+  .speed-option.correct { border-color: var(--correct); background: var(--correct-light); color: var(--correct); }
+  .speed-option.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); color: var(--incorrect); }
+  .speed-option.disabled { cursor: default; pointer-events: none; }
+  .speed-score { font-size: 0.82rem; color: var(--text-muted); margin-top: 10px; }
+  .speed-final-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0; }
+  .speed-final-stat { text-align: center; }
+  .speed-final-stat .val { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .speed-final-stat .lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* PHRASES MODE */
+  .phrase-cats {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px;
+  }
+  .phrase-cat-btn {
+    padding: 5px 12px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.75rem;
+    color: var(--text-muted); transition: all 0.15s; font-family: inherit;
+    text-transform: capitalize;
+  }
+  .phrase-cat-btn:hover { border-color: var(--accent); }
+  .phrase-cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .phrase-mode-toggle { display: flex; gap: 4px; justify-content: center; margin-bottom: 16px; }
+  .phrase-card-flip {
+    perspective: 800px; cursor: pointer; margin-bottom: 16px;
+  }
+  .phrase-card-inner {
+    position: relative; min-height: 160px; transition: transform 0.5s;
+    transform-style: preserve-3d;
+  }
+  .phrase-card-flip.flipped .phrase-card-inner { transform: rotateY(180deg); }
+  .phrase-card-face {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow);
+    border: 1px solid var(--border); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .phrase-card-back { transform: rotateY(180deg); }
+  .phrase-note { font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; font-style: italic; }
+  .phrase-speak-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--card-bg); cursor: pointer; font-size: 1.1rem; color: var(--accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.2s; margin-top: 8px;
+  }
+  .phrase-speak-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+
+  /* XP PROGRESS SECTION */
+  .xp-progress-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; text-align: center; margin-bottom: 20px;
+  }
+  .xp-progress-bar {
+    height: 10px; background: var(--border); border-radius: 5px;
+    overflow: hidden; margin: 10px 0;
+  }
+  .xp-progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), #8b5cf6);
+    border-radius: 5px; transition: width 0.5s;
+  }
+
+  /* READER MODE */
+  .reader-container {
+    max-width: 640px; margin: 0 auto; padding: 0 8px;
+  }
+  .reader-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+  }
+  .reader-title {
+    font-size: 1.1rem; font-weight: 600;
+  }
+  .reader-title-pl {
+    font-size: 0.82rem; color: var(--text-muted); font-weight: 400;
+  }
+  .reader-density-wrap {
+    display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted);
+  }
+  .reader-density-wrap input[type="range"] {
+    width: 120px; accent-color: var(--accent);
+  }
+  .reader-chapter-nav {
+    display: flex; gap: 8px; align-items: center; margin-bottom: 18px;
+  }
+  .reader-chapter-btn {
+    padding: 5px 14px; border: 1px solid var(--border); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.78rem;
+    color: var(--text-muted); transition: all 0.15s; font-family: inherit;
+  }
+  .reader-chapter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .reader-chapter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .reader-chapter-btn:disabled { opacity: 0.4; cursor: default; }
+  .reader-body {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 24px; box-shadow: var(--shadow); line-height: 1.85;
+    font-size: 1.05rem;
+  }
+  .reader-paragraph { margin-bottom: 18px; }
+  .reader-paragraph:last-child { margin-bottom: 0; }
+  .reader-chunk {
+    cursor: pointer; transition: all 0.15s; border-radius: 3px;
+    padding: 1px 2px; position: relative;
+  }
+  .reader-chunk:hover { background: var(--accent-light); }
+  .reader-chunk.chunk-pl-known {
+    color: var(--accent); font-weight: 500;
+  }
+  .reader-chunk.chunk-pl-function {
+    color: var(--correct); font-weight: 500;
+  }
+  .reader-chunk.chunk-pl-inferred {
+    color: var(--accent); font-style: italic;
+  }
+  .reader-chunk.chunk-pl-i1 {
+    color: var(--warn); font-weight: 500;
+    border-bottom: 2px dotted var(--warn);
+  }
+  .reader-chunk.chunk-en {
+    color: var(--text);
+  }
+  .reader-chunk .reader-tooltip {
+    display: none; position: absolute; bottom: 100%; left: 50%;
+    transform: translateX(-50%); background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12); z-index: 10; color: var(--text-muted);
+    pointer-events: none;
+  }
+  .reader-chunk:hover .reader-tooltip { display: block; }
+  .reader-ood-panel {
+    margin-top: 16px; background: var(--warn-light); border: 1px solid var(--warn);
+    border-radius: var(--radius); padding: 14px 18px;
+  }
+  .reader-ood-title {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--warn); font-weight: 600; margin-bottom: 8px;
+  }
+  .reader-ood-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .reader-ood-word {
+    padding: 4px 12px; border: 1px solid var(--warn); border-radius: 100px;
+    background: var(--card-bg); cursor: pointer; font-size: 0.8rem;
+    color: var(--text); transition: all 0.15s; font-family: inherit;
+  }
+  .reader-ood-word:hover { background: var(--warn); color: #fff; }
+  .reader-ood-word.added { background: var(--correct-light); border-color: var(--correct); color: var(--correct); cursor: default; }
+  .reader-stats {
+    margin-top: 14px; font-size: 0.78rem; color: var(--text-muted);
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .reader-stats strong { color: var(--text); }
+
 </style>
 </head>
 <body>
@@ -616,6 +883,7 @@
   </div>
   <div class="header-right">
     <span class="streak-badge inactive" id="streak-badge" title="Day streak">0</span>
+    <span class="xp-badge" id="xp-badge" onclick="switchMode('progress');closeSideMenu()" title="XP Progress"><span class="xp-level" id="xp-level-label">Lv1</span><span id="xp-amount">0 XP</span><span class="xp-mini-bar"><span class="xp-mini-fill" id="xp-mini-fill" style="width:0%"></span></span></span>
     <div class="stats" id="stats-bar">
       <div>Correct <strong id="stat-correct">0</strong></div>
       <div>Remaining <strong id="stat-remaining">0</strong></div>
@@ -843,6 +1111,105 @@
   <button class="btn btn-primary" onclick="cloze_next()" id="cloze-next-btn" style="display:none">Next</button>
 </div>
 
+
+<!-- NUMBERS -->
+<div class="mode-section" id="mode-numbers">
+  <div class="card-box">
+    <div class="num-type-tag" id="num-tag">Number to Polish</div>
+    <div class="card-label" id="num-prompt">Type the Polish word:</div>
+    <div class="card-word" id="num-word">--</div>
+    <div class="spell-input-row">
+      <input type="text" class="spell-input" id="num-input" placeholder="Type answer..." autocomplete="off">
+      <button class="btn btn-primary" onclick="num_check()" id="num-submit">Check</button>
+    </div>
+    <div class="pl-keyboard" id="num-keyboard"></div>
+    <div class="spell-feedback" id="num-feedback"></div>
+    <div class="spell-answer" id="num-answer"></div>
+  </div>
+</div>
+<div class="controls" id="num-controls" style="display:none">
+  <button class="btn btn-hint" onclick="num_showHint()" id="num-hint-btn">Hint</button>
+  <button class="btn btn-primary" onclick="num_next()" id="num-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- SENTENCE BUILDER -->
+<div class="mode-section" id="mode-sentences">
+  <div class="card-box">
+    <div class="card-label">Build the Polish sentence</div>
+    <div class="sb-english" id="sb-english">--</div>
+    <div class="sb-answer-area" id="sb-answer-area"></div>
+    <div class="sb-tiles" id="sb-tiles"></div>
+    <div class="sb-grammar" id="sb-grammar"></div>
+    <div class="spell-feedback" id="sb-feedback"></div>
+  </div>
+</div>
+<div class="controls" id="sb-controls" style="display:none">
+  <button class="btn btn-skip" onclick="sb_reset()" id="sb-reset-btn">Reset</button>
+  <button class="btn btn-primary" onclick="sb_check()" id="sb-check-btn">Check</button>
+  <button class="btn btn-primary" onclick="sb_next()" id="sb-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- SPEED ROUND -->
+<div class="mode-section" id="mode-speed">
+  <div class="card-box" id="speed-card">
+    <div id="speed-content">
+      <div style="text-align:center;padding:20px 0">
+        <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px">Speed Round</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px">60 seconds. Pick the correct translation. Build combos for bonus XP!</p>
+        <div id="speed-highscore" style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px"></div>
+        <button class="btn btn-primary" onclick="speed_start()" style="font-size:1rem;padding:12px 32px">Start!</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="controls" id="speed-controls" style="display:none"></div>
+
+<!-- PHRASES -->
+<div class="mode-section" id="mode-phrases">
+  <div class="phrase-cats" id="phrase-cats"></div>
+  <div class="phrase-mode-toggle">
+    <button class="conv-mode-btn active" id="phrase-browse-btn" onclick="phrase_setMode('browse')">Browse</button>
+    <button class="conv-mode-btn" id="phrase-quiz-btn" onclick="phrase_setMode('quiz')">Quiz</button>
+  </div>
+  <div id="phrase-content"></div>
+</div>
+<div class="controls" id="phrase-controls" style="display:none">
+  <button class="btn btn-skip" onclick="phrase_prev()" id="phrase-prev-btn">Prev</button>
+  <button class="btn btn-primary" onclick="phrase_action()" id="phrase-action-btn">Next</button>
+</div>
+
+<!-- READER -->
+<div class="mode-section" id="mode-reader" style="max-width:700px">
+  <div class="reader-container">
+    <div class="reader-header">
+      <div>
+        <div class="reader-title" id="reader-book-title"></div>
+        <div class="reader-title-pl" id="reader-book-title-pl"></div>
+      </div>
+      <div class="reader-density-wrap">
+        <span>EN</span>
+        <input type="range" min="0" max="100" value="50" id="reader-density" oninput="reader_setDensity(this.value)">
+        <span>PL</span>
+        <span id="reader-density-label">50%</span>
+      </div>
+    </div>
+    <div class="reader-chapter-nav" id="reader-chapter-nav"></div>
+    <div class="reader-body" id="reader-body"></div>
+    <div id="reader-ood-panel"></div>
+    <div class="reader-stats" id="reader-stats"></div>
+  </div>
+</div>
+
+<!-- LEVEL UP POPUP -->
+<div class="levelup-overlay" id="levelup-overlay" onclick="closeLevelUp()">
+  <div class="levelup-card" id="levelup-card" onclick="event.stopPropagation()">
+    <h2>Level Up!</h2>
+    <div class="level-name" id="levelup-name">--</div>
+    <p id="levelup-text">Keep going!</p>
+    <button class="btn btn-primary" onclick="closeLevelUp()" style="margin-top:16px">Continue</button>
+  </div>
+</div>
+
 <!-- PROGRESS -->
 <div class="mode-section progress-page" id="mode-progress">
   <div class="card-box" style="text-align:center;margin-bottom:20px" id="readiness-section">
@@ -1027,7 +1394,8 @@ let NOUN_GROUPS = { "All Nouns": null };
 const MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
   ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
-  ["gender","Gender"],["cloze","Cloze"],["conversations","Conversations"],["progress","Progress"],
+  ["gender","Gender"],["cloze","Cloze"],["numbers","Numbers"],["sentences","Sentence Builder"],
+  ["speed","Speed Round"],["phrases","Survival Phrases"],["conversations","Conversations"],["reader","Reader"],["progress","Progress"],
 ];
 
 // ===================== STATE =====================
@@ -1117,6 +1485,8 @@ function resetProgress() {
   localStorage.removeItem('fiszki_srs');
   localStorage.removeItem('fiszki_stats');
   localStorage.removeItem('fiszki_errors');
+  localStorage.removeItem('fiszki_xp');
+  localStorage.removeItem('fiszki_speed_high');
   location.reload();
 }
 
@@ -1236,7 +1606,7 @@ function switchMode(mode) {
   if (section) section.classList.add('active');
 
   // Hide all controls
-  ['fc','sp','mc','li','decl','conj','gen','conv','cloze'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen','conv','cloze','num','sb','speed','phrase'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1245,11 +1615,12 @@ function switchMode(mode) {
   const isProgress = mode === 'progress';
   const isConv = mode === 'conversations';
   const isCloze = mode === 'cloze';
-  const hideGroups = isProgress || isConv || isCloze || mode === 'conjugation' || mode === 'gender';
+  const isReader = mode === 'reader';
+  const hideGroups = isProgress || isConv || isCloze || isReader || mode === 'conjugation' || mode === 'gender' || mode === 'numbers' || mode === 'sentences' || mode === 'speed' || mode === 'phrases';
   document.getElementById('group-bar').style.display = hideGroups ? 'none' : '';
-  document.getElementById('progress-bar-wrap').style.display = (isProgress || isConv) ? 'none' : '';
-  document.getElementById('stats-bar').style.display = (isProgress || isConv) ? 'none' : '';
-  document.getElementById('streak-badge').style.display = (isProgress || isConv) ? 'none' : '';
+  document.getElementById('progress-bar-wrap').style.display = (isProgress || isConv || isReader || mode === 'speed' || mode === 'phrases') ? 'none' : '';
+  document.getElementById('stats-bar').style.display = (isProgress || isConv || isReader || mode === 'speed') ? 'none' : '';
+  document.getElementById('streak-badge').style.display = (isProgress || isConv || isReader) ? 'none' : '';
   document.getElementById('results').classList.remove('visible');
 
   const kb = document.getElementById('kb-hints');
@@ -1277,8 +1648,23 @@ function switchMode(mode) {
   } else if (mode === 'cloze') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>Ctrl+H</kbd> hint';
     kb.style.display = '';
+  } else if (mode === 'numbers') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next';
+    kb.style.display = '';
+  } else if (mode === 'sentences') {
+    kb.innerHTML = '<kbd>Enter</kbd> check / next';
+    kb.style.display = '';
+  } else if (mode === 'speed') {
+    kb.innerHTML = '<kbd>1</kbd><kbd>2</kbd> choose';
+    kb.style.display = '';
+  } else if (mode === 'phrases') {
+    kb.innerHTML = '<kbd>Enter</kbd> next &nbsp;<kbd>Space</kbd> flip';
+    kb.style.display = '';
   } else if (mode === 'conversations') {
     kb.innerHTML = '<kbd>Enter</kbd> check / continue';
+    kb.style.display = '';
+  } else if (mode === 'reader') {
+    kb.innerHTML = 'Click any word to reveal translation';
     kb.style.display = '';
   } else {
     kb.style.display = 'none';
@@ -1289,6 +1675,11 @@ function switchMode(mode) {
   if (isConv) { conv_init(); return; }
   if (mode === 'conjugation') { conj_startRound(); return; }
   if (mode === 'gender') { gen_startRound(); return; }
+  if (mode === 'numbers') { num_startRound(); return; }
+  if (mode === 'sentences') { sb_startRound(); return; }
+  if (mode === 'speed') { speed_init(); return; }
+  if (mode === 'phrases') { phrase_init(); return; }
+  if (mode === 'reader') { reader_init(); return; }
   startRound();
 }
 
@@ -1405,7 +1796,7 @@ function finishRound() {
 function showResults() {
   const section = document.getElementById('mode-' + currentMode);
   if (section) section.style.display = 'none';
-  ['fc','sp','mc','li','decl','conj','gen','conv','cloze'].forEach(p => {
+  ['fc','sp','mc','li','decl','conj','gen','conv','cloze','num','sb','speed','phrase'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1438,7 +1829,13 @@ function restart() { startRound(); }
 
 function markWord(word, wasCorrect) {
   updateWordSRS(word.id, wasCorrect);
-  if (wasCorrect) correct++;
+  if (wasCorrect) {
+    correct++;
+    // Award XP based on current mode
+    const xpMap = {flashcard:5,spelling:10,multichoice:5,listening:10,declension:15,conjugation:15,gender:10,cloze:10,numbers:8,sentences:15,phrases:10};
+    const xp = xpMap[currentMode] || 5;
+    addXP(xp);
+  }
   else missed.push(word);
 }
 
@@ -2500,7 +2897,27 @@ function renderProgress() {
   const top500 = WORD_BANK ? (WORD_BANK.nouns.length + WORD_BANK.verbs.length + WORD_BANK.adjectives.length) : 0;
   const knownWords = allWords.filter(w => srs[w.id] && srs[w.id].box >= 2).length;
   const readinessPct = top500 > 0 ? Math.round(knownWords / top500 * 100) : 0;
-  document.getElementById('readiness-value').textContent = readinessPct + '%';
+  // XP & Level progress
+  const totalXP = getXP();
+  const currentXPLevel = getXPLevel(totalXP);
+  const nextXPLevel = getNextLevel(totalXP);
+  const xpSection = document.getElementById('xp-progress-section');
+  if (!xpSection) {
+    const sec = document.createElement('div');
+    sec.className = 'xp-progress-card';
+    sec.id = 'xp-progress-section';
+    document.getElementById('readiness-section').insertAdjacentElement('beforebegin', sec);
+  }
+  const xpSec = document.getElementById('xp-progress-section');
+  const xpPct = nextXPLevel ? Math.round((totalXP - currentXPLevel.xp) / (nextXPLevel.xp - currentXPLevel.xp) * 100) : 100;
+  xpSec.innerHTML =
+    '<h3 class="chart-section" style="margin-bottom:8px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Level Progress</h3>' +
+    '<div style="font-size:1.6rem;font-weight:700;color:var(--accent)">' + currentXPLevel.name + '</div>' +
+    '<div style="font-size:0.82rem;color:var(--text-muted);margin-top:4px">Level ' + currentXPLevel.level + ' &middot; ' + totalXP + ' XP</div>' +
+    '<div class="xp-progress-bar"><div class="xp-progress-fill" style="width:' + xpPct + '%"></div></div>' +
+    (nextXPLevel ? '<div style="font-size:0.72rem;color:var(--text-muted)">' + (nextXPLevel.xp - totalXP) + ' XP to ' + nextXPLevel.name + '</div>' : '<div style="font-size:0.72rem;color:var(--accent);font-weight:600">Max level reached!</div>');
+
+    document.getElementById('readiness-value').textContent = readinessPct + '%';
   document.getElementById('readiness-label').textContent = knownWords + ' of ' + top500 + ' vocabulary words learned';
   document.getElementById('readiness-fill').style.width = Math.min(100, readinessPct) + '%';
 
@@ -2676,6 +3093,20 @@ document.addEventListener('keydown', (e) => {
   } else if (currentMode === 'cloze') {
     if (e.key === 'Enter') { e.preventDefault(); cloze_answered ? cloze_next() : cloze_check(); }
     else if (e.key === 'h' && e.ctrlKey) { e.preventDefault(); cloze_showHint(); }
+  } else if (currentMode === 'numbers') {
+    if (e.key === 'Enter') { e.preventDefault(); num_answered ? num_next() : num_check(); }
+    else if (e.key === 'h' && e.ctrlKey) { e.preventDefault(); num_showHint(); }
+  } else if (currentMode === 'sentences') {
+    if (e.key === 'Enter') { e.preventDefault(); sb_answered ? sb_next() : sb_check(); }
+  } else if (currentMode === 'speed') {
+    if (!speed_running) return;
+    if (e.key === '1' || e.key === '2') {
+      const btns = document.querySelectorAll('.speed-option');
+      if (btns[+e.key - 1] && !speed_picking) speed_pick(btns[+e.key - 1]);
+    }
+  } else if (currentMode === 'phrases') {
+    if (e.key === 'Enter') { e.preventDefault(); phrase_action(); }
+    else if (e.key === ' ' && phrase_mode === 'browse') { e.preventDefault(); phrase_flipCurrent(); }
   } else if (currentMode === 'conversations') {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -2710,6 +3141,1186 @@ function updateStreakBadge() {
   }
 }
 
+
+// ===================== XP & LEVEL SYSTEM =====================
+const XP_LEVELS = [
+  {level:1, name:'Turysta', xp:0},
+  {level:2, name:'Student', xp:100},
+  {level:3, name:'Pocz\u0105tkuj\u0105cy', xp:300},
+  {level:4, name:'Znajomy', xp:600},
+  {level:5, name:'Odkrywca', xp:1000},
+  {level:6, name:'Rozm\u00f3wca', xp:1500},
+  {level:7, name:'Przyjaciel', xp:2500},
+  {level:8, name:'Bieg\u0142y', xp:4000},
+  {level:9, name:'Ekspert', xp:6000},
+  {level:10, name:'Mistrz', xp:10000},
+];
+
+function getXP() {
+  return parseInt(localStorage.getItem('fiszki_xp') || '0', 10);
+}
+function setXP(val) {
+  localStorage.setItem('fiszki_xp', val.toString());
+}
+
+function getXPLevel(xp) {
+  let lvl = XP_LEVELS[0];
+  for (const l of XP_LEVELS) {
+    if (xp >= l.xp) lvl = l;
+    else break;
+  }
+  return lvl;
+}
+
+function getNextLevel(xp) {
+  for (const l of XP_LEVELS) {
+    if (xp < l.xp) return l;
+  }
+  return null;
+}
+
+function addXP(amount) {
+  const oldXP = getXP();
+  const oldLevel = getXPLevel(oldXP);
+  const newXP = oldXP + amount;
+  setXP(newXP);
+  const newLevel = getXPLevel(newXP);
+  updateXPDisplay();
+  if (newLevel.level > oldLevel.level) {
+    showLevelUp(newLevel);
+  }
+}
+
+function updateXPDisplay() {
+  const xp = getXP();
+  const level = getXPLevel(xp);
+  const next = getNextLevel(xp);
+  document.getElementById('xp-level-label').textContent = 'Lv' + level.level;
+  document.getElementById('xp-amount').textContent = xp + ' XP';
+  if (next) {
+    const pct = Math.round((xp - level.xp) / (next.xp - level.xp) * 100);
+    document.getElementById('xp-mini-fill').style.width = pct + '%';
+  } else {
+    document.getElementById('xp-mini-fill').style.width = '100%';
+  }
+}
+
+function showLevelUp(level) {
+  const overlay = document.getElementById('levelup-overlay');
+  document.getElementById('levelup-name').textContent = level.name;
+  document.getElementById('levelup-text').textContent = 'You reached Level ' + level.level + '!';
+  overlay.classList.add('show');
+  // Add confetti
+  const card = document.getElementById('levelup-card');
+  const colors = ['#2563eb','#10b981','#f59e0b','#ec4899','#8b5cf6','#ef4444'];
+  for (let i = 0; i < 30; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.background = colors[i % colors.length];
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.top = '-10px';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    piece.style.animationDuration = (1 + Math.random()) + 's';
+    card.appendChild(piece);
+  }
+  setTimeout(() => {
+    card.querySelectorAll('.confetti-piece').forEach(p => p.remove());
+  }, 2500);
+}
+
+function closeLevelUp() {
+  document.getElementById('levelup-overlay').classList.remove('show');
+}
+
+// ===================== NUMBERS MODE =====================
+let NUMBERS = [];
+let ORDINALS = [];
+let num_deck = [], num_current = 0, num_correct = 0, num_missed = [];
+let num_answered = false;
+
+function num_buildNumber(val) {
+  // Build Polish number text from base numbers array
+  const entry = NUMBERS.find(n => n.value === val);
+  if (entry) return entry.pl;
+  // Compose compound numbers
+  if (val >= 21 && val <= 99) {
+    const tens = Math.floor(val / 10) * 10;
+    const ones = val % 10;
+    const tensEntry = NUMBERS.find(n => n.value === tens);
+    const onesEntry = NUMBERS.find(n => n.value === ones);
+    if (tensEntry && onesEntry && ones > 0) return tensEntry.pl + ' ' + onesEntry.pl;
+    if (tensEntry && ones === 0) return tensEntry.pl;
+  }
+  return val.toString();
+}
+
+function num_buildExercises() {
+  const exercises = [];
+
+  // Type 1: Number -> Polish
+  for (let i = 0; i <= 100; i++) {
+    const pl = num_buildNumber(i);
+    if (!pl || pl === i.toString()) continue;
+    exercises.push({
+      type: 'num2pl',
+      prompt: i.toString(),
+      answer: pl,
+      display: i + ' = ' + pl,
+      tag: 'Number to Polish',
+    });
+  }
+
+  // Type 2: Polish -> Number
+  NUMBERS.forEach(n => {
+    exercises.push({
+      type: 'pl2num',
+      prompt: n.pl,
+      answer: n.value.toString(),
+      display: n.pl + ' = ' + n.value,
+      tag: 'Polish to Number',
+    });
+  });
+
+  // Type 3: Price Quiz
+  const priceAmounts = [
+    {zl:5,gr:0},{zl:12,gr:0},{zl:15,gr:50},{zl:3,gr:99},{zl:20,gr:30},
+    {zl:7,gr:10},{zl:50,gr:0},{zl:1,gr:0},{zl:100,gr:0},{zl:42,gr:0},
+    {zl:8,gr:75},{zl:23,gr:0},{zl:30,gr:50},{zl:60,gr:20},{zl:99,gr:99},
+  ];
+  priceAmounts.forEach(p => {
+    const zlPl = num_buildNumber(p.zl);
+    let grPl = num_buildNumber(p.gr);
+    let answer = zlPl + ' zlotych';
+    let display = p.zl + ' zl';
+    if (p.gr > 0) {
+      answer += ' ' + grPl + ' groszy';
+      display += ' ' + p.gr + ' gr';
+    }
+    exercises.push({
+      type: 'price',
+      prompt: display,
+      answer: answer,
+      display: display + ' = ' + answer,
+      tag: 'Price Quiz',
+    });
+  });
+
+  // Ordinals
+  ORDINALS.forEach(o => {
+    exercises.push({
+      type: 'num2pl',
+      prompt: o.value + '. (ordinal, masc.)',
+      answer: o.pl,
+      display: o.value + '. = ' + o.pl,
+      tag: 'Ordinals',
+    });
+  });
+
+  return exercises;
+}
+
+function num_startRound() {
+  NUMBERS = WORD_BANK.numbers || [];
+  ORDINALS = WORD_BANK.ordinals || [];
+  const all = num_buildExercises();
+  num_deck = shuffle(all).slice(0, 15);
+  num_current = 0; num_correct = 0; num_missed = [];
+  deck = num_deck; current = 0; correct = 0; missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-numbers').style.display = '';
+  document.getElementById('num-controls').style.display = '';
+  if (num_deck.length === 0) { showNoWords(); return; }
+  num_show();
+  updateProgress();
+}
+
+function num_show() {
+  num_answered = false;
+  const ex = num_deck[num_current];
+  document.getElementById('num-tag').textContent = ex.tag;
+  const isPlToNum = ex.type === 'pl2num';
+  document.getElementById('num-prompt').textContent = isPlToNum ? 'Type the number:' : 'Type the Polish word:';
+  document.getElementById('num-word').textContent = ex.prompt;
+  const inp = document.getElementById('num-input');
+  inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
+  inp.placeholder = isPlToNum ? 'Type the digit...' : 'Type in Polish...';
+  document.getElementById('num-submit').style.display = '';
+  document.getElementById('num-next-btn').style.display = 'none';
+  document.getElementById('num-hint-btn').style.display = '';
+  document.getElementById('num-feedback').textContent = '';
+  document.getElementById('num-feedback').className = 'spell-feedback';
+  document.getElementById('num-answer').textContent = '';
+  if (!isPlToNum) {
+    buildPlKeyboard('num-keyboard', 'num-input');
+    document.getElementById('num-keyboard').style.display = '';
+  } else {
+    document.getElementById('num-keyboard').style.display = 'none';
+  }
+  inp.focus();
+}
+
+function num_check() {
+  if (num_answered || num_current >= num_deck.length) return;
+  num_answered = true;
+  const ex = num_deck[num_current];
+  const inp = document.getElementById('num-input');
+  inp.disabled = true;
+  document.getElementById('num-submit').style.display = 'none';
+  document.getElementById('num-hint-btn').style.display = 'none';
+  document.getElementById('num-next-btn').style.display = '';
+  const fb = document.getElementById('num-feedback');
+  const ans = document.getElementById('num-answer');
+
+  const isCorrect = ex.type === 'pl2num'
+    ? inp.value.trim() === ex.answer
+    : plEqual(inp.value, ex.answer);
+
+  if (isCorrect) {
+    inp.className = 'spell-input correct anim-correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    num_correct++; correct++;
+    addXP(8);
+    if (ex.type !== 'pl2num' && inp.value.trim().toLowerCase() !== ex.answer.toLowerCase()) {
+      ans.textContent = 'Exact: ' + ex.answer;
+    }
+  } else {
+    inp.className = 'spell-input incorrect anim-incorrect';
+    fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
+    ans.textContent = 'Answer: ' + ex.answer;
+    num_missed.push({ pl: ex.answer, en: ex.prompt });
+    missed.push({ pl: ex.answer, en: ex.prompt });
+  }
+  current = num_current + 1;
+  updateProgress();
+}
+
+function num_next() {
+  if (!num_answered) return;
+  num_current++;
+  current = num_current;
+  if (num_current >= num_deck.length) {
+    deck = num_deck;
+    const newWords = 0;
+    recordSession(deck.length, num_correct, newWords);
+    updateStreakBadge();
+    showResults();
+  } else {
+    num_show();
+    updateProgress();
+  }
+}
+
+function num_showHint() {
+  if (num_answered || num_current >= num_deck.length) return;
+  const ex = num_deck[num_current];
+  const h = ex.answer[0] + ex.answer.slice(1).replace(/[a-zA-Z\u0105\u0107\u0119\u0142\u0144\u00f3\u015b\u017a\u017c]/gi, ' _');
+  document.getElementById('num-feedback').textContent = h;
+  document.getElementById('num-feedback').className = 'spell-feedback';
+}
+
+// ===================== SENTENCE BUILDER =====================
+let sb_deck = [], sb_current = 0, sb_correct = 0, sb_missed = [];
+let sb_answered = false;
+let sb_placedOrder = [];
+
+function sb_startRound() {
+  const sentences = WORD_BANK.sentence_exercises || [];
+  let filtered = sentences;
+  if (activeLevel) filtered = sentences.filter(s => s.level === activeLevel);
+  if (filtered.length === 0) filtered = sentences;
+  sb_deck = shuffle([...filtered]).slice(0, 15);
+  sb_current = 0; sb_correct = 0; sb_missed = [];
+  deck = sb_deck; current = 0; correct = 0; missed = [];
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('mode-sentences').style.display = '';
+  document.getElementById('sb-controls').style.display = '';
+  if (sb_deck.length === 0) { showNoWords(); return; }
+  sb_show();
+  updateProgress();
+}
+
+function sb_show() {
+  sb_answered = false;
+  sb_placedOrder = [];
+  const ex = sb_deck[sb_current];
+  document.getElementById('sb-english').textContent = ex.en;
+  document.getElementById('sb-grammar').textContent = '';
+  document.getElementById('sb-feedback').textContent = '';
+  document.getElementById('sb-feedback').className = 'spell-feedback';
+  document.getElementById('sb-check-btn').style.display = '';
+  document.getElementById('sb-reset-btn').style.display = '';
+  document.getElementById('sb-next-btn').style.display = 'none';
+  const area = document.getElementById('sb-answer-area');
+  area.className = 'sb-answer-area';
+  area.innerHTML = '<span style="color:var(--text-muted);font-size:0.82rem">Click tiles to build sentence</span>';
+
+  // Scramble words
+  const scrambled = shuffle([...ex.words]);
+  const tilesEl = document.getElementById('sb-tiles');
+  tilesEl.innerHTML = scrambled.map((w, i) =>
+    '<button class="sb-tile" data-word="' + escHtml(w) + '" data-idx="' + i + '" onclick="sb_placeTile(this)">' + escHtml(w) + '</button>'
+  ).join('');
+}
+
+function sb_placeTile(btn) {
+  if (sb_answered) return;
+  const word = btn.dataset.word;
+  const idx = btn.dataset.idx;
+  btn.classList.add('hidden');
+  sb_placedOrder.push({ word, idx });
+  sb_renderAnswer();
+}
+
+function sb_removeTile(placedIdx) {
+  if (sb_answered) return;
+  const removed = sb_placedOrder.splice(placedIdx, 1)[0];
+  // Un-hide the source tile
+  const tiles = document.querySelectorAll('#sb-tiles .sb-tile');
+  tiles.forEach(t => {
+    if (t.dataset.idx === removed.idx && t.classList.contains('hidden')) {
+      t.classList.remove('hidden');
+    }
+  });
+  sb_renderAnswer();
+}
+
+function sb_renderAnswer() {
+  const area = document.getElementById('sb-answer-area');
+  if (sb_placedOrder.length === 0) {
+    area.innerHTML = '<span style="color:var(--text-muted);font-size:0.82rem">Click tiles to build sentence</span>';
+    return;
+  }
+  area.innerHTML = sb_placedOrder.map((p, i) =>
+    '<button class="sb-tile placed" onclick="sb_removeTile(' + i + ')">' + escHtml(p.word) + '</button>'
+  ).join('');
+}
+
+function sb_reset() {
+  if (sb_answered) return;
+  sb_placedOrder = [];
+  document.querySelectorAll('#sb-tiles .sb-tile').forEach(t => t.classList.remove('hidden'));
+  sb_renderAnswer();
+}
+
+function sb_check() {
+  if (sb_answered) return;
+  const ex = sb_deck[sb_current];
+  const userWords = sb_placedOrder.map(p => p.word);
+  sb_answered = true;
+
+  const area = document.getElementById('sb-answer-area');
+  const fb = document.getElementById('sb-feedback');
+  document.getElementById('sb-check-btn').style.display = 'none';
+  document.getElementById('sb-reset-btn').style.display = 'none';
+  document.getElementById('sb-next-btn').style.display = '';
+
+  const isCorrect = userWords.length === ex.words.length &&
+    userWords.every((w, i) => w.toLowerCase() === ex.words[i].toLowerCase());
+
+  if (isCorrect) {
+    area.className = 'sb-answer-area correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    sb_correct++; correct++;
+    addXP(15);
+  } else {
+    area.className = 'sb-answer-area incorrect';
+    fb.textContent = 'Correct order: ' + ex.words.join(' ');
+    fb.className = 'spell-feedback incorrect';
+    sb_missed.push({ pl: ex.words.join(' '), en: ex.en });
+    missed.push({ pl: ex.words.join(' '), en: ex.en });
+  }
+  document.getElementById('sb-grammar').textContent = ex.grammar || '';
+  current = sb_current + 1;
+  updateProgress();
+}
+
+function sb_next() {
+  if (!sb_answered) return;
+  sb_current++;
+  current = sb_current;
+  if (sb_current >= sb_deck.length) {
+    deck = sb_deck;
+    recordSession(deck.length, sb_correct, 0);
+    updateStreakBadge();
+    showResults();
+  } else {
+    sb_show();
+    updateProgress();
+  }
+}
+
+// ===================== SPEED ROUND =====================
+let speed_running = false;
+let speed_timer = null;
+let speed_timeLeft = 60;
+let speed_total = 0;
+let speed_correct_count = 0;
+let speed_combo = 1;
+let speed_maxCombo = 1;
+let speed_xpEarned = 0;
+let speed_picking = false;
+let speed_currentWord = null;
+let speed_audioCtx = null;
+
+function speed_getAudioCtx() {
+  if (!speed_audioCtx) {
+    speed_audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return speed_audioCtx;
+}
+
+function speed_playCorrect() {
+  try {
+    const ctx = speed_getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine'; osc.frequency.value = 880;
+    gain.gain.value = 0.15;
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
+  } catch(e) {}
+}
+
+function speed_playWrong() {
+  try {
+    const ctx = speed_getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'square'; osc.frequency.value = 200;
+    gain.gain.value = 0.1;
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.25);
+  } catch(e) {}
+}
+
+function speed_playCombo() {
+  try {
+    const ctx = speed_getAudioCtx();
+    [523, 659, 784].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.value = 0.12;
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i*0.08 + 0.15);
+      osc.start(ctx.currentTime + i*0.08); osc.stop(ctx.currentTime + i*0.08 + 0.15);
+    });
+  } catch(e) {}
+}
+
+function speed_playWarning() {
+  try {
+    const ctx = speed_getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.type = 'sine'; osc.frequency.value = 440;
+    gain.gain.value = 0.08;
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.1);
+  } catch(e) {}
+}
+
+function speed_init() {
+  speed_running = false;
+  document.getElementById('mode-speed').style.display = '';
+  document.getElementById('speed-controls').style.display = '';
+  const hs = parseInt(localStorage.getItem('fiszki_speed_high') || '0', 10);
+  document.getElementById('speed-highscore').textContent = hs > 0 ? 'High Score: ' + hs + ' XP' : '';
+  document.getElementById('speed-content').innerHTML =
+    '<div style="text-align:center;padding:20px 0">' +
+    '<h3 style="font-size:1.1rem;font-weight:600;margin-bottom:8px">Speed Round</h3>' +
+    '<p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px">60 seconds. Pick the correct translation. Build combos for bonus XP!</p>' +
+    '<div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px">' + (hs > 0 ? 'High Score: ' + hs + ' XP' : '') + '</div>' +
+    '<button class="btn btn-primary" onclick="speed_start()" style="font-size:1rem;padding:12px 32px">Start!</button></div>';
+}
+
+function speed_start() {
+  speed_running = true;
+  speed_timeLeft = 60;
+  speed_total = 0;
+  speed_correct_count = 0;
+  speed_combo = 1;
+  speed_maxCombo = 1;
+  speed_xpEarned = 0;
+  speed_picking = false;
+  speed_showQuestion();
+  speed_timer = setInterval(() => {
+    speed_timeLeft--;
+    speed_updateTimer();
+    if (speed_timeLeft <= 10 && speed_timeLeft > 0) speed_playWarning();
+    if (speed_timeLeft <= 0) {
+      clearInterval(speed_timer);
+      speed_running = false;
+      speed_finish();
+    }
+  }, 1000);
+}
+
+function speed_updateTimer() {
+  const pct = speed_timeLeft / 60;
+  const circumference = 2 * Math.PI * 42;
+  const offset = circumference * (1 - pct);
+  const circle = document.getElementById('speed-timer-circle');
+  if (circle) circle.style.strokeDashoffset = offset;
+  const label = document.getElementById('speed-timer-text');
+  if (label) label.textContent = speed_timeLeft;
+  if (speed_timeLeft <= 10) {
+    if (label) label.style.color = 'var(--incorrect)';
+    if (circle) circle.style.stroke = 'var(--incorrect)';
+  }
+}
+
+function speed_showQuestion() {
+  if (!speed_running) return;
+  const allWords = getAllWords();
+  if (allWords.length < 4) return;
+  const word = allWords[Math.floor(Math.random() * allWords.length)];
+  speed_currentWord = word;
+  // Pick wrong answer
+  let wrongPool = allWords.filter(w => w.en !== word.en);
+  const wrong = wrongPool[Math.floor(Math.random() * wrongPool.length)];
+  const opts = shuffle([
+    { text: word.en, correct: true },
+    { text: wrong.en, correct: false },
+  ]);
+
+  const circumference = 2 * Math.PI * 42;
+  const el = document.getElementById('speed-content');
+  el.innerHTML =
+    '<div class="speed-timer-wrap">' +
+    '<svg width="100" height="100" viewBox="0 0 100 100">' +
+    '<circle class="speed-timer-bg" cx="50" cy="50" r="42" fill="none" stroke-width="6"/>' +
+    '<circle class="speed-timer-fill" id="speed-timer-circle" cx="50" cy="50" r="42" fill="none" stroke-width="6" ' +
+    'stroke-dasharray="' + circumference.toFixed(1) + '" stroke-dashoffset="0" stroke-linecap="round"/>' +
+    '</svg>' +
+    '<div class="speed-timer-label" id="speed-timer-text">' + speed_timeLeft + '</div></div>' +
+    '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:4px">What does this mean?</div>' +
+    '<div class="card-word" style="font-size:1.5rem;margin-bottom:6px">' + escHtml(word.pl) + '</div>' +
+    '<div style="margin-bottom:8px"><span class="speed-combo" id="speed-combo-label">x' + speed_combo + '</span></div>' +
+    '<div class="speed-score">Score: ' + speed_correct_count + ' | XP: ' + speed_xpEarned + '</div>' +
+    '<div class="speed-options">' +
+    opts.map(o =>
+      '<button class="speed-option" data-correct="' + o.correct + '" onclick="speed_pick(this)">' + escHtml(o.text) + '</button>'
+    ).join('') + '</div>';
+
+  speed_picking = false;
+  speed_updateTimer();
+}
+
+function speed_pick(btn) {
+  if (!speed_running || speed_picking) return;
+  speed_picking = true;
+  speed_total++;
+  const isCorrect = btn.dataset.correct === 'true';
+  document.querySelectorAll('.speed-option').forEach(b => {
+    b.classList.add('disabled');
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    speed_correct_count++;
+    const xp = 5 * speed_combo;
+    speed_xpEarned += xp;
+    addXP(xp);
+    speed_combo = Math.min(10, speed_combo + 1);
+    if (speed_combo > speed_maxCombo) speed_maxCombo = speed_combo;
+    speed_playCorrect();
+    if (speed_combo > 2) speed_playCombo();
+    // Animate combo
+    const comboEl = document.getElementById('speed-combo-label');
+    if (comboEl) {
+      comboEl.textContent = 'x' + speed_combo;
+      comboEl.classList.remove('pulse');
+      void comboEl.offsetWidth;
+      comboEl.classList.add('pulse');
+    }
+  } else {
+    btn.classList.add('incorrect');
+    speed_combo = 1;
+    speed_playWrong();
+    const comboEl = document.getElementById('speed-combo-label');
+    if (comboEl) comboEl.textContent = 'x1';
+  }
+
+  setTimeout(() => {
+    if (speed_running) speed_showQuestion();
+  }, 400);
+}
+
+function speed_finish() {
+  const hs = parseInt(localStorage.getItem('fiszki_speed_high') || '0', 10);
+  const isNew = speed_xpEarned > hs;
+  if (isNew) localStorage.setItem('fiszki_speed_high', speed_xpEarned.toString());
+
+  recordSession(speed_total, speed_correct_count, 0);
+  updateStreakBadge();
+
+  document.getElementById('speed-content').innerHTML =
+    '<h3 style="font-size:1.1rem;font-weight:600;margin-bottom:16px">Time\'s Up!</h3>' +
+    '<div class="speed-final-stats">' +
+    '<div class="speed-final-stat"><div class="val">' + speed_correct_count + '/' + speed_total + '</div><div class="lbl">Correct</div></div>' +
+    '<div class="speed-final-stat"><div class="val">x' + speed_maxCombo + '</div><div class="lbl">Max Combo</div></div>' +
+    '<div class="speed-final-stat"><div class="val">' + speed_xpEarned + '</div><div class="lbl">XP Earned</div></div>' +
+    '<div class="speed-final-stat"><div class="val">' + (isNew ? speed_xpEarned + ' NEW!' : hs) + '</div><div class="lbl">High Score</div></div>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;justify-content:center">' +
+    '<button class="btn btn-primary" onclick="speed_start()">Play Again</button>' +
+    '<button class="btn" onclick="switchMode(\'flashcard\')">Back</button></div>';
+}
+
+// ===================== PHRASES MODE =====================
+let PHRASES = [];
+let phrase_mode = 'browse';
+let phrase_category = 'all';
+let phrase_deck = [];
+let phrase_current = 0;
+let phrase_answered = false;
+let phrase_flipped = false;
+
+function phrase_init() {
+  PHRASES = WORD_BANK.phrases || [];
+  phrase_category = 'all';
+  phrase_current = 0;
+  document.getElementById('mode-phrases').style.display = '';
+  document.getElementById('phrase-controls').style.display = '';
+  phrase_buildCats();
+  phrase_setMode('browse');
+}
+
+function phrase_buildCats() {
+  const cats = ['all', ...new Set(PHRASES.map(p => p.category))];
+  document.getElementById('phrase-cats').innerHTML = cats.map(c =>
+    '<button class="phrase-cat-btn' + (c === phrase_category ? ' active' : '') + '" onclick="phrase_selectCat(\'' + c + '\')">' + c + '</button>'
+  ).join('');
+}
+
+function phrase_selectCat(cat) {
+  phrase_category = cat;
+  phrase_current = 0;
+  phrase_buildCats();
+  phrase_buildDeck();
+  phrase_render();
+}
+
+function phrase_buildDeck() {
+  if (phrase_category === 'all') {
+    phrase_deck = [...PHRASES];
+  } else {
+    phrase_deck = PHRASES.filter(p => p.category === phrase_category);
+  }
+  if (phrase_mode === 'quiz') phrase_deck = shuffle([...phrase_deck]).slice(0, 15);
+}
+
+function phrase_setMode(mode) {
+  phrase_mode = mode;
+  phrase_current = 0;
+  phrase_answered = false;
+  document.getElementById('phrase-browse-btn').classList.toggle('active', mode === 'browse');
+  document.getElementById('phrase-quiz-btn').classList.toggle('active', mode === 'quiz');
+  phrase_buildDeck();
+  phrase_render();
+}
+
+function phrase_render() {
+  if (phrase_deck.length === 0) {
+    document.getElementById('phrase-content').innerHTML = '<div class="no-words-msg"><h3>No phrases in this category</h3></div>';
+    return;
+  }
+  if (phrase_mode === 'browse') phrase_renderBrowse();
+  else phrase_renderQuiz();
+}
+
+function phrase_renderBrowse() {
+  const p = phrase_deck[phrase_current];
+  phrase_flipped = false;
+  document.getElementById('phrase-content').innerHTML =
+    '<div class="phrase-card-flip" id="phrase-flip-card" onclick="phrase_flipCurrent()">' +
+    '<div class="phrase-card-inner" id="phrase-card-inner">' +
+    '<div class="phrase-card-face">' +
+    '<div class="card-label">Polish</div>' +
+    '<div class="card-word" style="font-size:1.4rem">' + escHtml(p.pl) + '</div>' +
+    '<button class="phrase-speak-btn" onclick="event.stopPropagation();phrase_speak(\'' + escHtml(p.pl).replace(/'/g, "\\'") + '\')" title="Listen">&#9835;</button>' +
+    '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:8px">click to flip</div>' +
+    '</div>' +
+    '<div class="phrase-card-face phrase-card-back">' +
+    '<div class="card-label">English</div>' +
+    '<div class="card-word" style="font-size:1.3rem;color:var(--accent)">' + escHtml(p.en) + '</div>' +
+    (p.note ? '<div class="phrase-note">' + escHtml(p.note) + '</div>' : '') +
+    '</div></div></div>' +
+    '<div style="text-align:center;font-size:0.78rem;color:var(--text-muted)">' + (phrase_current + 1) + ' / ' + phrase_deck.length + '</div>';
+
+  document.getElementById('phrase-action-btn').textContent = 'Next';
+  document.getElementById('phrase-action-btn').className = 'btn btn-primary';
+}
+
+function phrase_flipCurrent() {
+  const card = document.getElementById('phrase-flip-card');
+  if (!card) return;
+  phrase_flipped = !phrase_flipped;
+  card.classList.toggle('flipped', phrase_flipped);
+  if (phrase_flipped) {
+    const p = phrase_deck[phrase_current];
+    phrase_speak(p.pl);
+  }
+}
+
+function phrase_speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'pl-PL'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+
+function phrase_renderQuiz() {
+  if (phrase_current >= phrase_deck.length) {
+    phrase_showResults();
+    return;
+  }
+  phrase_answered = false;
+  const p = phrase_deck[phrase_current];
+  document.getElementById('phrase-content').innerHTML =
+    '<div class="card-box">' +
+    '<div class="card-label">Translate to Polish</div>' +
+    '<div class="card-word" style="font-size:1.2rem">' + escHtml(p.en) + '</div>' +
+    (p.note ? '<div class="phrase-note" style="margin-bottom:12px">' + escHtml(p.note) + '</div>' : '') +
+    '<div class="spell-input-row">' +
+    '<input type="text" class="spell-input" id="phrase-input" placeholder="Type in Polish..." autocomplete="off">' +
+    '<button class="btn btn-primary" onclick="phrase_quizCheck()" id="phrase-submit">Check</button></div>' +
+    '<div class="pl-keyboard" id="phrase-keyboard"></div>' +
+    '<div class="spell-feedback" id="phrase-feedback"></div>' +
+    '<div class="spell-answer" id="phrase-quiz-answer"></div></div>' +
+    '<div style="text-align:center;font-size:0.78rem;color:var(--text-muted)">' + (phrase_current + 1) + ' / ' + phrase_deck.length + '</div>';
+
+  buildPlKeyboard('phrase-keyboard', 'phrase-input');
+  document.getElementById('phrase-input').focus();
+  document.getElementById('phrase-action-btn').textContent = 'Next';
+  document.getElementById('phrase-action-btn').style.display = 'none';
+}
+
+function phrase_quizCheck() {
+  if (phrase_answered) return;
+  phrase_answered = true;
+  const p = phrase_deck[phrase_current];
+  const inp = document.getElementById('phrase-input');
+  inp.disabled = true;
+  document.getElementById('phrase-submit').style.display = 'none';
+  document.getElementById('phrase-action-btn').style.display = '';
+  const fb = document.getElementById('phrase-feedback');
+  const ans = document.getElementById('phrase-quiz-answer');
+
+  if (plEqual(inp.value, p.pl)) {
+    inp.className = 'spell-input correct anim-correct';
+    fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
+    addXP(10);
+    if (inp.value.trim().toLowerCase() !== p.pl.toLowerCase()) {
+      ans.textContent = 'Exact: ' + p.pl;
+    }
+  } else {
+    inp.className = 'spell-input incorrect anim-incorrect';
+    fb.textContent = 'Not quite'; fb.className = 'spell-feedback incorrect';
+    ans.textContent = 'Answer: ' + p.pl;
+  }
+  phrase_speak(p.pl);
+}
+
+function phrase_action() {
+  if (phrase_mode === 'browse') {
+    phrase_current++;
+    if (phrase_current >= phrase_deck.length) phrase_current = 0;
+    phrase_renderBrowse();
+  } else {
+    if (!phrase_answered && document.getElementById('phrase-input')) {
+      phrase_quizCheck();
+      return;
+    }
+    phrase_current++;
+    phrase_render();
+  }
+}
+
+function phrase_prev() {
+  if (phrase_mode === 'browse') {
+    phrase_current--;
+    if (phrase_current < 0) phrase_current = phrase_deck.length - 1;
+    phrase_renderBrowse();
+  }
+}
+
+function phrase_showResults() {
+  document.getElementById('phrase-content').innerHTML =
+    '<div class="card-box"><h3 style="font-size:1.05rem;font-weight:600;margin-bottom:8px">Phrases Complete!</h3>' +
+    '<p style="color:var(--text-muted);font-size:0.85rem">Great job practicing survival phrases.</p>' +
+    '<button class="btn btn-primary" onclick="phrase_setMode(\'quiz\')" style="margin-top:14px">Try Again</button></div>';
+}
+
+// ===================== READER MODE =====================
+let reader_book = null;
+let reader_chapter = 0;
+let reader_density = 0.5;
+let reader_knowledge = null;
+let reader_freqList = {};
+let reader_freqLoaded = false;
+
+function reader_init() {
+  // Load frequency list if not loaded
+  if (!reader_freqLoaded) {
+    fetch('hermit_dave_top_500_pl.txt').then(r => r.text()).then(text => {
+      text.trim().split('\n').forEach((line, idx) => {
+        const parts = line.trim().split(/\s+/);
+        if (parts.length >= 2) {
+          reader_freqList[parts[0].toLowerCase()] = idx + 1; // rank: 1 = most common
+        }
+      });
+      reader_freqLoaded = true;
+      reader_loadBook();
+    });
+  } else {
+    reader_loadBook();
+  }
+}
+
+function reader_loadBook() {
+  if (reader_book) {
+    reader_buildKnowledge();
+    reader_renderPage();
+    return;
+  }
+  fetch('sample_book.json').then(r => r.json()).then(book => {
+    reader_book = book;
+    reader_buildKnowledge();
+    reader_renderPage();
+  });
+}
+
+function reader_buildKnowledge() {
+  const srs = getSRS();
+  const known = new Map(); // lemma -> confidence
+
+  // Process nouns: all case forms are known if base word is known
+  if (WORD_BANK && WORD_BANK.nouns) {
+    WORD_BANK.nouns.forEach((n, i) => {
+      const s = srs['n' + i];
+      if (!s || s.reviews === 0) return;
+      const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
+      known.set(n.pl.toLowerCase(), conf);
+      // All case forms map back to same confidence
+      [n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(form => {
+        if (form) known.set(form.toLowerCase(), conf);
+      });
+    });
+  }
+
+  // Process verbs: ONLY present tense conjugation forms (not past/future)
+  if (WORD_BANK && WORD_BANK.verbs) {
+    WORD_BANK.verbs.forEach((v, i) => {
+      const s = srs['v' + i];
+      if (!s || s.reviews === 0) return;
+      const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
+      known.set(v.pl.toLowerCase(), conf); // infinitive
+      if (v.conj) {
+        v.conj.forEach(form => {
+          if (form) known.set(form.toLowerCase(), conf);
+        });
+      }
+    });
+  }
+
+  // Process adjectives: all gender forms are known
+  if (WORD_BANK && WORD_BANK.adjectives) {
+    WORD_BANK.adjectives.forEach((a, i) => {
+      const s = srs['a' + i];
+      if (!s || s.reviews === 0) return;
+      const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
+      known.set(a.pl.toLowerCase(), conf);
+      if (a.forms) {
+        Object.values(a.forms).forEach(form => {
+          if (form) known.set(form.toLowerCase(), conf);
+        });
+      }
+    });
+  }
+
+  // Infer frequency tier: median rank of known words in frequency list
+  const knownRanks = [];
+  for (const [lemma] of known) {
+    if (reader_freqList[lemma]) knownRanks.push(reader_freqList[lemma]);
+  }
+  knownRanks.sort((a, b) => a - b);
+  const medianRank = knownRanks.length > 0 ? knownRanks[Math.floor(knownRanks.length / 2)] : 30;
+
+  // Function words: top 50 in frequency list
+  const functionWords = new Set();
+  for (const [word, rank] of Object.entries(reader_freqList)) {
+    if (rank <= 50) functionWords.add(word);
+  }
+
+  reader_knowledge = { known, medianRank, functionWords };
+}
+
+function reader_getChunkConfidence(chunk) {
+  if (!chunk.lemmas || chunk.lemmas.length === 0) return { confidence: 1.0, type: 'proper' };
+
+  const k = reader_knowledge;
+  let minConf = Infinity;
+  let knownCount = 0;
+  let unknownLemmas = [];
+
+  for (const lemma of chunk.lemmas) {
+    const l = lemma.toLowerCase();
+
+    // 1. Check word bank knowledge (direct or inflected form)
+    if (k.known.has(l)) {
+      const conf = k.known.get(l);
+      minConf = Math.min(minConf, conf);
+      knownCount++;
+      continue;
+    }
+
+    // 2. Check function words (top 50 frequency) - strategy F: swap these first
+    if (k.functionWords.has(l)) {
+      minConf = Math.min(minConf, 0.9);
+      knownCount++;
+      continue;
+    }
+
+    // 3. Check frequency-inferred knowledge (rank <= user's median)
+    if (reader_freqList[l] && reader_freqList[l] <= k.medianRank) {
+      minConf = Math.min(minConf, 0.5);
+      knownCount++;
+      continue;
+    }
+
+    // Unknown
+    unknownLemmas.push(l);
+  }
+
+  if (unknownLemmas.length === 0) {
+    if (minConf === Infinity) minConf = 1.0;
+    return { confidence: minConf, type: 'known' };
+  }
+
+  // i+1 candidate: mostly known with exactly 1 unknown lemma
+  if (knownCount > 0 && unknownLemmas.length === 1) {
+    return { confidence: 0.3, type: 'i-plus-one', unknownLemmas };
+  }
+
+  return { confidence: 0.0, type: 'unknown', unknownLemmas };
+}
+
+function reader_shouldShowPl(chunkInfo, sentenceUnknownRatio, isI1Pick) {
+  if (chunkInfo.type === 'proper') return true;
+  if (isI1Pick) return true;
+
+  const threshold = 1.0 - reader_density;
+
+  // Sentence-level difficulty: if > 30% unknown, raise threshold
+  let adjusted = threshold;
+  if (sentenceUnknownRatio > 0.3) {
+    adjusted = Math.min(1.0, threshold + 0.2);
+  }
+
+  return chunkInfo.confidence >= adjusted;
+}
+
+function reader_renderPage() {
+  if (!reader_book || !reader_knowledge) return;
+
+  const book = reader_book;
+  const chapter = book.chapters[reader_chapter];
+
+  // Header
+  document.getElementById('reader-book-title').textContent = book.title;
+  document.getElementById('reader-book-title-pl').textContent = book.title_pl;
+
+  // Chapter nav
+  const navEl = document.getElementById('reader-chapter-nav');
+  navEl.innerHTML = book.chapters.map((ch, i) =>
+    `<button class="reader-chapter-btn${i === reader_chapter ? ' active' : ''}" onclick="reader_goChapter(${i})">${ch.title}</button>`
+  ).join('');
+
+  // Render body
+  const bodyEl = document.getElementById('reader-body');
+  let html = '';
+  let totalChunks = 0, plChunks = 0, i1Chunks = 0;
+  const oodWords = []; // OOD words for flashcard panel
+
+  for (const para of chapter.paragraphs) {
+    html += '<div class="reader-paragraph">';
+
+    for (const sent of para.sentences) {
+      // First pass: compute chunk infos and sentence difficulty
+      const chunkInfos = sent.chunks.map(c => ({
+        chunk: c,
+        info: reader_getChunkConfidence(c)
+      }));
+
+      const unknownCount = chunkInfos.filter(ci => ci.info.type === 'unknown' || ci.info.type === 'i-plus-one').length;
+      const sentenceUnknownRatio = unknownCount / (chunkInfos.length || 1);
+
+      // i+1 sprinkling: pick at most 1 i+1 candidate per sentence
+      let i1PickIdx = -1;
+      const i1Candidates = [];
+      chunkInfos.forEach((ci, idx) => {
+        if (ci.info.type === 'i-plus-one') i1Candidates.push(idx);
+      });
+      if (i1Candidates.length > 0 && sentenceUnknownRatio <= 0.4) {
+        i1PickIdx = i1Candidates[Math.floor(Math.random() * i1Candidates.length)];
+      }
+
+      // Second pass: render chunks
+      for (let ci = 0; ci < chunkInfos.length; ci++) {
+        const { chunk, info } = chunkInfos[ci];
+        const isI1Pick = ci === i1PickIdx;
+        const showPl = reader_shouldShowPl(info, sentenceUnknownRatio, isI1Pick);
+
+        totalChunks++;
+
+        if (showPl && info.type !== 'proper') {
+          plChunks++;
+          let cssClass = 'chunk-pl-known';
+          if (info.type === 'i-plus-one' || isI1Pick) {
+            cssClass = 'chunk-pl-i1';
+            i1Chunks++;
+            // Collect OOD words for flashcard panel
+            if (info.unknownLemmas) {
+              info.unknownLemmas.forEach(ul => {
+                if (!oodWords.find(w => w.lemma === ul)) {
+                  oodWords.push({ lemma: ul, en: chunk.en, pl: chunk.pl });
+                }
+              });
+            }
+          } else if (info.confidence >= 0.85) {
+            cssClass = 'chunk-pl-function';
+          } else if (info.confidence <= 0.5) {
+            cssClass = 'chunk-pl-inferred';
+          }
+
+          html += `<span class="reader-chunk ${cssClass}" data-en="${escHtml(chunk.en)}" data-pl="${escHtml(chunk.pl)}" onclick="reader_tap(this, 'pl')">`;
+          html += escHtml(chunk.pl);
+          html += `<span class="reader-tooltip">${escHtml(chunk.en)}</span>`;
+          html += '</span> ';
+        } else if (info.type === 'proper') {
+          html += `<span class="reader-chunk chunk-en">${escHtml(chunk.en)}</span> `;
+        } else {
+          html += `<span class="reader-chunk chunk-en" data-en="${escHtml(chunk.en)}" data-pl="${escHtml(chunk.pl)}" onclick="reader_tap(this, 'en')">`;
+          html += escHtml(chunk.en);
+          html += `<span class="reader-tooltip">${escHtml(chunk.pl)}</span>`;
+          html += '</span> ';
+        }
+      }
+    }
+
+    html += '</div>';
+  }
+
+  bodyEl.innerHTML = html;
+
+  // OOD panel: only show i+1 words for flashcard capture
+  const oodPanel = document.getElementById('reader-ood-panel');
+  if (oodWords.length > 0) {
+    let oodHtml = '<div class="reader-ood-panel"><div class="reader-ood-title">New words to learn</div><div class="reader-ood-list">';
+    oodWords.forEach((w, i) => {
+      oodHtml += `<button class="reader-ood-word" id="ood-${i}" onclick="reader_addToReview('${escHtml(w.lemma)}', '${escHtml(w.en)}', this)">${escHtml(w.lemma)} (${escHtml(w.en)})</button>`;
+    });
+    oodHtml += '</div></div>';
+    oodPanel.innerHTML = oodHtml;
+  } else {
+    oodPanel.innerHTML = '';
+  }
+
+  // Stats
+  const statsEl = document.getElementById('reader-stats');
+  const plPct = totalChunks > 0 ? Math.round(plChunks / totalChunks * 100) : 0;
+  const knownWords = reader_knowledge.known.size;
+  statsEl.innerHTML = `<span>Polish: <strong>${plPct}%</strong> of text</span>` +
+    `<span>Known words: <strong>${knownWords}</strong></span>` +
+    `<span>New words: <strong>${i1Chunks}</strong></span>` +
+    `<span>Freq. tier: <strong>top ${reader_knowledge.medianRank}</strong></span>`;
+}
+
+function reader_tap(el, currentLang) {
+  // Toggle between showing PL and EN text
+  const en = el.dataset.en;
+  const pl = el.dataset.pl;
+  if (!en || !pl) return;
+
+  if (currentLang === 'pl') {
+    // Currently showing Polish, flip to English
+    el.childNodes[0].textContent = en;
+    el.querySelector('.reader-tooltip').textContent = pl;
+    el.onclick = () => reader_tap(el, 'en');
+  } else {
+    // Currently showing English, flip to Polish
+    el.childNodes[0].textContent = pl;
+    el.querySelector('.reader-tooltip').textContent = en;
+    el.onclick = () => reader_tap(el, 'pl');
+  }
+}
+
+function reader_addToReview(lemma, en, btnEl) {
+  // Find the word in word_bank and add to SRS, or create a lightweight entry
+  let found = false;
+
+  if (WORD_BANK) {
+    // Check nouns
+    WORD_BANK.nouns.forEach((n, i) => {
+      if (n.pl.toLowerCase() === lemma.toLowerCase()) {
+        const id = 'n' + i;
+        const srs = getSRS();
+        if (!srs[id]) {
+          srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: new Date().toISOString().slice(0,10) };
+          saveSRS(srs);
+        }
+        found = true;
+      }
+    });
+    // Check verbs
+    if (!found) WORD_BANK.verbs.forEach((v, i) => {
+      if (v.pl.toLowerCase() === lemma.toLowerCase()) {
+        const id = 'v' + i;
+        const srs = getSRS();
+        if (!srs[id]) {
+          srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: new Date().toISOString().slice(0,10) };
+          saveSRS(srs);
+        }
+        found = true;
+      }
+    });
+    // Check adjectives
+    if (!found) WORD_BANK.adjectives.forEach((a, i) => {
+      if (a.pl.toLowerCase() === lemma.toLowerCase()) {
+        const id = 'a' + i;
+        const srs = getSRS();
+        if (!srs[id]) {
+          srs[id] = { box: 1, lastReview: null, reviews: 0, correct: 0, firstSeen: new Date().toISOString().slice(0,10) };
+          saveSRS(srs);
+        }
+        found = true;
+      }
+    });
+  }
+
+  btnEl.classList.add('added');
+  btnEl.textContent = lemma + ' - added!';
+  btnEl.onclick = null;
+}
+
+function reader_goChapter(idx) {
+  reader_chapter = idx;
+  reader_renderPage();
+}
+
+function reader_setDensity(val) {
+  reader_density = parseInt(val) / 100;
+  document.getElementById('reader-density-label').textContent = val + '%';
+  reader_renderPage();
+}
+
 // ===================== INIT =====================
 initDark();
 
@@ -2720,6 +4331,7 @@ fetch('word_bank.json').then(r => r.json()).then(data => {
   buildGroups();
   buildPlKeyboard('sp-keyboard', 'sp-input');
   updateStreakBadge();
+  updateXPDisplay();
   switchMode('flashcard');
 }).catch(err => {
   console.error('Failed to load word bank:', err);

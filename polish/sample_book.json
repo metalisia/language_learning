@@ -1,0 +1,302 @@
+{
+  "title": "A Day in Warsaw",
+  "title_pl": "Dzień w Warszawie",
+  "chapters": [
+    {
+      "title": "Morning",
+      "title_pl": "Rano",
+      "paragraphs": [
+        {
+          "sentences": [
+            {
+              "en": "Anna lives in a big city.",
+              "pl": "Anna mieszka w dużym mieście.",
+              "chunks": [
+                {"en": "Anna", "pl": "Anna", "lemmas": []},
+                {"en": "lives", "pl": "mieszka", "lemmas": ["mieszkać"]},
+                {"en": "in", "pl": "w", "lemmas": ["w"]},
+                {"en": "a big city", "pl": "dużym mieście", "lemmas": ["duży", "miasto"]}
+              ]
+            },
+            {
+              "en": "She has a small house and a dog.",
+              "pl": "Ma mały dom i psa.",
+              "chunks": [
+                {"en": "She has", "pl": "Ma", "lemmas": ["mieć"]},
+                {"en": "a small house", "pl": "mały dom", "lemmas": ["mały", "dom"]},
+                {"en": "and", "pl": "i", "lemmas": ["i"]},
+                {"en": "a dog", "pl": "psa", "lemmas": ["pies"]}
+              ]
+            },
+            {
+              "en": "Every morning she drinks coffee in the kitchen.",
+              "pl": "Każdego ranka pije kawę w kuchni.",
+              "chunks": [
+                {"en": "Every morning", "pl": "Każdego ranka", "lemmas": ["każdy", "ranek"]},
+                {"en": "she drinks", "pl": "pije", "lemmas": ["pić"]},
+                {"en": "coffee", "pl": "kawę", "lemmas": ["kawa"]},
+                {"en": "in", "pl": "w", "lemmas": ["w"]},
+                {"en": "the kitchen", "pl": "kuchni", "lemmas": ["kuchnia"]}
+              ]
+            },
+            {
+              "en": "The dog sits under the table and waits.",
+              "pl": "Pies siedzi pod stołem i czeka.",
+              "chunks": [
+                {"en": "The dog", "pl": "Pies", "lemmas": ["pies"]},
+                {"en": "sits", "pl": "siedzi", "lemmas": ["siedzieć"]},
+                {"en": "under", "pl": "pod", "lemmas": ["pod"]},
+                {"en": "the table", "pl": "stołem", "lemmas": ["stół"]},
+                {"en": "and", "pl": "i", "lemmas": ["i"]},
+                {"en": "waits", "pl": "czeka", "lemmas": ["czekać"]}
+              ]
+            }
+          ]
+        },
+        {
+          "sentences": [
+            {
+              "en": "Today is a good day.",
+              "pl": "Dzisiaj jest dobry dzień.",
+              "chunks": [
+                {"en": "Today", "pl": "Dzisiaj", "lemmas": ["dzisiaj"]},
+                {"en": "is", "pl": "jest", "lemmas": ["być"]},
+                {"en": "a good day", "pl": "dobry dzień", "lemmas": ["dobry", "dzień"]}
+              ]
+            },
+            {
+              "en": "The sun is shining and the sky is blue.",
+              "pl": "Słońce świeci i niebo jest niebieskie.",
+              "chunks": [
+                {"en": "The sun", "pl": "Słońce", "lemmas": ["słońce"]},
+                {"en": "is shining", "pl": "świeci", "lemmas": ["świecić"]},
+                {"en": "and", "pl": "i", "lemmas": ["i"]},
+                {"en": "the sky", "pl": "niebo", "lemmas": ["niebo"]},
+                {"en": "is", "pl": "jest", "lemmas": ["być"]},
+                {"en": "blue", "pl": "niebieskie", "lemmas": ["niebieski"]}
+              ]
+            },
+            {
+              "en": "Anna eats bread with cheese and drinks warm tea.",
+              "pl": "Anna je chleb z serem i pije ciepłą herbatę.",
+              "chunks": [
+                {"en": "Anna", "pl": "Anna", "lemmas": []},
+                {"en": "eats", "pl": "je", "lemmas": ["jeść"]},
+                {"en": "bread", "pl": "chleb", "lemmas": ["chleb"]},
+                {"en": "with", "pl": "z", "lemmas": ["z"]},
+                {"en": "cheese", "pl": "serem", "lemmas": ["ser"]},
+                {"en": "and", "pl": "i", "lemmas": ["i"]},
+                {"en": "drinks", "pl": "pije", "lemmas": ["pić"]},
+                {"en": "warm tea", "pl": "ciepłą herbatę", "lemmas": ["ciepły", "herbata"]}
+              ]
+            },
+            {
+              "en": "She reads a book at the table.",
+              "pl": "Czyta książkę przy stole.",
+              "chunks": [
+                {"en": "She reads", "pl": "Czyta", "lemmas": ["czytać"]},
+                {"en": "a book", "pl": "książkę", "lemmas": ["książka"]},
+                {"en": "at", "pl": "przy", "lemmas": ["przy"]},
+                {"en": "the table", "pl": "stole", "lemmas": ["stół"]}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "In the City",
+      "title_pl": "W mieście",
+      "paragraphs": [
+        {
+          "sentences": [
+            {
+              "en": "Anna goes to work by car.",
+              "pl": "Anna jedzie do pracy samochodem.",
+              "chunks": [
+                {"en": "Anna", "pl": "Anna", "lemmas": []},
+                {"en": "goes", "pl": "jedzie", "lemmas": ["jechać"]},
+                {"en": "to", "pl": "do", "lemmas": ["do"]},
+                {"en": "work", "pl": "pracy", "lemmas": ["praca"]},
+                {"en": "by car", "pl": "samochodem", "lemmas": ["samochód"]}
+              ]
+            },
+            {
+              "en": "She works in a big school.",
+              "pl": "Pracuje w dużej szkole.",
+              "chunks": [
+                {"en": "She works", "pl": "Pracuje", "lemmas": ["pracować"]},
+                {"en": "in", "pl": "w", "lemmas": ["w"]},
+                {"en": "a big school", "pl": "dużej szkole", "lemmas": ["duży", "szkoła"]}
+              ]
+            },
+            {
+              "en": "She likes her work very much.",
+              "pl": "Bardzo lubi swoją pracę.",
+              "chunks": [
+                {"en": "Very much", "pl": "Bardzo", "lemmas": ["bardzo"]},
+                {"en": "she likes", "pl": "lubi", "lemmas": ["lubić"]},
+                {"en": "her work", "pl": "swoją pracę", "lemmas": ["swój", "praca"]}
+              ]
+            },
+            {
+              "en": "She teaches children.",
+              "pl": "Uczy dzieci.",
+              "chunks": [
+                {"en": "She teaches", "pl": "Uczy", "lemmas": ["uczyć"]},
+                {"en": "children", "pl": "dzieci", "lemmas": ["dziecko"]}
+              ]
+            }
+          ]
+        },
+        {
+          "sentences": [
+            {
+              "en": "After work she goes to the shop.",
+              "pl": "Po pracy idzie do sklepu.",
+              "chunks": [
+                {"en": "After", "pl": "Po", "lemmas": ["po"]},
+                {"en": "work", "pl": "pracy", "lemmas": ["praca"]},
+                {"en": "she goes", "pl": "idzie", "lemmas": ["iść"]},
+                {"en": "to", "pl": "do", "lemmas": ["do"]},
+                {"en": "the shop", "pl": "sklepu", "lemmas": ["sklep"]}
+              ]
+            },
+            {
+              "en": "She buys milk, eggs, and apples.",
+              "pl": "Kupuje mleko, jajka i jabłka.",
+              "chunks": [
+                {"en": "She buys", "pl": "Kupuje", "lemmas": ["kupować"]},
+                {"en": "milk", "pl": "mleko", "lemmas": ["mleko"]},
+                {"en": "eggs", "pl": "jajka", "lemmas": ["jajko"]},
+                {"en": "and", "pl": "i", "lemmas": ["i"]},
+                {"en": "apples", "pl": "jabłka", "lemmas": ["jabłko"]}
+              ]
+            },
+            {
+              "en": "In the shop she sees her friend.",
+              "pl": "W sklepie widzi swoją przyjaciółkę.",
+              "chunks": [
+                {"en": "In", "pl": "W", "lemmas": ["w"]},
+                {"en": "the shop", "pl": "sklepie", "lemmas": ["sklep"]},
+                {"en": "she sees", "pl": "widzi", "lemmas": ["widzieć"]},
+                {"en": "her friend", "pl": "swoją przyjaciółkę", "lemmas": ["swój", "przyjaciel"]}
+              ]
+            },
+            {
+              "en": "They talk and laugh together.",
+              "pl": "Rozmawiają i śmieją się razem.",
+              "chunks": [
+                {"en": "They talk", "pl": "Rozmawiają", "lemmas": ["rozmawiać"]},
+                {"en": "and", "pl": "i", "lemmas": ["i"]},
+                {"en": "laugh", "pl": "śmieją się", "lemmas": ["śmiać"]},
+                {"en": "together", "pl": "razem", "lemmas": ["razem"]}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Evening",
+      "title_pl": "Wieczór",
+      "paragraphs": [
+        {
+          "sentences": [
+            {
+              "en": "Anna comes home.",
+              "pl": "Anna wraca do domu.",
+              "chunks": [
+                {"en": "Anna", "pl": "Anna", "lemmas": []},
+                {"en": "comes", "pl": "wraca", "lemmas": ["wracać"]},
+                {"en": "home", "pl": "do domu", "lemmas": ["do", "dom"]}
+              ]
+            },
+            {
+              "en": "The dog is happy.",
+              "pl": "Pies jest szczęśliwy.",
+              "chunks": [
+                {"en": "The dog", "pl": "Pies", "lemmas": ["pies"]},
+                {"en": "is", "pl": "jest", "lemmas": ["być"]},
+                {"en": "happy", "pl": "szczęśliwy", "lemmas": ["szczęśliwy"]}
+              ]
+            },
+            {
+              "en": "She cooks dinner in the kitchen.",
+              "pl": "Gotuje obiad w kuchni.",
+              "chunks": [
+                {"en": "She cooks", "pl": "Gotuje", "lemmas": ["gotować"]},
+                {"en": "dinner", "pl": "obiad", "lemmas": ["obiad"]},
+                {"en": "in", "pl": "w", "lemmas": ["w"]},
+                {"en": "the kitchen", "pl": "kuchni", "lemmas": ["kuchnia"]}
+              ]
+            },
+            {
+              "en": "She makes meat with potatoes.",
+              "pl": "Robi mięso z ziemniakami.",
+              "chunks": [
+                {"en": "She makes", "pl": "Robi", "lemmas": ["robić"]},
+                {"en": "meat", "pl": "mięso", "lemmas": ["mięso"]},
+                {"en": "with", "pl": "z", "lemmas": ["z"]},
+                {"en": "potatoes", "pl": "ziemniakami", "lemmas": ["ziemniak"]}
+              ]
+            }
+          ]
+        },
+        {
+          "sentences": [
+            {
+              "en": "After dinner she sits in a chair.",
+              "pl": "Po obiedzie siada w krześle.",
+              "chunks": [
+                {"en": "After", "pl": "Po", "lemmas": ["po"]},
+                {"en": "dinner", "pl": "obiedzie", "lemmas": ["obiad"]},
+                {"en": "she sits", "pl": "siada", "lemmas": ["siadać"]},
+                {"en": "in", "pl": "w", "lemmas": ["w"]},
+                {"en": "a chair", "pl": "krześle", "lemmas": ["krzesło"]}
+              ]
+            },
+            {
+              "en": "She reads her book.",
+              "pl": "Czyta swoją książkę.",
+              "chunks": [
+                {"en": "She reads", "pl": "Czyta", "lemmas": ["czytać"]},
+                {"en": "her book", "pl": "swoją książkę", "lemmas": ["swój", "książka"]}
+              ]
+            },
+            {
+              "en": "The dog sleeps on the bed.",
+              "pl": "Pies śpi na łóżku.",
+              "chunks": [
+                {"en": "The dog", "pl": "Pies", "lemmas": ["pies"]},
+                {"en": "sleeps", "pl": "śpi", "lemmas": ["spać"]},
+                {"en": "on", "pl": "na", "lemmas": ["na"]},
+                {"en": "the bed", "pl": "łóżku", "lemmas": ["łóżko"]}
+              ]
+            },
+            {
+              "en": "Anna is tired but happy.",
+              "pl": "Anna jest zmęczona, ale szczęśliwa.",
+              "chunks": [
+                {"en": "Anna", "pl": "Anna", "lemmas": []},
+                {"en": "is", "pl": "jest", "lemmas": ["być"]},
+                {"en": "tired", "pl": "zmęczona", "lemmas": ["zmęczony"]},
+                {"en": "but", "pl": "ale", "lemmas": ["ale"]},
+                {"en": "happy", "pl": "szczęśliwa", "lemmas": ["szczęśliwy"]}
+              ]
+            },
+            {
+              "en": "It was a good day.",
+              "pl": "To był dobry dzień.",
+              "chunks": [
+                {"en": "It", "pl": "To", "lemmas": ["to"]},
+                {"en": "was", "pl": "był", "lemmas": ["być"]},
+                {"en": "a good day", "pl": "dobry dzień", "lemmas": ["dobry", "dzień"]}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
