@@ -1,0 +1,2238 @@
+{
+  "lang": "it",
+  "name": "Italian",
+  "appName": "Schede",
+  "speechLang": "it-IT",
+  "specialChars": [
+    "à",
+    "è",
+    "é",
+    "ì",
+    "ò",
+    "ù"
+  ],
+  "storagePrefix": "schede",
+  "modes": [
+    "flashcard",
+    "spelling",
+    "multichoice",
+    "listening",
+    "articles",
+    "conjugation",
+    "gender",
+    "progress"
+  ],
+  "grammarMode": {
+    "id": "articles",
+    "label": "Articles"
+  },
+  "genderSystem": [
+    "m",
+    "f"
+  ],
+  "conjLabels": [
+    "io",
+    "tu",
+    "lui/lei",
+    "noi",
+    "voi",
+    "loro"
+  ],
+  "pronunciationGuide": [
+    {
+      "sound": "à",
+      "ipa": "/a/",
+      "desc": "Open 'a' as in 'father'. The accent marks stress position."
+    },
+    {
+      "sound": "è",
+      "ipa": "/ɛ/",
+      "desc": "Open 'e' as in 'bed'. Used in stressed syllables."
+    },
+    {
+      "sound": "é",
+      "ipa": "/e/",
+      "desc": "Closed 'e' as in 'they' (without the glide)."
+    },
+    {
+      "sound": "ì",
+      "ipa": "/i/",
+      "desc": "Like 'ee' in 'see'. The accent marks stress."
+    },
+    {
+      "sound": "ò",
+      "ipa": "/ɔ/",
+      "desc": "Open 'o' as in British 'hot'. Used in stressed syllables."
+    },
+    {
+      "sound": "ù",
+      "ipa": "/u/",
+      "desc": "Like 'oo' in 'food'. The accent marks stress."
+    },
+    {
+      "sound": "c (before e/i)",
+      "ipa": "/tʃ/",
+      "desc": "Like 'ch' in 'church'. 'Cena' = 'chena'."
+    },
+    {
+      "sound": "c (before a/o/u)",
+      "ipa": "/k/",
+      "desc": "Like 'k' in 'cat'. 'Casa' = 'kasa'."
+    },
+    {
+      "sound": "ch",
+      "ipa": "/k/",
+      "desc": "Always hard 'k' sound. 'Chi' = 'ki', 'che' = 'ke'."
+    },
+    {
+      "sound": "g (before e/i)",
+      "ipa": "/dʒ/",
+      "desc": "Like 'j' in 'jump'. 'Gelato' = 'jelato'."
+    },
+    {
+      "sound": "g (before a/o/u)",
+      "ipa": "/ɡ/",
+      "desc": "Like 'g' in 'go'. 'Gatto' = 'gatto'."
+    },
+    {
+      "sound": "gh",
+      "ipa": "/ɡ/",
+      "desc": "Always hard 'g'. 'Ghiaccio' = 'giattcho'."
+    },
+    {
+      "sound": "gl (before i)",
+      "ipa": "/ʎ/",
+      "desc": "Like 'lli' in 'million'. 'Figlio' = 'fee-lyo'."
+    },
+    {
+      "sound": "gn",
+      "ipa": "/ɲ/",
+      "desc": "Like 'ny' in 'canyon'. 'Gnocchi' = 'nyokki'."
+    },
+    {
+      "sound": "sc (before e/i)",
+      "ipa": "/ʃ/",
+      "desc": "Like 'sh' in 'ship'. 'Pesce' = 'peshe'."
+    },
+    {
+      "sound": "z",
+      "ipa": "/ts/ or /dz/",
+      "desc": "Either 'ts' as in 'pizza' or 'dz' as in 'zero'."
+    },
+    {
+      "sound": "double consonants",
+      "ipa": "(lengthened)",
+      "desc": "Hold the sound longer: 'anno' vs 'ano', 'palla' vs 'pala'."
+    }
+  ],
+  "genderNouns": [
+    {
+      "word": "libro",
+      "en": "book",
+      "g": "m"
+    },
+    {
+      "word": "gatto",
+      "en": "cat",
+      "g": "m"
+    },
+    {
+      "word": "cane",
+      "en": "dog",
+      "g": "m"
+    },
+    {
+      "word": "tavolo",
+      "en": "table",
+      "g": "m"
+    },
+    {
+      "word": "treno",
+      "en": "train",
+      "g": "m"
+    },
+    {
+      "word": "donna",
+      "en": "woman",
+      "g": "f"
+    },
+    {
+      "word": "casa",
+      "en": "house",
+      "g": "f"
+    },
+    {
+      "word": "scuola",
+      "en": "school",
+      "g": "f"
+    },
+    {
+      "word": "sedia",
+      "en": "chair",
+      "g": "f"
+    },
+    {
+      "word": "notte",
+      "en": "night",
+      "g": "f"
+    }
+  ],
+  "verbPastData": [
+    [
+      "stato",
+      "stata",
+      "stati",
+      "state",
+      "essere"
+    ],
+    [
+      "avuto",
+      "avuta",
+      "avuti",
+      "avute",
+      "avere"
+    ],
+    [
+      "mangiato",
+      "mangiata",
+      "mangiati",
+      "mangiate",
+      "avere"
+    ],
+    [
+      "bevuto",
+      "bevuta",
+      "bevuti",
+      "bevute",
+      "avere"
+    ],
+    [
+      "andato",
+      "andata",
+      "andati",
+      "andate",
+      "essere"
+    ],
+    [
+      "venuto",
+      "venuta",
+      "venuti",
+      "venute",
+      "essere"
+    ],
+    [
+      "fatto",
+      "fatta",
+      "fatti",
+      "fatte",
+      "avere"
+    ],
+    [
+      "parlato",
+      "parlata",
+      "parlati",
+      "parlate",
+      "avere"
+    ],
+    [
+      "visto",
+      "vista",
+      "visti",
+      "viste",
+      "avere"
+    ],
+    [
+      "sentito",
+      "sentita",
+      "sentiti",
+      "sentite",
+      "avere"
+    ],
+    [
+      "voluto",
+      "voluta",
+      "voluti",
+      "volute",
+      "avere"
+    ],
+    [
+      "potuto",
+      "potuta",
+      "potuti",
+      "potute",
+      "avere"
+    ],
+    [
+      "dovuto",
+      "dovuta",
+      "dovuti",
+      "dovute",
+      "avere"
+    ],
+    [
+      "saputo",
+      "saputa",
+      "saputi",
+      "sapute",
+      "avere"
+    ],
+    [
+      "conosciuto",
+      "conosciuta",
+      "conosciuti",
+      "conosciute",
+      "avere"
+    ],
+    [
+      "piaciuto",
+      "piaciuta",
+      "piaciuti",
+      "piaciute",
+      "essere"
+    ],
+    [
+      "amato",
+      "amata",
+      "amati",
+      "amate",
+      "avere"
+    ],
+    [
+      "letto",
+      "letta",
+      "letti",
+      "lette",
+      "avere"
+    ],
+    [
+      "scritto",
+      "scritta",
+      "scritti",
+      "scritte",
+      "avere"
+    ],
+    [
+      "comprato",
+      "comprata",
+      "comprati",
+      "comprate",
+      "avere"
+    ],
+    [
+      "lavorato",
+      "lavorata",
+      "lavorati",
+      "lavorate",
+      "avere"
+    ],
+    [
+      "imparato",
+      "imparata",
+      "imparati",
+      "imparate",
+      "avere"
+    ],
+    [
+      "vissuto",
+      "vissuta",
+      "vissuti",
+      "vissute",
+      "essere"
+    ],
+    [
+      "dormito",
+      "dormita",
+      "dormiti",
+      "dormite",
+      "avere"
+    ],
+    [
+      "cucinato",
+      "cucinata",
+      "cucinati",
+      "cucinate",
+      "avere"
+    ],
+    [
+      "pensato",
+      "pensata",
+      "pensati",
+      "pensate",
+      "avere"
+    ],
+    [
+      "chiesto",
+      "chiesta",
+      "chiesti",
+      "chieste",
+      "avere"
+    ],
+    [
+      "risposto",
+      "risposta",
+      "risposti",
+      "risposte",
+      "avere"
+    ],
+    [
+      "dato",
+      "data",
+      "dati",
+      "date",
+      "avere"
+    ],
+    [
+      "preso",
+      "presa",
+      "presi",
+      "prese",
+      "avere"
+    ]
+  ],
+  "nouns": [
+    {
+      "it": "donna",
+      "en": "woman",
+      "gender": "f",
+      "plural": "donne",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "uomo",
+      "en": "man",
+      "gender": "m",
+      "plural": "uomini",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "bambino",
+      "en": "child",
+      "gender": "m",
+      "plural": "bambini",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "ragazza",
+      "en": "girl",
+      "gender": "f",
+      "plural": "ragazze",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "ragazzo",
+      "en": "boy",
+      "gender": "m",
+      "plural": "ragazzi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "madre",
+      "en": "mother",
+      "gender": "f",
+      "plural": "madri",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "padre",
+      "en": "father",
+      "gender": "m",
+      "plural": "padri",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "sorella",
+      "en": "sister",
+      "gender": "f",
+      "plural": "sorelle",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "fratello",
+      "en": "brother",
+      "gender": "m",
+      "plural": "fratelli",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "amico",
+      "en": "friend",
+      "gender": "m",
+      "plural": "amici",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "People",
+      "level": "A1"
+    },
+    {
+      "it": "cane",
+      "en": "dog",
+      "gender": "m",
+      "plural": "cani",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "gatto",
+      "en": "cat",
+      "gender": "m",
+      "plural": "gatti",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "uccello",
+      "en": "bird",
+      "gender": "m",
+      "plural": "uccelli",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "pesce",
+      "en": "fish",
+      "gender": "m",
+      "plural": "pesci",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "cavallo",
+      "en": "horse",
+      "gender": "m",
+      "plural": "cavalli",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "mucca",
+      "en": "cow",
+      "gender": "f",
+      "plural": "mucche",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "topo",
+      "en": "mouse",
+      "gender": "m",
+      "plural": "topi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "farfalla",
+      "en": "butterfly",
+      "gender": "f",
+      "plural": "farfalle",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "lupo",
+      "en": "wolf",
+      "gender": "m",
+      "plural": "lupi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "orso",
+      "en": "bear",
+      "gender": "m",
+      "plural": "orsi",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Animals",
+      "level": "A1"
+    },
+    {
+      "it": "pane",
+      "en": "bread",
+      "gender": "m",
+      "plural": "pani",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "acqua",
+      "en": "water",
+      "gender": "f",
+      "plural": "acque",
+      "def_sg": "l'",
+      "def_pl": "le",
+      "indef_sg": "un'",
+      "indef_pl": "delle",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "latte",
+      "en": "milk",
+      "gender": "m",
+      "plural": "latti",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "mela",
+      "en": "apple",
+      "gender": "f",
+      "plural": "mele",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "formaggio",
+      "en": "cheese",
+      "gender": "m",
+      "plural": "formaggi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "carne",
+      "en": "meat",
+      "gender": "f",
+      "plural": "carni",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "tè",
+      "en": "tea",
+      "gender": "m",
+      "plural": "tè",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "caffè",
+      "en": "coffee",
+      "gender": "m",
+      "plural": "caffè",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "uovo",
+      "en": "egg",
+      "gender": "m",
+      "plural": "uova",
+      "def_sg": "l'",
+      "def_pl": "le",
+      "indef_sg": "un",
+      "indef_pl": "delle",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "burro",
+      "en": "butter",
+      "gender": "m",
+      "plural": "burri",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Food",
+      "level": "A1"
+    },
+    {
+      "it": "casa",
+      "en": "house",
+      "gender": "f",
+      "plural": "case",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "porta",
+      "en": "door",
+      "gender": "f",
+      "plural": "porte",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "finestra",
+      "en": "window",
+      "gender": "f",
+      "plural": "finestre",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "tavolo",
+      "en": "table",
+      "gender": "m",
+      "plural": "tavoli",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "sedia",
+      "en": "chair",
+      "gender": "f",
+      "plural": "sedie",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "letto",
+      "en": "bed",
+      "gender": "m",
+      "plural": "letti",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "cucina",
+      "en": "kitchen",
+      "gender": "f",
+      "plural": "cucine",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "bagno",
+      "en": "bathroom",
+      "gender": "m",
+      "plural": "bagni",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "chiave",
+      "en": "key",
+      "gender": "f",
+      "plural": "chiavi",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "scala",
+      "en": "stairs",
+      "gender": "f",
+      "plural": "scale",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Home",
+      "level": "A1"
+    },
+    {
+      "it": "albero",
+      "en": "tree",
+      "gender": "m",
+      "plural": "alberi",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "fiore",
+      "en": "flower",
+      "gender": "m",
+      "plural": "fiori",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "sole",
+      "en": "sun",
+      "gender": "m",
+      "plural": "soli",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "luna",
+      "en": "moon",
+      "gender": "f",
+      "plural": "lune",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "stella",
+      "en": "star",
+      "gender": "f",
+      "plural": "stelle",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "cielo",
+      "en": "sky",
+      "gender": "m",
+      "plural": "cieli",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "pioggia",
+      "en": "rain",
+      "gender": "f",
+      "plural": "piogge",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "neve",
+      "en": "snow",
+      "gender": "f",
+      "plural": "nevi",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "montagna",
+      "en": "mountain",
+      "gender": "f",
+      "plural": "montagne",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "fiume",
+      "en": "river",
+      "gender": "m",
+      "plural": "fiumi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Nature",
+      "level": "A1"
+    },
+    {
+      "it": "testa",
+      "en": "head",
+      "gender": "f",
+      "plural": "teste",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "mano",
+      "en": "hand",
+      "gender": "f",
+      "plural": "mani",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "gamba",
+      "en": "leg",
+      "gender": "f",
+      "plural": "gambe",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "occhio",
+      "en": "eye",
+      "gender": "m",
+      "plural": "occhi",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "orecchio",
+      "en": "ear",
+      "gender": "m",
+      "plural": "orecchie",
+      "def_sg": "l'",
+      "def_pl": "le",
+      "indef_sg": "un",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "naso",
+      "en": "nose",
+      "gender": "m",
+      "plural": "nasi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "bocca",
+      "en": "mouth",
+      "gender": "f",
+      "plural": "bocche",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "cuore",
+      "en": "heart",
+      "gender": "m",
+      "plural": "cuori",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "dito",
+      "en": "finger",
+      "gender": "m",
+      "plural": "dita",
+      "def_sg": "il",
+      "def_pl": "le",
+      "indef_sg": "un",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "ginocchio",
+      "en": "knee",
+      "gender": "m",
+      "plural": "ginocchia",
+      "def_sg": "il",
+      "def_pl": "le",
+      "indef_sg": "un",
+      "indef_pl": "delle",
+      "group": "Body",
+      "level": "A1"
+    },
+    {
+      "it": "libro",
+      "en": "book",
+      "gender": "m",
+      "plural": "libri",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "telefono",
+      "en": "phone",
+      "gender": "m",
+      "plural": "telefoni",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "macchina",
+      "en": "car",
+      "gender": "f",
+      "plural": "macchine",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "orologio",
+      "en": "watch",
+      "gender": "m",
+      "plural": "orologi",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "borsa",
+      "en": "bag",
+      "gender": "f",
+      "plural": "borse",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "soldi",
+      "en": "money",
+      "gender": "m",
+      "plural": "soldi",
+      "def_sg": "i",
+      "def_pl": "i",
+      "indef_sg": "dei",
+      "indef_pl": "dei",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "lettera",
+      "en": "letter",
+      "gender": "f",
+      "plural": "lettere",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "mappa",
+      "en": "map",
+      "gender": "f",
+      "plural": "mappe",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "ombrello",
+      "en": "umbrella",
+      "gender": "m",
+      "plural": "ombrelli",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "occhiali",
+      "en": "glasses",
+      "gender": "m",
+      "plural": "occhiali",
+      "def_sg": "gli",
+      "def_pl": "gli",
+      "indef_sg": "degli",
+      "indef_pl": "degli",
+      "group": "Objects",
+      "level": "A1"
+    },
+    {
+      "it": "città",
+      "en": "city",
+      "gender": "f",
+      "plural": "città",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "strada",
+      "en": "street",
+      "gender": "f",
+      "plural": "strade",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "negozio",
+      "en": "shop",
+      "gender": "m",
+      "plural": "negozi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "scuola",
+      "en": "school",
+      "gender": "f",
+      "plural": "scuole",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "ospedale",
+      "en": "hospital",
+      "gender": "m",
+      "plural": "ospedali",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "chiesa",
+      "en": "church",
+      "gender": "f",
+      "plural": "chiese",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "ponte",
+      "en": "bridge",
+      "gender": "m",
+      "plural": "ponti",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "parco",
+      "en": "park",
+      "gender": "m",
+      "plural": "parchi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "aeroporto",
+      "en": "airport",
+      "gender": "m",
+      "plural": "aeroporti",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "spiaggia",
+      "en": "beach",
+      "gender": "f",
+      "plural": "spiagge",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Places",
+      "level": "A1"
+    },
+    {
+      "it": "tempo",
+      "en": "time",
+      "gender": "m",
+      "plural": "tempi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "giorno",
+      "en": "day",
+      "gender": "m",
+      "plural": "giorni",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "notte",
+      "en": "night",
+      "gender": "f",
+      "plural": "notti",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "anno",
+      "en": "year",
+      "gender": "m",
+      "plural": "anni",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "inizio",
+      "en": "beginning",
+      "gender": "m",
+      "plural": "inizi",
+      "def_sg": "l'",
+      "def_pl": "gli",
+      "indef_sg": "un",
+      "indef_pl": "degli",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "fine",
+      "en": "end",
+      "gender": "f",
+      "plural": "fini",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "strada",
+      "en": "road",
+      "gender": "f",
+      "plural": "strade",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "lavoro",
+      "en": "work",
+      "gender": "m",
+      "plural": "lavori",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "domanda",
+      "en": "question",
+      "gender": "f",
+      "plural": "domande",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "risposta",
+      "en": "answer",
+      "gender": "f",
+      "plural": "risposte",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Concepts",
+      "level": "A1"
+    },
+    {
+      "it": "scarpe",
+      "en": "shoes",
+      "gender": "f",
+      "plural": "scarpe",
+      "def_sg": "le",
+      "def_pl": "le",
+      "indef_sg": "delle",
+      "indef_pl": "delle",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "camicia",
+      "en": "shirt",
+      "gender": "f",
+      "plural": "camicie",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "cappello",
+      "en": "hat",
+      "gender": "m",
+      "plural": "cappelli",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "luce",
+      "en": "light",
+      "gender": "f",
+      "plural": "luci",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "fuoco",
+      "en": "fire",
+      "gender": "m",
+      "plural": "fuochi",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "ghiaccio",
+      "en": "ice",
+      "gender": "m",
+      "plural": "ghiacci",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "vento",
+      "en": "wind",
+      "gender": "m",
+      "plural": "venti",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "pietra",
+      "en": "stone",
+      "gender": "f",
+      "plural": "pietre",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "nuvola",
+      "en": "cloud",
+      "gender": "f",
+      "plural": "nuvole",
+      "def_sg": "la",
+      "def_pl": "le",
+      "indef_sg": "una",
+      "indef_pl": "delle",
+      "group": "Misc",
+      "level": "A1"
+    },
+    {
+      "it": "sogno",
+      "en": "dream",
+      "gender": "m",
+      "plural": "sogni",
+      "def_sg": "il",
+      "def_pl": "i",
+      "indef_sg": "un",
+      "indef_pl": "dei",
+      "group": "Misc",
+      "level": "A1"
+    }
+  ],
+  "verbs": [
+    {
+      "it": "essere",
+      "en": "to be",
+      "conj": [
+        "sono",
+        "sei",
+        "è",
+        "siamo",
+        "siete",
+        "sono"
+      ],
+      "ipa": "/ˈɛssere/",
+      "level": "A1"
+    },
+    {
+      "it": "avere",
+      "en": "to have",
+      "conj": [
+        "ho",
+        "hai",
+        "ha",
+        "abbiamo",
+        "avete",
+        "hanno"
+      ],
+      "ipa": "/aˈvere/",
+      "level": "A1"
+    },
+    {
+      "it": "mangiare",
+      "en": "to eat",
+      "conj": [
+        "mangio",
+        "mangi",
+        "mangia",
+        "mangiamo",
+        "mangiate",
+        "mangiano"
+      ],
+      "ipa": "/manˈdʒare/",
+      "level": "A1"
+    },
+    {
+      "it": "bere",
+      "en": "to drink",
+      "conj": [
+        "bevo",
+        "bevi",
+        "beve",
+        "beviamo",
+        "bevete",
+        "bevono"
+      ],
+      "ipa": "/ˈbere/",
+      "level": "A1"
+    },
+    {
+      "it": "andare",
+      "en": "to go",
+      "conj": [
+        "vado",
+        "vai",
+        "va",
+        "andiamo",
+        "andate",
+        "vanno"
+      ],
+      "ipa": "/anˈdare/",
+      "level": "A1"
+    },
+    {
+      "it": "venire",
+      "en": "to come",
+      "conj": [
+        "vengo",
+        "vieni",
+        "viene",
+        "veniamo",
+        "venite",
+        "vengono"
+      ],
+      "ipa": "/veˈnire/",
+      "level": "A1"
+    },
+    {
+      "it": "fare",
+      "en": "to do",
+      "conj": [
+        "faccio",
+        "fai",
+        "fa",
+        "facciamo",
+        "fate",
+        "fanno"
+      ],
+      "ipa": "/ˈfare/",
+      "level": "A1"
+    },
+    {
+      "it": "parlare",
+      "en": "to speak",
+      "conj": [
+        "parlo",
+        "parli",
+        "parla",
+        "parliamo",
+        "parlate",
+        "parlano"
+      ],
+      "ipa": "/parˈlare/",
+      "level": "A1"
+    },
+    {
+      "it": "vedere",
+      "en": "to see",
+      "conj": [
+        "vedo",
+        "vedi",
+        "vede",
+        "vediamo",
+        "vedete",
+        "vedono"
+      ],
+      "ipa": "/veˈdere/",
+      "level": "A1"
+    },
+    {
+      "it": "sentire",
+      "en": "to hear",
+      "conj": [
+        "sento",
+        "senti",
+        "sente",
+        "sentiamo",
+        "sentite",
+        "sentono"
+      ],
+      "ipa": "/senˈtire/",
+      "level": "A1"
+    },
+    {
+      "it": "volere",
+      "en": "to want",
+      "conj": [
+        "voglio",
+        "vuoi",
+        "vuole",
+        "vogliamo",
+        "volete",
+        "vogliono"
+      ],
+      "ipa": "/voˈlere/",
+      "level": "A1"
+    },
+    {
+      "it": "potere",
+      "en": "to be able",
+      "conj": [
+        "posso",
+        "puoi",
+        "può",
+        "possiamo",
+        "potete",
+        "possono"
+      ],
+      "ipa": "/poˈtere/",
+      "level": "A1"
+    },
+    {
+      "it": "dovere",
+      "en": "to have to",
+      "conj": [
+        "devo",
+        "devi",
+        "deve",
+        "dobbiamo",
+        "dovete",
+        "devono"
+      ],
+      "ipa": "/doˈvere/",
+      "level": "A1"
+    },
+    {
+      "it": "sapere",
+      "en": "to know (fact)",
+      "conj": [
+        "so",
+        "sai",
+        "sa",
+        "sappiamo",
+        "sapete",
+        "sanno"
+      ],
+      "ipa": "/saˈpere/",
+      "level": "A1"
+    },
+    {
+      "it": "conoscere",
+      "en": "to know (person)",
+      "conj": [
+        "conosco",
+        "conosci",
+        "conosce",
+        "conosciamo",
+        "conoscete",
+        "conoscono"
+      ],
+      "ipa": "/koˈnoʃʃere/",
+      "level": "A1"
+    },
+    {
+      "it": "piacere",
+      "en": "to like",
+      "conj": [
+        "piaccio",
+        "piaci",
+        "piace",
+        "piacciamo",
+        "piacete",
+        "piacciono"
+      ],
+      "ipa": "/pjaˈtʃere/",
+      "level": "A1"
+    },
+    {
+      "it": "amare",
+      "en": "to love",
+      "conj": [
+        "amo",
+        "ami",
+        "ama",
+        "amiamo",
+        "amate",
+        "amano"
+      ],
+      "ipa": "/aˈmare/",
+      "level": "A1"
+    },
+    {
+      "it": "leggere",
+      "en": "to read",
+      "conj": [
+        "leggo",
+        "leggi",
+        "legge",
+        "leggiamo",
+        "leggete",
+        "leggono"
+      ],
+      "ipa": "/ˈlɛddʒere/",
+      "level": "A1"
+    },
+    {
+      "it": "scrivere",
+      "en": "to write",
+      "conj": [
+        "scrivo",
+        "scrivi",
+        "scrive",
+        "scriviamo",
+        "scrivete",
+        "scrivono"
+      ],
+      "ipa": "/ˈskrivere/",
+      "level": "A1"
+    },
+    {
+      "it": "comprare",
+      "en": "to buy",
+      "conj": [
+        "compro",
+        "compri",
+        "compra",
+        "compriamo",
+        "comprate",
+        "comprano"
+      ],
+      "ipa": "/komˈprare/",
+      "level": "A1"
+    },
+    {
+      "it": "lavorare",
+      "en": "to work",
+      "conj": [
+        "lavoro",
+        "lavori",
+        "lavora",
+        "lavoriamo",
+        "lavorate",
+        "lavorano"
+      ],
+      "ipa": "/lavoˈrare/",
+      "level": "A1"
+    },
+    {
+      "it": "imparare",
+      "en": "to learn",
+      "conj": [
+        "imparo",
+        "impari",
+        "impara",
+        "impariamo",
+        "imparate",
+        "imparano"
+      ],
+      "ipa": "/impaˈrare/",
+      "level": "A1"
+    },
+    {
+      "it": "vivere",
+      "en": "to live",
+      "conj": [
+        "vivo",
+        "vivi",
+        "vive",
+        "viviamo",
+        "vivete",
+        "vivono"
+      ],
+      "ipa": "/ˈvivere/",
+      "level": "A1"
+    },
+    {
+      "it": "dormire",
+      "en": "to sleep",
+      "conj": [
+        "dormo",
+        "dormi",
+        "dorme",
+        "dormiamo",
+        "dormite",
+        "dormono"
+      ],
+      "ipa": "/dorˈmire/",
+      "level": "A1"
+    },
+    {
+      "it": "cucinare",
+      "en": "to cook",
+      "conj": [
+        "cucino",
+        "cucini",
+        "cucina",
+        "cuciniamo",
+        "cucinate",
+        "cucinano"
+      ],
+      "ipa": "/kutʃiˈnare/",
+      "level": "A1"
+    },
+    {
+      "it": "pensare",
+      "en": "to think",
+      "conj": [
+        "penso",
+        "pensi",
+        "pensa",
+        "pensiamo",
+        "pensate",
+        "pensano"
+      ],
+      "ipa": "/penˈsare/",
+      "level": "A1"
+    },
+    {
+      "it": "chiedere",
+      "en": "to ask",
+      "conj": [
+        "chiedo",
+        "chiedi",
+        "chiede",
+        "chiediamo",
+        "chiedete",
+        "chiedono"
+      ],
+      "ipa": "/ˈkjɛdere/",
+      "level": "A1"
+    },
+    {
+      "it": "rispondere",
+      "en": "to answer",
+      "conj": [
+        "rispondo",
+        "rispondi",
+        "risponde",
+        "rispondiamo",
+        "rispondete",
+        "rispondono"
+      ],
+      "ipa": "/risˈpondere/",
+      "level": "A1"
+    },
+    {
+      "it": "dare",
+      "en": "to give",
+      "conj": [
+        "do",
+        "dai",
+        "dà",
+        "diamo",
+        "date",
+        "danno"
+      ],
+      "ipa": "/ˈdare/",
+      "level": "A1"
+    },
+    {
+      "it": "prendere",
+      "en": "to take",
+      "conj": [
+        "prendo",
+        "prendi",
+        "prende",
+        "prendiamo",
+        "prendete",
+        "prendono"
+      ],
+      "ipa": "/ˈprɛndere/",
+      "level": "A1"
+    }
+  ],
+  "adjectives": [
+    {
+      "it": "grande",
+      "en": "big",
+      "forms": {
+        "m": "grande",
+        "f": "grande",
+        "m_pl": "grandi",
+        "f_pl": "grandi"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "piccolo",
+      "en": "small",
+      "forms": {
+        "m": "piccolo",
+        "f": "piccola",
+        "m_pl": "piccoli",
+        "f_pl": "piccole"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "buono",
+      "en": "good",
+      "forms": {
+        "m": "buono",
+        "f": "buona",
+        "m_pl": "buoni",
+        "f_pl": "buone"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "cattivo",
+      "en": "bad",
+      "forms": {
+        "m": "cattivo",
+        "f": "cattiva",
+        "m_pl": "cattivi",
+        "f_pl": "cattive"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "nuovo",
+      "en": "new",
+      "forms": {
+        "m": "nuovo",
+        "f": "nuova",
+        "m_pl": "nuovi",
+        "f_pl": "nuove"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "vecchio",
+      "en": "old",
+      "forms": {
+        "m": "vecchio",
+        "f": "vecchia",
+        "m_pl": "vecchi",
+        "f_pl": "vecchie"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "bello",
+      "en": "beautiful",
+      "forms": {
+        "m": "bello",
+        "f": "bella",
+        "m_pl": "belli",
+        "f_pl": "belle"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "brutto",
+      "en": "ugly",
+      "forms": {
+        "m": "brutto",
+        "f": "brutta",
+        "m_pl": "brutti",
+        "f_pl": "brutte"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "veloce",
+      "en": "fast",
+      "forms": {
+        "m": "veloce",
+        "f": "veloce",
+        "m_pl": "veloci",
+        "f_pl": "veloci"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "lento",
+      "en": "slow",
+      "forms": {
+        "m": "lento",
+        "f": "lenta",
+        "m_pl": "lenti",
+        "f_pl": "lente"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "caldo",
+      "en": "hot",
+      "forms": {
+        "m": "caldo",
+        "f": "calda",
+        "m_pl": "caldi",
+        "f_pl": "calde"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "freddo",
+      "en": "cold",
+      "forms": {
+        "m": "freddo",
+        "f": "fredda",
+        "m_pl": "freddi",
+        "f_pl": "fredde"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "caro",
+      "en": "expensive",
+      "forms": {
+        "m": "caro",
+        "f": "cara",
+        "m_pl": "cari",
+        "f_pl": "care"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "economico",
+      "en": "cheap",
+      "forms": {
+        "m": "economico",
+        "f": "economica",
+        "m_pl": "economici",
+        "f_pl": "economiche"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "facile",
+      "en": "easy",
+      "forms": {
+        "m": "facile",
+        "f": "facile",
+        "m_pl": "facili",
+        "f_pl": "facili"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "difficile",
+      "en": "difficult",
+      "forms": {
+        "m": "difficile",
+        "f": "difficile",
+        "m_pl": "difficili",
+        "f_pl": "difficili"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "alto",
+      "en": "tall",
+      "forms": {
+        "m": "alto",
+        "f": "alta",
+        "m_pl": "alti",
+        "f_pl": "alte"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "basso",
+      "en": "short",
+      "forms": {
+        "m": "basso",
+        "f": "bassa",
+        "m_pl": "bassi",
+        "f_pl": "basse"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "pesante",
+      "en": "heavy",
+      "forms": {
+        "m": "pesante",
+        "f": "pesante",
+        "m_pl": "pesanti",
+        "f_pl": "pesanti"
+      },
+      "level": "A1"
+    },
+    {
+      "it": "leggero",
+      "en": "light (weight)",
+      "forms": {
+        "m": "leggero",
+        "f": "leggera",
+        "m_pl": "leggeri",
+        "f_pl": "leggere"
+      },
+      "level": "A1"
+    }
+  ]
+}

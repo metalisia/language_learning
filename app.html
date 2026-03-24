@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#2563eb">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="../manifest.json">
-<link rel="icon" type="image/svg+xml" href="../images/icon-192.svg">
-<title>Fiszki - Polish Language Trainer</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="images/icon-192.svg">
+<title id="app-title">Language Trainer</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -246,17 +246,17 @@
   .spell-feedback.incorrect { color: var(--incorrect); }
   .spell-answer { margin-top: 4px; font-size: 0.85rem; color: var(--text-muted); min-height: 1.2em; }
 
-  /* POLISH KEYBOARD */
-  .pl-keyboard {
+  /* LANGUAGE KEYBOARD */
+  .lang-keyboard {
     display: flex; gap: 4px; justify-content: center; margin-top: 10px; flex-wrap: wrap;
   }
-  .pl-key {
+  .lang-key {
     width: 32px; height: 30px; border: 1px solid var(--border); border-radius: 6px;
     background: var(--card-bg); cursor: pointer; font-size: 0.85rem; color: var(--text);
     display: flex; align-items: center; justify-content: center; transition: all 0.1s;
     font-family: inherit;
   }
-  .pl-key:hover { border-color: var(--accent); background: var(--accent-light); }
+  .lang-key:hover { border-color: var(--accent); background: var(--accent-light); }
 
   /* MULTIPLE CHOICE */
   .mc-direction { margin-bottom: 16px; display: flex; justify-content: center; gap: 6px; }
@@ -310,6 +310,29 @@
   .decl-correction {
     font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px;
   }
+
+  /* Articles (Italian grammar mode) */
+  .art-grid {
+    display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px;
+    align-items: center; margin-top: 20px; text-align: left;
+  }
+  .art-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+  .art-col-head { font-size: 0.7rem; color: var(--text-muted); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+  .art-input {
+    padding: 7px 10px; border: 2px solid var(--border); border-radius: 8px;
+    font-size: 0.9rem; font-family: inherit; text-align: center; width: 100%;
+    outline: none; transition: border-color 0.2s; background: var(--bg); color: var(--text);
+  }
+  .art-input:focus { border-color: var(--accent); }
+  .art-input.correct { border-color: var(--correct); background: var(--correct-light); }
+  .art-input.incorrect { border-color: var(--incorrect); background: var(--incorrect-light); }
+  .art-input.given { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .art-input:disabled { opacity: 0.8; }
+  .art-cell { display: flex; flex-direction: column; }
+  .art-correction {
+    font-size: 0.72rem; color: var(--incorrect); text-align: center; margin-top: 2px;
+  }
+
   .gender-picker { display: flex; gap: 6px; justify-content: center; margin: 16px 0 8px; }
   .gender-btn {
     padding: 6px 18px; border: 2px solid var(--border); border-radius: 8px;
@@ -559,7 +582,7 @@
 
   /* EXAMPLE SENTENCE ON FLASHCARD */
   .card-example { font-size: 0.78rem; color: var(--text-muted); margin-top: 14px; line-height: 1.5; }
-  .card-example-pl { color: var(--accent); font-weight: 500; }
+  .card-example-tl { color: var(--accent); font-weight: 500; }
 
   /* CONVERSATION READINESS */
   .readiness-value { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
@@ -593,6 +616,9 @@
     .decl-grid { gap: 5px; }
     .decl-input { font-size: 0.8rem; padding: 5px 6px; }
     .decl-label { font-size: 0.7rem; }
+    .art-grid { gap: 5px; }
+    .art-input { font-size: 0.8rem; padding: 5px 6px; }
+    .art-label { font-size: 0.7rem; }
     .conj-label { font-size: 0.75rem; padding-right: 4px; }
     .conj-input { font-size: 0.8rem; padding: 5px 6px; }
     .error-label { width: 70px; font-size: 0.7rem; }
@@ -931,7 +957,7 @@
   <div style="display:flex;align-items:center;gap:8px">
     <button class="menu-toggle" onclick="toggleSideMenu()" title="Menu">&#9776;</button>
     <a href="../index.html" style="text-decoration:none;color:var(--accent);font-size:1.1rem" title="Back to menu">&#8249;</a>
-    <h1>Fiszki <span id="current-mode-label">/ Flashcards</span></h1>
+    <h1 id="app-name-header">Language Trainer <span id="current-mode-label">/ Flashcards</span></h1>
   </div>
   <div class="header-right">
     <span class="streak-badge inactive" id="streak-badge" title="Day streak">0</span>
@@ -977,7 +1003,7 @@
   <div class="card-container" onclick="fc_flip()">
     <div class="card" id="fc-card">
       <div class="card-face card-front">
-        <div class="card-label">Polish</div>
+        <div class="card-label" id="li-lang-label">Target Language</div>
         <div class="card-word" id="fc-front">--</div>
         <div class="word-meta" id="fc-meta"></div>
         <div class="hint-text" id="fc-hint"></div>
@@ -1001,13 +1027,13 @@
 <!-- SPELLING -->
 <div class="mode-section" id="mode-spelling">
   <div class="card-box">
-    <div class="spell-prompt" id="sp-prompt">Translate to Polish:</div>
+    <div class="spell-prompt" id="sp-prompt">Translate:</div>
     <div class="card-word" id="sp-word">--</div>
     <div class="spell-input-row">
-      <input type="text" class="spell-input" id="sp-input" placeholder="Type in Polish..." autocomplete="off">
+      <input type="text" class="spell-input" id="sp-input" placeholder="Type translation..." autocomplete="off">
       <button class="btn btn-primary" onclick="sp_check()" id="sp-submit">Check</button>
     </div>
-    <div class="pl-keyboard" id="sp-keyboard"></div>
+    <div class="lang-keyboard" id="sp-keyboard"></div>
     <div class="spell-feedback" id="sp-feedback"></div>
     <div class="spell-answer" id="sp-answer"></div>
   </div>
@@ -1021,11 +1047,11 @@
 <!-- MULTIPLE CHOICE -->
 <div class="mode-section" id="mode-multichoice">
   <div class="mc-direction">
-    <button class="mc-dir-btn active" id="mc-dir-pen" onclick="mc_setDir('pe')">Polish &rarr; English</button>
-    <button class="mc-dir-btn" id="mc-dir-enp" onclick="mc_setDir('ep')">English &rarr; Polish</button>
+    <button class="mc-dir-btn active" id="mc-dir-pen" onclick="mc_setDir('pe')"><span id="mc-lang-name">Target</span> &rarr; English</button>
+    <button class="mc-dir-btn" id="mc-dir-enp" onclick="mc_setDir('ep')">English &rarr; <span id="mc-lang-name2">Target</span></button>
   </div>
   <div class="card-box">
-    <div class="card-label" id="mc-label">Polish</div>
+    <div class="card-label" id="mc-label">Target Language</div>
     <div class="card-word" id="mc-word">--</div>
     <div class="mc-options" id="mc-options"></div>
   </div>
@@ -1075,12 +1101,41 @@
       <div class="decl-cell"><input class="decl-input" id="d-gen-sg" placeholder="gen. sg."></div>
       <div class="decl-cell"><input class="decl-input" id="d-gen-pl" placeholder="gen. pl."></div>
     </div>
-    <div class="pl-keyboard" id="decl-keyboard" style="margin-top:12px"></div>
+    <div class="lang-keyboard" id="decl-keyboard" style="margin-top:12px"></div>
   </div>
 </div>
 <div class="controls" id="decl-controls" style="display:none">
   <button class="btn btn-primary" onclick="decl_check()" id="decl-check-btn">Check</button>
   <button class="btn btn-primary" onclick="decl_next()" id="decl-next-btn" style="display:none">Next</button>
+</div>
+
+<!-- ARTICLES (Italian grammar mode) -->
+<div class="mode-section" id="mode-articles" style="display:none">
+  <div class="card-box" id="art-card">
+    <div class="card-label">Give the articles for this noun</div>
+    <div class="card-word" id="art-word">--</div>
+    <div class="word-meta" id="art-en"></div>
+    <div class="gender-picker" id="art-gender">
+      <button class="gender-btn" data-g="m" onclick="art_pickGender(this)">m</button>
+      <button class="gender-btn" data-g="f" onclick="art_pickGender(this)">f</button>
+    </div>
+    <div class="art-grid" id="art-grid">
+      <div class="art-label"></div><div class="art-col-head">Singular</div><div class="art-col-head">Plural</div>
+      <div class="art-label">Def.</div>
+      <div class="art-cell"><input class="art-input" id="a-def-sg" placeholder="il/la/l'..."></div>
+      <div class="art-cell"><input class="art-input" id="a-def-pl" placeholder="i/le/gli..."></div>
+      <div class="art-label">Indef.</div>
+      <div class="art-cell"><input class="art-input" id="a-indef-sg" placeholder="un/una..."></div>
+      <div class="art-cell"><input class="art-input" id="a-indef-pl" placeholder="dei/delle..."></div>
+      <div class="art-label">Plural</div>
+      <div class="art-cell"><input class="art-input given" id="a-noun-sg" disabled></div>
+      <div class="art-cell"><input class="art-input" id="a-noun-pl" placeholder="plural form"></div>
+    </div>
+  </div>
+</div>
+<div class="controls" id="art-controls" style="display:none">
+  <button class="btn btn-primary" onclick="art_check()" id="art-check-btn">Check</button>
+  <button class="btn btn-primary" onclick="art_next()" id="art-next-btn" style="display:none">Next</button>
 </div>
 
 <!-- CONJUGATION -->
@@ -1098,9 +1153,9 @@
       <div class="conj-label">wy</div><div class="conj-cell"><input class="conj-input" id="cj-4" placeholder="wy..."></div>
       <div class="conj-label">oni/one</div><div class="conj-cell"><input class="conj-input" id="cj-5" placeholder="oni/one..."></div>
     </div>
-    <div class="pl-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
+    <div class="lang-keyboard" id="conj-keyboard" style="margin-top:12px"></div>
     <details class="pron-guide">
-      <summary>Polish Pronunciation Guide</summary>
+      <summary id="pron-guide-title">Pronunciation Guide</summary>
       <table class="pron-table" id="pron-table"></table>
     </details>
   </div>
@@ -1121,7 +1176,7 @@
       <input type="text" class="spell-input" id="gen-input" placeholder="Type the correct form..." autocomplete="off">
       <button class="btn btn-primary" onclick="gen_check()" id="gen-submit">Check</button>
     </div>
-    <div class="pl-keyboard" id="gen-keyboard" style="margin-top:8px"></div>
+    <div class="lang-keyboard" id="gen-keyboard" style="margin-top:8px"></div>
     <div class="spell-feedback" id="gen-feedback"></div>
     <div class="spell-answer" id="gen-answer"></div>
   </div>
@@ -1152,7 +1207,7 @@
       <input type="text" class="spell-input" id="cloze-input" placeholder="Type the missing word..." autocomplete="off">
       <button class="btn btn-primary" onclick="cloze_check()" id="cloze-submit">Check</button>
     </div>
-    <div class="pl-keyboard" id="cloze-keyboard"></div>
+    <div class="lang-keyboard" id="cloze-keyboard"></div>
     <div class="spell-feedback" id="cloze-feedback"></div>
     <div class="cloze-full" id="cloze-full"></div>
   </div>
@@ -1167,14 +1222,14 @@
 <!-- NUMBERS -->
 <div class="mode-section" id="mode-numbers">
   <div class="card-box">
-    <div class="num-type-tag" id="num-tag">Number to Polish</div>
-    <div class="card-label" id="num-prompt">Type the Polish word:</div>
+    <div class="num-type-tag" id="num-tag">Number to Word</div>
+    <div class="card-label" id="num-prompt">Type the word:</div>
     <div class="card-word" id="num-word">--</div>
     <div class="spell-input-row">
       <input type="text" class="spell-input" id="num-input" placeholder="Type answer..." autocomplete="off">
       <button class="btn btn-primary" onclick="num_check()" id="num-submit">Check</button>
     </div>
-    <div class="pl-keyboard" id="num-keyboard"></div>
+    <div class="lang-keyboard" id="num-keyboard"></div>
     <div class="spell-feedback" id="num-feedback"></div>
     <div class="spell-answer" id="num-answer"></div>
   </div>
@@ -1187,7 +1242,7 @@
 <!-- SENTENCE BUILDER -->
 <div class="mode-section" id="mode-sentences">
   <div class="card-box">
-    <div class="card-label">Build the Polish sentence</div>
+    <div class="card-label" id="sb-label">Build the sentence</div>
     <div class="sb-english" id="sb-english">--</div>
     <div class="sb-answer-area" id="sb-answer-area"></div>
     <div class="sb-tiles" id="sb-tiles"></div>
@@ -1240,7 +1295,7 @@
     </div>
 
     <div class="reader-input-area" id="reader-input-paste">
-      <textarea class="reader-textarea" id="reader-paste-area" placeholder="Paste any Polish text here..."></textarea>
+      <textarea class="reader-textarea" id="reader-paste-area" placeholder="Paste any text here..."></textarea>
       <div class="reader-input-actions">
         <button class="btn btn-primary" onclick="reader_readPasted()">Read</button>
         <span style="font-size:0.78rem;color:var(--text-muted)">Paste a news article, book excerpt, recipe, tweet...</span>
@@ -1294,7 +1349,7 @@
   <div class="card-box" style="text-align:center;margin-bottom:20px" id="readiness-section">
     <h3 class="chart-section" style="margin-bottom:8px;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Conversation Readiness</h3>
     <div class="readiness-value" id="readiness-value">0%</div>
-    <div class="readiness-label" id="readiness-label">of the 500 most common Polish words</div>
+    <div class="readiness-label" id="readiness-label">of the 500 most common words</div>
     <div class="readiness-bar"><div class="readiness-fill" id="readiness-fill" style="width:0%"></div></div>
     <div class="badges" id="readiness-badges"></div>
   </div>
@@ -1348,12 +1403,20 @@
 </div>
 
 <script>
-// ===================== DATA =====================
-const PL_CHARS = ['ą','ć','ę','ł','ń','ó','ś','ź','ż'];
-const CEFR_LEVELS = ['A1','A2','B1','B2'];
-let WORD_BANK = null; // loaded from word_bank.json
+// ===================== CONFIG =====================
+const URL_PARAMS = new URLSearchParams(window.location.search);
+const LANG_DIR = URL_PARAMS.get('lang') || 'polish';
 
-// These arrays are populated from word_bank.json at init
+let CONFIG = null; // loaded from {LANG_DIR}/config.json
+let LANG_CHARS = [];
+let VERB_PAST_DATA = [];
+let GENDER_NOUNS = [];
+let PRONUNCIATION_GUIDE = [];
+let CONJ_LABELS = [];
+
+const CEFR_LEVELS = ['A1','A2','B1','B2'];
+let WORD_BANK = null;
+
 let NOUNS = [];
 let VERBS = [];
 let ADJECTIVES = [];
@@ -1365,112 +1428,123 @@ let NOUN_LEVELS = [];
 let VERB_LEVELS = [];
 let ADJ_LEVELS = [];
 
-// Legacy past tense data for existing 30 verbs (gender mode exercises)
-const VERB_PAST_DATA = [
-  ["byłem","byłam","był","była","było"],
-  ["miałem","miałam","miał","miała","miało"],
-  ["jadłem","jadłam","jadł","jadła","jadło"],
-  ["piłem","piłam","pił","piła","piło"],
-  ["szedłem","szłam","szedł","szła","szło"],
-  ["jechałem","jechałam","jechał","jechała","jechało"],
-  ["robiłem","robiłam","robił","robiła","robiło"],
-  ["mówiłem","mówiłam","mówił","mówiła","mówiło"],
-  ["widziałem","widziałam","widział","widziała","widziało"],
-  ["słyszałem","słyszałam","słyszał","słyszała","słyszało"],
-  ["chciałem","chciałam","chciał","chciała","chciało"],
-  ["mogłem","mogłam","mógł","mogła","mogło"],
-  ["musiałem","musiałam","musiał","musiała","musiało"],
-  ["wiedziałem","wiedziałam","wiedział","wiedziała","wiedziało"],
-  ["znałem","znałam","znał","znała","znało"],
-  ["lubiłem","lubiłam","lubił","lubiła","lubiło"],
-  ["kochałem","kochałam","kochał","kochała","kochało"],
-  ["czytałem","czytałam","czytał","czytała","czytało"],
-  ["pisałem","pisałam","pisał","pisała","pisało"],
-  ["kupowałem","kupowałam","kupował","kupowała","kupowało"],
-  ["pracowałem","pracowałam","pracował","pracowała","pracowało"],
-  ["uczyłem się","uczyłam się","uczył się","uczyła się","uczyło się"],
-  ["mieszkałem","mieszkałam","mieszkał","mieszkała","mieszkało"],
-  ["spałem","spałam","spał","spała","spało"],
-  ["gotowałem","gotowałam","gotował","gotowała","gotowało"],
-  ["myślałem","myślałam","myślał","myślała","myślało"],
-  ["pytałem","pytałam","pytał","pytała","pytało"],
-  ["odpowiadałem","odpowiadałam","odpowiadał","odpowiadała","odpowiadało"],
-  ["dawałem","dawałam","dawał","dawała","dawało"],
-  ["brałem","brałam","brał","brała","brało"],
-];
+function loadConfig(config) {
+  CONFIG = config;
+  const TL = config.lang; // "pl" or "it"
+
+  // Set config-driven globals
+  LANG_CHARS = config.specialChars || [];
+  VERB_PAST_DATA = config.verbPastData || [];
+  GENDER_NOUNS = (config.genderNouns || []).map(n => ({ pl: n.word, en: n.en, g: n.g }));
+  PRONUNCIATION_GUIDE = config.pronunciationGuide || [];
+  CONJ_LABELS = config.conjLabels || [];
+  MODES = config.modes ? config.modes.map(m => {
+    const labels = {flashcard:'Flashcards',spelling:'Spelling',multichoice:'Multiple Choice',
+      listening:'Listening',declension:'Declension',conjugation:'Conjugation',gender:'Gender',
+      cloze:'Cloze',numbers:'Numbers',sentences:'Sentence Builder',speed:'Speed Round',
+      phrases:'Survival Phrases',conversations:'Conversations',reader:'Reader',progress:'Progress',
+      articles:'Articles'};
+    return [m, labels[m] || m];
+  }) : MODES;
+
+  // Alias language-specific field to .pl for internal consistency
+  const data = config;
+  data.nouns.forEach(n => { n.pl = n[TL]; });
+  data.verbs.forEach(v => { v.pl = v[TL]; });
+  data.adjectives.forEach(a => { a.pl = a[TL]; });
+
+  loadWordBank(data);
+
+  // Update page title and header
+  document.getElementById('app-title').textContent = config.appName + ' - ' + config.name + ' Language Trainer';
+  const headerEl = document.getElementById('app-name-header');
+  if (headerEl) headerEl.firstChild.textContent = config.appName + ' ';
+
+  // Update conjugation grid labels
+  CONJ_LABELS.forEach((label, i) => {
+    const labelEl = document.querySelectorAll('.conj-label')[i];
+    if (labelEl) labelEl.textContent = label;
+    const inp = document.getElementById('cj-' + i);
+    if (inp) inp.placeholder = label + '...';
+  });
+
+  // Update grammar mode section visibility & gender buttons
+  const hasDecl = config.modes.includes('declension');
+  const hasArt = config.modes.includes('articles');
+  const declSection = document.getElementById('mode-declension');
+  const artSection = document.getElementById('mode-articles');
+  if (declSection) declSection.style.display = hasDecl ? '' : 'none';
+  if (artSection) artSection.style.display = hasArt ? '' : 'none';
+
+  // Update language-specific labels
+  const langName = config.name;
+  const labelUpdates = {
+    'mc-lang-name': langName, 'mc-lang-name2': langName,
+    'li-lang-label': langName, 'mc-label': langName,
+    'pron-guide-title': langName + ' Pronunciation Guide',
+    'sp-prompt': 'Translate to ' + langName + ':',
+  };
+  Object.entries(labelUpdates).forEach(([id, text]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  });
+  const spInput = document.getElementById('sp-input');
+  if (spInput) spInput.placeholder = 'Type in ' + langName + '...';
+  const readerArea = document.getElementById('reader-paste-area');
+  if (readerArea) readerArea.placeholder = 'Paste any ' + langName + ' text here...';
+
+  // Build gender buttons dynamically
+  const genderPicker = document.getElementById('decl-gender');
+  if (genderPicker && config.genderSystem) {
+    genderPicker.innerHTML = config.genderSystem.map(g =>
+      `<button class="gender-btn" data-g="${g}" onclick="decl_pickGender(this)">${g}</button>`
+    ).join('');
+  }
+}
 
 function loadWordBank(data) {
   WORD_BANK = data;
-  // Build NOUNS array: [pl, en, gender, nom_pl, acc_sg, acc_pl, gen_sg, gen_pl]
-  NOUNS = data.nouns.map(n => {
-    if (n.gender === 'pl') return [n.pl, n.en, 'pl', n.nom_pl, n.acc_pl, n.gen_pl];
-    return [n.pl, n.en, n.gender, n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl];
-  });
-  NOUN_LEVELS = data.nouns.map(n => n.level);
+  // Build NOUNS array: [pl, en, gender, ...]
+  // Format depends on language: Polish has declension fields, Italian has article fields
+  if (CONFIG.lang === 'pl') {
+    NOUNS = data.nouns.map(n => {
+      if (n.gender === 'pl') return [n.pl, n.en, 'pl', n.nom_pl, n.acc_pl, n.gen_pl];
+      return [n.pl, n.en, n.gender, n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl];
+    });
+  } else if (CONFIG.lang === 'it') {
+    NOUNS = data.nouns.map(n => [n.pl, n.en, n.gender, n.plural, n.def_sg, n.def_pl, n.indef_sg, n.indef_pl]);
+  } else {
+    NOUNS = data.nouns.map(n => [n.pl, n.en, n.gender]);
+  }
+  NOUN_LEVELS = data.nouns.map(n => n.level || 'A1');
 
-  // Build VERBS array: [pl, en]
   VERBS = data.verbs.map(v => [v.pl, v.en]);
   VERB_CONJ = data.verbs.map(v => v.conj);
   VERB_IPA = data.verbs.map(v => v.ipa);
-  VERB_LEVELS = data.verbs.map(v => v.level);
-  // Past tense: use legacy data for first 30, empty for new verbs
+  VERB_LEVELS = data.verbs.map(v => v.level || 'A1');
   VERB_PAST = data.verbs.map((v, i) => i < VERB_PAST_DATA.length ? VERB_PAST_DATA[i] : null);
 
-  // Build ADJECTIVES array: [pl, en]
   ADJECTIVES = data.adjectives.map(a => [a.pl, a.en]);
   ADJ_FORMS = data.adjectives.map(a => a.forms);
-  ADJ_LEVELS = data.adjectives.map(a => a.level);
+  ADJ_LEVELS = data.adjectives.map(a => a.level || 'A1');
 
-  // Rebuild noun groups dynamically (store arrays of indices for non-contiguous groups)
+  // Rebuild noun groups dynamically
   const groupMap = {};
   data.nouns.forEach((n, i) => {
-    if (!groupMap[n.group]) groupMap[n.group] = [];
-    groupMap[n.group].push(i);
+    const group = n.group || 'Misc';
+    if (!groupMap[group]) groupMap[group] = [];
+    groupMap[group].push(i);
   });
   NOUN_GROUPS = { "All Nouns": null };
   Object.keys(groupMap).forEach(g => { NOUN_GROUPS[g] = groupMap[g]; });
 
-  // Load examples and conversations
   EXAMPLES = data.examples || {};
   CONVERSATIONS = data.conversations || [];
 }
 
-const CONJ_LABELS = ["ja","ty","on/ona/ono","my","wy","oni/one"];
-
-// Example nouns for gender-aware adjective practice
-const GENDER_NOUNS = [
-  {pl:"dom",en:"house",g:"m"},{pl:"kot",en:"cat",g:"m"},{pl:"pies",en:"dog",g:"m"},
-  {pl:"stół",en:"table",g:"m"},{pl:"samochód",en:"car",g:"m"},
-  {pl:"kobieta",en:"woman",g:"f"},{pl:"kawa",en:"coffee",g:"f"},{pl:"książka",en:"book",g:"f"},
-  {pl:"szkoła",en:"school",g:"f"},{pl:"noc",en:"night",g:"f"},
-  {pl:"dziecko",en:"child",g:"n"},{pl:"okno",en:"window",g:"n"},{pl:"mleko",en:"milk",g:"n"},
-  {pl:"miasto",en:"city",g:"n"},{pl:"jajko",en:"egg",g:"n"},
-];
-
-// Polish pronunciation guide for English speakers
-const PRONUNCIATION_GUIDE = [
-  {sound:"ą",ipa:"/ɔ̃/",desc:"Nasal 'o', like French 'on'. Before b/p becomes 'om'."},
-  {sound:"ć",ipa:"/tɕ/",desc:"Soft 'ch', like 'cheese' but softer. Tongue touches palate."},
-  {sound:"ę",ipa:"/ɛ̃/",desc:"Nasal 'e', like French 'in'. At word end often just /ɛ/."},
-  {sound:"ł",ipa:"/w/",desc:"Like English 'w'. 'Łóżko' sounds like 'woosh-ko'."},
-  {sound:"ń",ipa:"/ɲ/",desc:"Like 'ny' in 'canyon'. Soft nasal n."},
-  {sound:"ó",ipa:"/u/",desc:"Same sound as 'u'. 'Góra' sounds like 'goora'."},
-  {sound:"ś",ipa:"/ɕ/",desc:"Soft 'sh', tongue near palate. Softer than 'sz'."},
-  {sound:"ź",ipa:"/ʑ/",desc:"Soft 'zh', voiced version of ś."},
-  {sound:"ż/rz",ipa:"/ʐ/",desc:"Hard 'zh', like 'pleasure'. ż and rz sound the same."},
-  {sound:"sz",ipa:"/ʂ/",desc:"Hard 'sh', like English 'sh' in 'ship'."},
-  {sound:"cz",ipa:"/ʈʂ/",desc:"Hard 'ch', like English 'ch' in 'church'."},
-  {sound:"dz",ipa:"/dz/",desc:"Like 'ds' in 'beds'."},
-  {sound:"dź",ipa:"/dʑ/",desc:"Soft 'j', like 'jeans' but softer."},
-  {sound:"dż",ipa:"/dʐ/",desc:"Hard 'j', like English 'j' in 'judge'."},
-  {sound:"ch/h",ipa:"/x/",desc:"Like Scottish 'loch'. ch and h sound the same."},
-  {sound:"w",ipa:"/v/",desc:"Like English 'v'. 'Woda' sounds like 'voda'."},
-  {sound:"y",ipa:"/ɨ/",desc:"Between 'i' and 'u'. Like 'i' in 'bit' but further back."},
-];
-
 let NOUN_GROUPS = { "All Nouns": null };
 
-const MODES = [
+let MODES = [
   ["flashcard","Flashcards"],["spelling","Spelling"],["multichoice","Multiple Choice"],
   ["listening","Listening"],["declension","Declension"],["conjugation","Conjugation"],
   ["gender","Gender"],["cloze","Cloze"],["numbers","Numbers"],["sentences","Sentence Builder"],
@@ -1491,9 +1565,9 @@ let gen_deck = [], gen_current = 0, gen_correct = 0, gen_missed = [];
 const BOX_INTERVALS = [0, 1, 2, 4, 8, 16]; // days per box (box 0 unused)
 
 function getSRS() {
-  try { return JSON.parse(localStorage.getItem('fiszki_srs')) || {}; } catch { return {}; }
+  try { return JSON.parse(localStorage.getItem(CONFIG.storagePrefix + '_srs')) || {}; } catch { return {}; }
 }
-function saveSRS(data) { localStorage.setItem('fiszki_srs', JSON.stringify(data)); }
+function saveSRS(data) { localStorage.setItem(CONFIG.storagePrefix + '_srs', JSON.stringify(data)); }
 
 function getWordSRS(id) {
   const srs = getSRS();
@@ -1528,10 +1602,10 @@ function wordId(type, idx) { return type[0] + idx; }
 
 // ===================== DAILY STATS =====================
 function getStats() {
-  try { return JSON.parse(localStorage.getItem('fiszki_stats')) || { daily: {}, streak: 0, lastActive: null }; }
+  try { return JSON.parse(localStorage.getItem(CONFIG.storagePrefix + '_stats')) || { daily: {}, streak: 0, lastActive: null }; }
   catch { return { daily: {}, streak: 0, lastActive: null }; }
 }
-function saveStats(s) { localStorage.setItem('fiszki_stats', JSON.stringify(s)); }
+function saveStats(s) { localStorage.setItem(CONFIG.storagePrefix + '_stats', JSON.stringify(s)); }
 
 function recordSession(reviewed, numCorrect, newWords) {
   const s = getStats();
@@ -1554,18 +1628,18 @@ function recordSession(reviewed, numCorrect, newWords) {
 
 // ===================== ERROR PATTERNS =====================
 function getErrors() {
-  try { return JSON.parse(localStorage.getItem('fiszki_errors')) || { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
-  catch { return { diacritics:0, gender:0, case_form:0, conjugation:0, vocabulary:0 }; }
+  try { return JSON.parse(localStorage.getItem(CONFIG.storagePrefix + '_errors')) || { diacritics:0, gender:0, case_form:0, articles:0, conjugation:0, vocabulary:0 }; }
+  catch { return { diacritics:0, gender:0, case_form:0, articles:0, conjugation:0, vocabulary:0 }; }
 }
-function saveErrors(e) { localStorage.setItem('fiszki_errors', JSON.stringify(e)); }
+function saveErrors(e) { localStorage.setItem(CONFIG.storagePrefix + '_errors', JSON.stringify(e)); }
 
 function resetProgress() {
   if (!confirm('This will erase all your progress, streaks, and stats. Are you sure?')) return;
-  localStorage.removeItem('fiszki_srs');
-  localStorage.removeItem('fiszki_stats');
-  localStorage.removeItem('fiszki_errors');
-  localStorage.removeItem('fiszki_xp');
-  localStorage.removeItem('fiszki_speed_high');
+  localStorage.removeItem(CONFIG.storagePrefix + '_srs');
+  localStorage.removeItem(CONFIG.storagePrefix + '_stats');
+  localStorage.removeItem(CONFIG.storagePrefix + '_errors');
+  localStorage.removeItem(CONFIG.storagePrefix + '_xp');
+  localStorage.removeItem(CONFIG.storagePrefix + '_speed_high');
   location.reload();
 }
 
@@ -1594,13 +1668,17 @@ function escHtml(s) { const d = document.createElement('div'); d.textContent = s
 
 function normalize(s) {
   return s.toLowerCase().trim()
+    // Polish diacritics
     .replace(/ą/g,'a').replace(/ć/g,'c').replace(/ę/g,'e').replace(/ł/g,'l')
-    .replace(/ń/g,'n').replace(/ó/g,'o').replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z');
+    .replace(/ń/g,'n').replace(/ó/g,'o').replace(/ś/g,'s').replace(/ź/g,'z').replace(/ż/g,'z')
+    // Italian accented vowels
+    .replace(/à/g,'a').replace(/è/g,'e').replace(/é/g,'e').replace(/ì/g,'i')
+    .replace(/ò/g,'o').replace(/ù/g,'u');
 }
 
-function plEqual(a, b) { return normalize(a) === normalize(b); }
+function langEqual(a, b) { return normalize(a) === normalize(b); }
 
-let activeLevel = localStorage.getItem('fiszki_level') || null; // null = all levels
+let activeLevel = null; // set from localStorage after config loads
 
 function getAllWords() {
   const words = [];
@@ -1634,10 +1712,10 @@ function getSmartReviewWords() {
   return all.filter(w => isWordDue(w.id));
 }
 
-function buildPlKeyboard(containerId, targetInputId) {
+function buildLangKeyboard(containerId, targetInputId) {
   const el = document.getElementById(containerId);
-  el.innerHTML = PL_CHARS.map(c =>
-    `<button class="pl-key" onmousedown="event.preventDefault()" onclick="insertChar('${targetInputId}','${c}')">${c}</button>`
+  el.innerHTML = LANG_CHARS.map(c =>
+    `<button class="lang-key" onmousedown="event.preventDefault()" onclick="insertChar('${targetInputId}','${c}')">${c}</button>`
   ).join('');
 }
 
@@ -1652,7 +1730,7 @@ function insertChar(inputId, ch) {
 
 // Track last focused declension input
 document.addEventListener('focusin', (e) => {
-  if (e.target.classList && (e.target.classList.contains('decl-input') || e.target.classList.contains('conj-input')) && !e.target.disabled) {
+  if (e.target.classList && (e.target.classList.contains('decl-input') || e.target.classList.contains('art-input') || e.target.classList.contains('conj-input')) && !e.target.disabled) {
     lastFocusedInput = e.target.id;
   }
 });
@@ -1662,11 +1740,11 @@ function toggleDark() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
   document.getElementById('dark-btn').innerHTML = isDark ? '&#9790;' : '&#9788;';
-  localStorage.setItem('fiszki_dark', isDark ? '' : 'dark');
+  localStorage.setItem('lang_trainer_dark', isDark ? '' : 'dark');
 }
 
 function initDark() {
-  const pref = localStorage.getItem('fiszki_dark');
+  const pref = localStorage.getItem('lang_trainer_dark');
   if (pref === 'dark') {
     document.documentElement.setAttribute('data-theme', 'dark');
     document.getElementById('dark-btn').innerHTML = '&#9788;';
@@ -1685,7 +1763,7 @@ function switchMode(mode) {
   if (section) section.classList.add('active');
 
   // Hide all controls
-  ['fc','sp','mc','li','decl','conj','gen','conv','cloze','num','sb','speed','phrase'].forEach(p => {
+  ['fc','sp','mc','li','decl','art','conj','gen','conv','cloze','num','sb','speed','phrase'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1715,7 +1793,7 @@ function switchMode(mode) {
   } else if (mode === 'listening') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next &nbsp;<kbd>R</kbd> replay';
     kb.style.display = '';
-  } else if (mode === 'declension') {
+  } else if (mode === 'declension' || mode === 'articles') {
     kb.innerHTML = '<kbd>Enter</kbd> check / next';
     kb.style.display = '';
   } else if (mode === 'conjugation') {
@@ -1794,7 +1872,8 @@ function openSideMenu() {
 
 function buildGroups() {
   const el = document.getElementById('groups');
-  const groups = currentMode === 'declension'
+  const isGrammarMode = currentMode === 'declension' || currentMode === 'articles';
+  const groups = isGrammarMode
     ? Object.keys(NOUN_GROUPS).concat(['Smart Review'])
     : Object.keys(NOUN_GROUPS).concat(['Verbs','Adjectives','Smart Review']);
   el.innerHTML = groups.map(name =>
@@ -1805,8 +1884,8 @@ function buildGroups() {
 function selectGroup(name) { activeGroup = name; buildGroups(); startRound(); }
 function selectLevel(level) {
   activeLevel = level;
-  if (level) localStorage.setItem('fiszki_level', level);
-  else localStorage.removeItem('fiszki_level');
+  if (level) localStorage.setItem(CONFIG.storagePrefix + '_level', level);
+  else localStorage.removeItem(CONFIG.storagePrefix + '_level');
   buildLevelPills();
   buildGroups();
   switchMode(currentMode);
@@ -1815,8 +1894,8 @@ function selectLevel(level) {
 // ===================== ROUND MANAGEMENT =====================
 function startRound(wordList) {
   const words = wordList || getGroupWords();
-  if (currentMode === 'declension') {
-    // Only regular nouns for declension
+  if (currentMode === 'declension' || currentMode === 'articles') {
+    // Only regular nouns for grammar modes
     deck = shuffle(words.filter(w => w.type === 'noun' && NOUNS[w.idx][2] !== 'pl'));
   } else {
     deck = shuffle([...words]);
@@ -1832,7 +1911,7 @@ function startRound(wordList) {
   }
 
   // Show relevant controls
-  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',declension:'decl',conjugation:'conj',gender:'gen'}[currentMode];
+  const ctrlId = {flashcard:'fc',spelling:'sp',multichoice:'mc',listening:'li',declension:'decl',articles:'art',conjugation:'conj',gender:'gen'}[currentMode];
   if (ctrlId) document.getElementById(ctrlId + '-controls').style.display = '';
 
   showCurrent();
@@ -1845,6 +1924,7 @@ function showCurrent() {
   else if (currentMode === 'multichoice') mc_show();
   else if (currentMode === 'listening') li_show();
   else if (currentMode === 'declension') decl_show();
+  else if (currentMode === 'articles') art_show();
   updateProgress();
 }
 
@@ -1875,7 +1955,7 @@ function finishRound() {
 function showResults() {
   const section = document.getElementById('mode-' + currentMode);
   if (section) section.style.display = 'none';
-  ['fc','sp','mc','li','decl','conj','gen','conv','cloze','num','sb','speed','phrase'].forEach(p => {
+  ['fc','sp','mc','li','decl','art','conj','gen','conv','cloze','num','sb','speed','phrase'].forEach(p => {
     const c = document.getElementById(p + '-controls');
     if (c) c.style.display = 'none';
   });
@@ -1911,7 +1991,7 @@ function markWord(word, wasCorrect) {
   if (wasCorrect) {
     correct++;
     // Award XP based on current mode
-    const xpMap = {flashcard:5,spelling:10,multichoice:5,listening:10,declension:15,conjugation:15,gender:10,cloze:10,numbers:8,sentences:15,phrases:10};
+    const xpMap = {flashcard:5,spelling:10,multichoice:5,listening:10,declension:15,articles:15,conjugation:15,gender:10,cloze:10,numbers:8,sentences:15,phrases:10};
     const xp = xpMap[currentMode] || 5;
     addXP(xp);
   }
@@ -1935,7 +2015,7 @@ function fc_show() {
   const ex = EXAMPLES[w.id];
   const exEl = document.getElementById('fc-example');
   if (ex) {
-    exEl.innerHTML = '<span class="card-example-pl">' + escHtml(ex.pl) + '</span><br>' + escHtml(ex.en);
+    exEl.innerHTML = '<span class="card-example-tl">' + escHtml(ex.pl) + '</span><br>' + escHtml(ex.en);
   } else {
     exEl.textContent = '';
   }
@@ -1970,8 +2050,9 @@ function sp_show() {
   const inp = document.getElementById('sp-input');
   inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
   document.getElementById('sp-word').textContent = w.en;
-  let prompt = w.type === 'verb' ? 'Translate this verb to Polish:' :
-    w.type === 'adj' ? 'Translate this adjective to Polish:' : 'Translate to Polish:';
+  const langName = CONFIG ? CONFIG.name : 'target language';
+  let prompt = w.type === 'verb' ? `Translate this verb to ${langName}:` :
+    w.type === 'adj' ? `Translate this adjective to ${langName}:` : `Translate to ${langName}:`;
   if (w.type === 'noun' && w.gender) {
     const genderHint = w.gender === 'pl' ? 'plural-only' : {m:'masculine',f:'feminine',n:'neuter'}[w.gender];
     prompt += ` (${genderHint})`;
@@ -1983,7 +2064,7 @@ function sp_show() {
   document.getElementById('sp-submit').style.display = '';
   document.getElementById('sp-next-btn').style.display = 'none';
   document.getElementById('sp-giveup-btn').style.display = '';
-  buildPlKeyboard('sp-keyboard', 'sp-input');
+  buildLangKeyboard('sp-keyboard', 'sp-input');
   inp.focus();
 }
 
@@ -2017,7 +2098,7 @@ function sp_check() {
   const fb = document.getElementById('sp-feedback');
   const ans = document.getElementById('sp-answer');
 
-  if (plEqual(inp.value, w.pl)) {
+  if (langEqual(inp.value, w.pl)) {
     inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     if (inp.value.trim().toLowerCase() !== w.pl.toLowerCase()) {
@@ -2039,7 +2120,7 @@ function sp_next() { if (!sp_answered) return; current++; showCurrent(); }
 function sp_showHint() {
   if (sp_answered || current >= deck.length) return;
   const w = deck[current];
-  const h = w.pl[0] + w.pl.slice(1).replace(/[a-ząćęłńóśźż]/gi,' _');
+  const h = w.pl[0] + w.pl.slice(1).replace(/\p{L}/gu,' _');
   document.getElementById('sp-feedback').textContent = h;
   document.getElementById('sp-feedback').className = 'spell-feedback';
 }
@@ -2058,7 +2139,7 @@ function mc_show() {
   const w = deck[current];
   const qField = mc_dir === 'pe' ? 'pl' : 'en';
   const aField = mc_dir === 'pe' ? 'en' : 'pl';
-  document.getElementById('mc-label').textContent = mc_dir === 'pe' ? 'Polish' : 'English';
+  document.getElementById('mc-label').textContent = mc_dir === 'pe' ? (CONFIG ? CONFIG.name : 'Target') : 'English';
   document.getElementById('mc-word').textContent = w[qField];
 
   const correctAns = w[aField];
@@ -2097,7 +2178,7 @@ function li_speak(text) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'pl-PL'; u.rate = 0.85;
+  u.lang = CONFIG.speechLang; u.rate = 0.85;
   speechSynthesis.speak(u);
 }
 
@@ -2138,15 +2219,15 @@ function li_check() {
     accepted.push(noParen);
     if (noParen.startsWith('to ')) accepted.push(noParen.slice(3));
   }
-  const typedPolish = normalize(inp.value) === normalize(w.pl);
+  const typedTarget = normalize(inp.value) === normalize(w.pl);
   if (accepted.some(a => userAns === a)) {
     inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     ans.textContent = w.pl + ' = ' + w.en;
     markWord(w, true);
-  } else if (typedPolish) {
+  } else if (typedTarget) {
     inp.className = 'spell-input correct anim-correct';
-    fb.textContent = 'You typed the Polish word — the English meaning is:'; fb.className = 'spell-feedback';
+    fb.textContent = 'You typed the ' + (CONFIG ? CONFIG.name : '') + ' word — the English meaning is:'; fb.className = 'spell-feedback';
     ans.textContent = w.en;
     markWord(w, true);
   } else {
@@ -2196,11 +2277,11 @@ function decl_show() {
 
   document.getElementById('decl-check-btn').style.display = '';
   document.getElementById('decl-next-btn').style.display = 'none';
-  buildPlKeyboard('decl-keyboard', 'd-nom-pl');
+  buildLangKeyboard('decl-keyboard', 'd-nom-pl');
 
   // Update keyboard target on focus
   document.querySelectorAll('#decl-grid .decl-input:not(:disabled)').forEach(inp => {
-    inp.onfocus = () => buildPlKeyboard('decl-keyboard', inp.id);
+    inp.onfocus = () => buildLangKeyboard('decl-keyboard', inp.id);
   });
 }
 
@@ -2241,7 +2322,7 @@ function decl_check() {
     const inp = document.getElementById(id);
     inp.disabled = true;
     const correct = answers[id];
-    if (plEqual(inp.value, correct)) {
+    if (langEqual(inp.value, correct)) {
       inp.classList.add('correct');
     } else {
       inp.classList.add('incorrect');
@@ -2261,6 +2342,92 @@ function decl_check() {
 }
 
 function decl_next() { if (!decl_answered) return; current++; showCurrent(); }
+
+// ===================== ARTICLES (Italian) =====================
+let art_answered = false, art_genderPick = null;
+
+function art_show() {
+  art_answered = false;
+  art_genderPick = null;
+  const w = deck[current];
+  const n = NOUNS[w.idx];
+
+  document.getElementById('art-word').textContent = n[0];
+  document.getElementById('art-en').textContent = '(' + n[1] + ')';
+  document.getElementById('a-noun-sg').value = n[0];
+
+  document.querySelectorAll('#art-gender .gender-btn').forEach(b => {
+    b.className = 'gender-btn'; b.style.pointerEvents = '';
+  });
+
+  ['a-def-sg','a-def-pl','a-indef-sg','a-indef-pl','a-noun-pl'].forEach(id => {
+    const inp = document.getElementById(id);
+    inp.value = ''; inp.className = 'art-input'; inp.disabled = false;
+    const cell = inp.parentElement;
+    const corr = cell.querySelector('.art-correction');
+    if (corr) corr.remove();
+  });
+
+  document.getElementById('art-check-btn').style.display = '';
+  document.getElementById('art-next-btn').style.display = 'none';
+}
+
+function art_pickGender(btn) {
+  if (art_answered) return;
+  document.querySelectorAll('#art-gender .gender-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  art_genderPick = btn.dataset.g;
+}
+
+function art_check() {
+  if (art_answered) return;
+  art_answered = true;
+  const w = deck[current];
+  const n = NOUNS[w.idx];
+  // n = [word, en, gender, plural, def_sg, def_pl, indef_sg, indef_pl]
+  const answers = {
+    'gender': n[2],
+    'a-def-sg': n[4],
+    'a-def-pl': n[5],
+    'a-indef-sg': n[6],
+    'a-indef-pl': n[7],
+    'a-noun-pl': n[3],
+  };
+
+  let allCorrect = true;
+
+  document.querySelectorAll('#art-gender .gender-btn').forEach(b => {
+    b.classList.add('disabled');
+    if (b.dataset.g === answers.gender) b.classList.add('correct');
+    else if (b.dataset.g === art_genderPick && art_genderPick !== answers.gender) b.classList.add('incorrect');
+  });
+  if (art_genderPick !== answers.gender) { allCorrect = false; recordError('gender'); }
+
+  ['a-def-sg','a-def-pl','a-indef-sg','a-indef-pl','a-noun-pl'].forEach(id => {
+    const inp = document.getElementById(id);
+    inp.disabled = true;
+    const correct = answers[id];
+    if (inp.value.trim().toLowerCase() === correct.toLowerCase()) {
+      inp.classList.add('correct');
+    } else {
+      inp.classList.add('incorrect');
+      allCorrect = false;
+      if (id === 'a-noun-pl') recordError('vocabulary');
+      else recordError('articles');
+      const corr = document.createElement('div');
+      corr.className = 'art-correction';
+      corr.textContent = correct;
+      inp.parentElement.appendChild(corr);
+    }
+  });
+
+  markWord(w, allCorrect);
+  document.getElementById('art-check-btn').style.display = 'none';
+  document.getElementById('art-next-btn').style.display = '';
+  updateProgress();
+}
+
+function art_next() { if (!art_answered) return; current++; showCurrent(); }
 
 // ===================== CONJUGATION =====================
 function conj_startRound() {
@@ -2292,7 +2459,7 @@ function conj_show() {
   }
   document.getElementById('conj-check-btn').style.display = '';
   document.getElementById('conj-next-btn').style.display = 'none';
-  buildPlKeyboard('conj-keyboard', 'cj-0');
+  buildLangKeyboard('conj-keyboard', 'cj-0');
 
   // Build pronunciation guide table
   const tbl = document.getElementById('pron-table');
@@ -2300,7 +2467,7 @@ function conj_show() {
     PRONUNCIATION_GUIDE.map(p => `<tr><td>${p.sound}</td><td>${p.ipa}</td><td>${p.desc}</td></tr>`).join('');
 
   document.querySelectorAll('#conj-grid .conj-input').forEach(inp => {
-    inp.onfocus = () => buildPlKeyboard('conj-keyboard', inp.id);
+    inp.onfocus = () => buildLangKeyboard('conj-keyboard', inp.id);
   });
   document.getElementById('cj-0').focus();
 }
@@ -2315,7 +2482,7 @@ function conj_check() {
   for (let i = 0; i < 6; i++) {
     const inp = document.getElementById('cj-' + i);
     inp.disabled = true;
-    if (plEqual(inp.value, forms[i])) {
+    if (langEqual(inp.value, forms[i])) {
       inp.classList.add('correct');
     } else {
       inp.classList.add('incorrect');
@@ -2340,81 +2507,75 @@ function conj_next() { if (!conj_answered) return; current++; if (current >= dec
 // ===================== GENDER-AWARE PRACTICE =====================
 function gen_buildExercises() {
   const exercises = [];
+  const isItalian = CONFIG && CONFIG.lang === 'it';
 
   // Type 1: Adjective agreement with nouns
   ADJ_FORMS.forEach((forms, ai) => {
     const adj = ADJECTIVES[ai];
     GENDER_NOUNS.forEach(noun => {
-      const gi = noun.g === 'm' ? 0 : noun.g === 'f' ? 1 : 2;
-      const genderName = noun.g === 'm' ? 'masculine' : noun.g === 'f' ? 'feminine' : 'neuter';
-      exercises.push({
-        type: 'adj',
-        prompt: `_____ ${noun.pl}`,
-        hint: `<strong>${adj[1]}</strong> ${noun.en} (${genderName})`,
-        hintWord: `${forms[0]} (masc. nominative)`,
-        answer: forms[gi],
-        display: `${forms[gi]} ${noun.pl}`,
-        id: 'ga_' + ai + '_' + noun.pl,
-      });
+      if (isItalian) {
+        // Italian: noun + adjective order, m/f only
+        const fi = noun.g === 'm' ? 0 : 1;
+        const genderName = noun.g === 'm' ? 'masculine' : 'feminine';
+        exercises.push({
+          type: 'adj',
+          prompt: `${noun.pl} _____`,
+          hint: `<strong>${adj[1]}</strong> ${noun.en} (${genderName})`,
+          hintWord: `${forms.m || forms[0]} (masc. singular)`,
+          answer: typeof forms === 'object' && !Array.isArray(forms) ? (noun.g === 'm' ? forms.m : forms.f) : forms[fi],
+          display: `${noun.pl} ${typeof forms === 'object' && !Array.isArray(forms) ? (noun.g === 'm' ? forms.m : forms.f) : forms[fi]}`,
+          id: 'ga_' + ai + '_' + noun.pl,
+        });
+      } else {
+        // Polish: adjective + noun order, m/f/n
+        const gi = noun.g === 'm' ? 0 : noun.g === 'f' ? 1 : 2;
+        const genderName = noun.g === 'm' ? 'masculine' : noun.g === 'f' ? 'feminine' : 'neuter';
+        const formVal = typeof forms === 'object' && !Array.isArray(forms) ? (noun.g === 'm' ? forms.m : noun.g === 'f' ? forms.f : forms.n) : forms[gi];
+        exercises.push({
+          type: 'adj',
+          prompt: `_____ ${noun.pl}`,
+          hint: `<strong>${adj[1]}</strong> ${noun.en} (${genderName})`,
+          hintWord: `${typeof forms === 'object' && !Array.isArray(forms) ? forms.m : forms[0]} (masc. nominative)`,
+          answer: formVal,
+          display: `${formVal} ${noun.pl}`,
+          id: 'ga_' + ai + '_' + noun.pl,
+        });
+      }
     });
   });
 
-  // Type 2: Past tense 1st person (male/female speaker)
-  VERB_PAST.forEach((forms, vi) => {
-    if (!forms) return; // skip verbs without past tense data
-    const verb = VERBS[vi];
-    exercises.push({
-      type: 'past',
-      prompt: `Ja _____. (male speaker)`,
-      hint: `I <strong>${verb[1].replace('to ','')}</strong> (past, male)`,
-      hintWord: `${verb[0]} (infinitive)`,
-      answer: forms[0],
-      display: `Ja ${forms[0]}.`,
-      id: 'gp_m1_' + vi,
+  // Type 2 & 3: Past tense exercises (language-specific)
+  if (isItalian) {
+    // Italian passato prossimo: auxiliary + past participle with gender agreement
+    VERB_PAST.forEach((forms, vi) => {
+      if (!forms) return;
+      const verb = VERBS[vi];
+      const aux = forms[4]; // "essere" or "avere"
+      if (aux === 'essere') {
+        exercises.push({ type:'past', prompt:`Lui è _____.`, hint:`He <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[0], display:`Lui è ${forms[0]}.`, id:'gp_m_'+vi });
+        exercises.push({ type:'past', prompt:`Lei è _____.`, hint:`She <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[1], display:`Lei è ${forms[1]}.`, id:'gp_f_'+vi });
+        exercises.push({ type:'past', prompt:`Loro sono _____.`, hint:`They (m.) <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[2], display:`Loro sono ${forms[2]}.`, id:'gp_mpl_'+vi });
+        exercises.push({ type:'past', prompt:`Loro sono _____.`, hint:`They (f.) <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[3], display:`Loro sono ${forms[3]}.`, id:'gp_fpl_'+vi });
+      } else {
+        exercises.push({ type:'past', prompt:`Io ho _____.`, hint:`I <strong>${verb[1].replace('to ','')}</strong> (passato prossimo)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[0], display:`Io ho ${forms[0]}.`, id:'gp_avere_'+vi });
+      }
     });
-    exercises.push({
-      type: 'past',
-      prompt: `Ja _____. (female speaker)`,
-      hint: `I <strong>${verb[1].replace('to ','')}</strong> (past, female)`,
-      hintWord: `${verb[0]} (infinitive)`,
-      answer: forms[1],
-      display: `Ja ${forms[1]}.`,
-      id: 'gp_f1_' + vi,
+  } else {
+    // Polish past tense: 1st person male/female + 3rd person he/she/it
+    VERB_PAST.forEach((forms, vi) => {
+      if (!forms) return;
+      const verb = VERBS[vi];
+      exercises.push({ type:'past', prompt:`Ja _____. (male speaker)`, hint:`I <strong>${verb[1].replace('to ','')}</strong> (past, male)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[0], display:`Ja ${forms[0]}.`, id:'gp_m1_'+vi });
+      exercises.push({ type:'past', prompt:`Ja _____. (female speaker)`, hint:`I <strong>${verb[1].replace('to ','')}</strong> (past, female)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[1], display:`Ja ${forms[1]}.`, id:'gp_f1_'+vi });
     });
-  });
-
-  // Type 3: Past tense 3rd person (he/she/it)
-  VERB_PAST.forEach((forms, vi) => {
-    if (!forms) return; // skip verbs without past tense data
-    const verb = VERBS[vi];
-    exercises.push({
-      type: 'past',
-      prompt: `On _____.`,
-      hint: `He <strong>${verb[1].replace('to ','')}</strong> (past)`,
-      hintWord: `${verb[0]} (infinitive)`,
-      answer: forms[2],
-      display: `On ${forms[2]}.`,
-      id: 'gp_m3_' + vi,
+    VERB_PAST.forEach((forms, vi) => {
+      if (!forms) return;
+      const verb = VERBS[vi];
+      exercises.push({ type:'past', prompt:`On _____.`, hint:`He <strong>${verb[1].replace('to ','')}</strong> (past)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[2], display:`On ${forms[2]}.`, id:'gp_m3_'+vi });
+      exercises.push({ type:'past', prompt:`Ona _____.`, hint:`She <strong>${verb[1].replace('to ','')}</strong> (past)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[3], display:`Ona ${forms[3]}.`, id:'gp_f3_'+vi });
+      exercises.push({ type:'past', prompt:`Ono _____.`, hint:`It <strong>${verb[1].replace('to ','')}</strong> (past)`, hintWord:`${verb[0]} (infinitive)`, answer:forms[4], display:`Ono ${forms[4]}.`, id:'gp_n3_'+vi });
     });
-    exercises.push({
-      type: 'past',
-      prompt: `Ona _____.`,
-      hint: `She <strong>${verb[1].replace('to ','')}</strong> (past)`,
-      hintWord: `${verb[0]} (infinitive)`,
-      answer: forms[3],
-      display: `Ona ${forms[3]}.`,
-      id: 'gp_f3_' + vi,
-    });
-    exercises.push({
-      type: 'past',
-      prompt: `Ono _____.`,
-      hint: `It <strong>${verb[1].replace('to ','')}</strong> (past)`,
-      hintWord: `${verb[0]} (infinitive)`,
-      answer: forms[4],
-      display: `Ono ${forms[4]}.`,
-      id: 'gp_n3_' + vi,
-    });
-  });
+  }
 
   return exercises;
 }
@@ -2451,7 +2612,7 @@ function gen_show() {
   document.getElementById('gen-feedback').textContent = '';
   document.getElementById('gen-feedback').className = 'spell-feedback';
   document.getElementById('gen-answer').textContent = '';
-  buildPlKeyboard('gen-keyboard', 'gen-input');
+  buildLangKeyboard('gen-keyboard', 'gen-input');
   inp.focus();
 }
 
@@ -2476,7 +2637,7 @@ function gen_check() {
   const fb = document.getElementById('gen-feedback');
   const ans = document.getElementById('gen-answer');
 
-  if (plEqual(inp.value, ex.answer)) {
+  if (langEqual(inp.value, ex.answer)) {
     inp.className = 'spell-input correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     if (inp.value.trim().toLowerCase() !== ex.answer.toLowerCase()) {
@@ -2663,7 +2824,7 @@ function cloze_show() {
   document.getElementById('cloze-next-btn').style.display = 'none';
   document.getElementById('cloze-feedback').textContent = '';
   document.getElementById('cloze-feedback').className = 'spell-feedback';
-  buildPlKeyboard('cloze-keyboard', 'cloze-input');
+  buildLangKeyboard('cloze-keyboard', 'cloze-input');
   inp.focus();
 }
 
@@ -2679,7 +2840,7 @@ function cloze_check() {
   document.getElementById('cloze-next-btn').style.display = '';
   const fb = document.getElementById('cloze-feedback');
 
-  const isCorrect = plEqual(inp.value, ex.answer);
+  const isCorrect = langEqual(inp.value, ex.answer);
   if (isCorrect) {
     inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
@@ -2775,7 +2936,7 @@ function conv_showSelector() {
   el.innerHTML =
     '<div style="text-align:center;margin-bottom:20px">' +
     '<h3 style="font-size:1.05rem;font-weight:600;margin-bottom:4px">Conversations</h3>' +
-    '<p style="font-size:0.8rem;color:var(--text-muted)">Practice real-life Polish dialogues</p></div>' +
+    '<p style="font-size:0.8rem;color:var(--text-muted)">Practice real-life dialogues</p></div>' +
     '<div class="conv-selector">' +
     CONVERSATIONS.map((c, i) =>
       '<div class="conv-card" onclick="conv_select(' + i + ')">' +
@@ -2805,7 +2966,7 @@ function conv_showConversation() {
     '<button class="conv-mode-btn ' + (conv_mode === 'browse' ? 'active' : '') + '" onclick="conv_setMode(\'browse\')">Browse</button>' +
     '<button class="conv-mode-btn ' + (conv_mode === 'practice' ? 'active' : '') + '" onclick="conv_setMode(\'practice\')">Practice</button></div>' +
     '<div class="conv-chat" id="conv-chat"></div>' +
-    '<div class="pl-keyboard" id="conv-keyboard" style="max-width:320px;margin:0 auto"></div>';
+    '<div class="lang-keyboard" id="conv-keyboard" style="max-width:320px;margin:0 auto"></div>';
 
   document.getElementById('conv-controls').style.display = '';
   document.getElementById('conv-back-btn').style.display = '';
@@ -2829,7 +2990,7 @@ function conv_renderBrowse() {
   ).join('');
   document.getElementById('conv-next-btn').style.display = 'none';
   document.getElementById('conv-check-btn').style.display = 'none';
-  buildPlKeyboard('conv-keyboard', '');
+  buildLangKeyboard('conv-keyboard', '');
   document.getElementById('conv-keyboard').style.display = 'none';
 }
 
@@ -2837,7 +2998,7 @@ function conv_startPractice() {
   conv_lineIdx = 0;
   conv_correct = 0;
   conv_total = conv_current.lines.filter(l => l.speaker === 'you').length;
-  buildPlKeyboard('conv-keyboard', 'conv-input');
+  buildLangKeyboard('conv-keyboard', 'conv-input');
   document.getElementById('conv-keyboard').style.display = '';
   conv_renderPractice();
 }
@@ -2866,7 +3027,7 @@ function conv_renderPractice() {
     } else {
       html += '<div class="conv-bubble conv-bubble-you input-mode">' +
         '<div class="conv-bubble-en" style="margin-bottom:6px">' + escHtml(line.en) + '</div>' +
-        '<input type="text" class="conv-input" id="conv-input" placeholder="Type in Polish..." autocomplete="off">' +
+        '<input type="text" class="conv-input" id="conv-input" placeholder="Type translation..." autocomplete="off">' +
         '<div class="spell-feedback" id="conv-feedback" style="font-size:0.76rem;margin-top:4px"></div></div>';
     }
   }
@@ -2882,7 +3043,7 @@ function conv_renderPractice() {
   const inp = document.getElementById('conv-input');
   if (inp) {
     inp.focus();
-    buildPlKeyboard('conv-keyboard', 'conv-input');
+    buildLangKeyboard('conv-keyboard', 'conv-input');
   }
   document.getElementById('conv-check-btn').style.display = '';
   document.getElementById('conv-next-btn').style.display = 'none';
@@ -2899,7 +3060,7 @@ function conv_check() {
   const fb = document.getElementById('conv-feedback');
 
   inp.disabled = true;
-  if (plEqual(inp.value, line.pl)) {
+  if (langEqual(inp.value, line.pl)) {
     inp.className = 'conv-input correct anim-correct';
     fb.textContent = 'Correct!';
     fb.className = 'spell-feedback correct';
@@ -3079,10 +3240,13 @@ function renderProgress() {
 
   // Error pattern analysis
   const errors = getErrors();
+  const grammarCat = CONFIG && CONFIG.grammarMode && CONFIG.grammarMode.id === 'articles'
+    ? { key: 'articles', label: 'Articles', color: '#8b5cf6', desc: 'Wrong definite/indefinite article' }
+    : { key: 'case_form', label: 'Case Forms', color: '#8b5cf6', desc: 'Wrong noun declension' };
   const errorCategories = [
-    { key: 'diacritics', label: 'Diacritics', color: '#f59e0b', desc: 'Missing or wrong Polish special characters' },
+    { key: 'diacritics', label: 'Diacritics', color: '#f59e0b', desc: 'Missing or wrong special characters' },
     { key: 'gender', label: 'Gender', color: '#ec4899', desc: 'Wrong masculine/feminine/neuter form' },
-    { key: 'case_form', label: 'Case Forms', color: '#8b5cf6', desc: 'Wrong noun declension' },
+    grammarCat,
     { key: 'conjugation', label: 'Conjugation', color: '#06b6d4', desc: 'Wrong verb form' },
     { key: 'vocabulary', label: 'Vocabulary', color: '#ef4444', desc: 'Wrong word or meaning' },
   ];
@@ -3114,7 +3278,7 @@ function renderProgress() {
       errorCategories.filter(c => (errors[c.key] || 0) > 0).sort((a,b) => (errors[b.key]||0) - (errors[a.key]||0))
         .slice(0,2).map(c => `<strong>${c.label}:</strong> ${c.desc}`).join(' &bull; ') +
       '</div>' +
-      '<div style="margin-top:10px"><button class="btn btn-sm" onclick="if(confirm(\'Reset error stats?\')){saveErrors({diacritics:0,gender:0,case_form:0,conjugation:0,vocabulary:0});renderProgress();}">Reset Error Stats</button></div>';
+      '<div style="margin-top:10px"><button class="btn btn-sm" onclick="if(confirm(\'Reset error stats?\')){saveErrors({diacritics:0,gender:0,case_form:0,articles:0,conjugation:0,vocabulary:0});renderProgress();}">Reset Error Stats</button></div>';
   } else {
     errSec.style.display = '';
     errSec.innerHTML = '<h3 class="chart-section" style="margin-bottom:0;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted)">Error Patterns</h3>' +
@@ -3165,6 +3329,8 @@ document.addEventListener('keydown', (e) => {
     else if ((e.key === 'r' || e.key === 'R') && !inInput) li_play();
   } else if (currentMode === 'declension') {
     if (e.key === 'Enter') { e.preventDefault(); decl_answered ? decl_next() : decl_check(); }
+  } else if (currentMode === 'articles') {
+    if (e.key === 'Enter') { e.preventDefault(); art_answered ? art_next() : art_check(); }
   } else if (currentMode === 'conjugation') {
     if (e.key === 'Enter') { e.preventDefault(); conj_answered ? conj_next() : conj_check(); }
   } else if (currentMode === 'gender') {
@@ -3236,10 +3402,10 @@ const XP_LEVELS = [
 ];
 
 function getXP() {
-  return parseInt(localStorage.getItem('fiszki_xp') || '0', 10);
+  return parseInt(localStorage.getItem(CONFIG.storagePrefix + '_xp') || '0', 10);
 }
 function setXP(val) {
-  localStorage.setItem('fiszki_xp', val.toString());
+  localStorage.setItem(CONFIG.storagePrefix + '_xp', val.toString());
 }
 
 function getXPLevel(xp) {
@@ -3345,7 +3511,7 @@ function num_buildExercises() {
       prompt: i.toString(),
       answer: pl,
       display: i + ' = ' + pl,
-      tag: 'Number to Polish',
+      tag: 'Number to Word',
     });
   }
 
@@ -3356,7 +3522,7 @@ function num_buildExercises() {
       prompt: n.pl,
       answer: n.value.toString(),
       display: n.pl + ' = ' + n.value,
-      tag: 'Polish to Number',
+      tag: 'Word to Number',
     });
   });
 
@@ -3418,11 +3584,11 @@ function num_show() {
   const ex = num_deck[num_current];
   document.getElementById('num-tag').textContent = ex.tag;
   const isPlToNum = ex.type === 'pl2num';
-  document.getElementById('num-prompt').textContent = isPlToNum ? 'Type the number:' : 'Type the Polish word:';
+  document.getElementById('num-prompt').textContent = isPlToNum ? 'Type the number:' : 'Type the word:';
   document.getElementById('num-word').textContent = ex.prompt;
   const inp = document.getElementById('num-input');
   inp.value = ''; inp.className = 'spell-input'; inp.disabled = false;
-  inp.placeholder = isPlToNum ? 'Type the digit...' : 'Type in Polish...';
+  inp.placeholder = isPlToNum ? 'Type the digit...' : 'Type the word...';
   document.getElementById('num-submit').style.display = '';
   document.getElementById('num-next-btn').style.display = 'none';
   document.getElementById('num-hint-btn').style.display = '';
@@ -3430,7 +3596,7 @@ function num_show() {
   document.getElementById('num-feedback').className = 'spell-feedback';
   document.getElementById('num-answer').textContent = '';
   if (!isPlToNum) {
-    buildPlKeyboard('num-keyboard', 'num-input');
+    buildLangKeyboard('num-keyboard', 'num-input');
     document.getElementById('num-keyboard').style.display = '';
   } else {
     document.getElementById('num-keyboard').style.display = 'none';
@@ -3452,7 +3618,7 @@ function num_check() {
 
   const isCorrect = ex.type === 'pl2num'
     ? inp.value.trim() === ex.answer
-    : plEqual(inp.value, ex.answer);
+    : langEqual(inp.value, ex.answer);
 
   if (isCorrect) {
     inp.className = 'spell-input correct anim-correct';
@@ -3706,7 +3872,7 @@ function speed_init() {
   speed_running = false;
   document.getElementById('mode-speed').style.display = '';
   document.getElementById('speed-controls').style.display = '';
-  const hs = parseInt(localStorage.getItem('fiszki_speed_high') || '0', 10);
+  const hs = parseInt(localStorage.getItem(CONFIG.storagePrefix + '_speed_high') || '0', 10);
   document.getElementById('speed-highscore').textContent = hs > 0 ? 'High Score: ' + hs + ' XP' : '';
   document.getElementById('speed-content').innerHTML =
     '<div style="text-align:center;padding:20px 0">' +
@@ -3831,9 +3997,9 @@ function speed_pick(btn) {
 }
 
 function speed_finish() {
-  const hs = parseInt(localStorage.getItem('fiszki_speed_high') || '0', 10);
+  const hs = parseInt(localStorage.getItem(CONFIG.storagePrefix + '_speed_high') || '0', 10);
   const isNew = speed_xpEarned > hs;
-  if (isNew) localStorage.setItem('fiszki_speed_high', speed_xpEarned.toString());
+  if (isNew) localStorage.setItem(CONFIG.storagePrefix + '_speed_high', speed_xpEarned.toString());
 
   recordSession(speed_total, speed_correct_count, 0);
   updateStreakBadge();
@@ -3920,7 +4086,7 @@ function phrase_renderBrowse() {
     '<div class="phrase-card-flip" id="phrase-flip-card" onclick="phrase_flipCurrent()">' +
     '<div class="phrase-card-inner" id="phrase-card-inner">' +
     '<div class="phrase-card-face">' +
-    '<div class="card-label">Polish</div>' +
+    '<div class="card-label">' + (CONFIG ? CONFIG.name : '') + '</div>' +
     '<div class="card-word" style="font-size:1.4rem">' + escHtml(p.pl) + '</div>' +
     '<button class="phrase-speak-btn" onclick="event.stopPropagation();phrase_speak(\'' + escHtml(p.pl).replace(/'/g, "\\'") + '\')" title="Listen">&#9835;</button>' +
     '<div style="font-size:0.72rem;color:var(--text-muted);margin-top:8px">click to flip</div>' +
@@ -3951,7 +4117,7 @@ function phrase_speak(text) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'pl-PL'; u.rate = 0.85;
+  u.lang = CONFIG.speechLang; u.rate = 0.85;
   speechSynthesis.speak(u);
 }
 
@@ -3964,18 +4130,18 @@ function phrase_renderQuiz() {
   const p = phrase_deck[phrase_current];
   document.getElementById('phrase-content').innerHTML =
     '<div class="card-box">' +
-    '<div class="card-label">Translate to Polish</div>' +
+    '<div class="card-label">Translate to ' + (CONFIG ? CONFIG.name : '') + '</div>' +
     '<div class="card-word" style="font-size:1.2rem">' + escHtml(p.en) + '</div>' +
     (p.note ? '<div class="phrase-note" style="margin-bottom:12px">' + escHtml(p.note) + '</div>' : '') +
     '<div class="spell-input-row">' +
-    '<input type="text" class="spell-input" id="phrase-input" placeholder="Type in Polish..." autocomplete="off">' +
+    '<input type="text" class="spell-input" id="phrase-input" placeholder="Type translation..." autocomplete="off">' +
     '<button class="btn btn-primary" onclick="phrase_quizCheck()" id="phrase-submit">Check</button></div>' +
-    '<div class="pl-keyboard" id="phrase-keyboard"></div>' +
+    '<div class="lang-keyboard" id="phrase-keyboard"></div>' +
     '<div class="spell-feedback" id="phrase-feedback"></div>' +
     '<div class="spell-answer" id="phrase-quiz-answer"></div></div>' +
     '<div style="text-align:center;font-size:0.78rem;color:var(--text-muted)">' + (phrase_current + 1) + ' / ' + phrase_deck.length + '</div>';
 
-  buildPlKeyboard('phrase-keyboard', 'phrase-input');
+  buildLangKeyboard('phrase-keyboard', 'phrase-input');
   document.getElementById('phrase-input').focus();
   document.getElementById('phrase-action-btn').textContent = 'Next';
   document.getElementById('phrase-action-btn').style.display = 'none';
@@ -3992,7 +4158,7 @@ function phrase_quizCheck() {
   const fb = document.getElementById('phrase-feedback');
   const ans = document.getElementById('phrase-quiz-answer');
 
-  if (plEqual(inp.value, p.pl)) {
+  if (langEqual(inp.value, p.pl)) {
     inp.className = 'spell-input correct anim-correct';
     fb.textContent = 'Correct!'; fb.className = 'spell-feedback correct';
     addXP(10);
@@ -4050,13 +4216,22 @@ let reader_freeText = null; // parsed free text for paste/upload mode
 
 function reader_init() {
   if (!reader_freqLoaded) {
-    fetch('hermit_dave_top_500_pl.txt').then(r => r.text()).then(text => {
+    const freqFile = (CONFIG && CONFIG.freqFile) || 'hermit_dave_top_500_pl.txt';
+    fetch(LANG_DIR + '/' + freqFile).then(r => {
+      if (!r.ok) throw new Error('Frequency file not found');
+      return r.text();
+    }).then(text => {
       text.trim().split('\n').forEach((line, idx) => {
         const parts = line.trim().split(/\s+/);
         if (parts.length >= 2) {
           reader_freqList[parts[0].toLowerCase()] = idx + 1;
         }
       });
+      reader_freqLoaded = true;
+      reader_buildKnowledge();
+      reader_buildTranslations();
+      reader_switchTab(reader_mode);
+    }).catch(() => {
       reader_freqLoaded = true;
       reader_buildKnowledge();
       reader_buildTranslations();
@@ -4076,7 +4251,16 @@ function reader_buildTranslations() {
   // Nouns: map all forms -> English
   WORD_BANK.nouns.forEach(n => {
     const en = n.en;
-    [n.pl, n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(form => {
+    // Common: base form + plural
+    const forms = [n.pl];
+    if (CONFIG.lang === 'pl') {
+      // Polish case forms
+      [n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(f => { if (f) forms.push(f); });
+    } else if (CONFIG.lang === 'it') {
+      // Italian plural
+      if (n.plural) forms.push(n.plural);
+    }
+    forms.forEach(form => {
       if (form) reader_translations.set(form.toLowerCase(), en);
     });
   });
@@ -4246,13 +4430,13 @@ function reader_renderFreeText(text) {
   if (WORD_BANK) {
     const srs = getSRS();
     WORD_BANK.nouns.forEach((n, i) => {
-      if (!srs['n' + i] && unknownList.find(w => {
-        const l = w.toLowerCase();
-        return l === n.pl.toLowerCase() || l === (n.nom_pl||'').toLowerCase() ||
-               l === (n.acc_sg||'').toLowerCase() || l === (n.acc_pl||'').toLowerCase() ||
-               l === (n.gen_sg||'').toLowerCase() || l === (n.gen_pl||'').toLowerCase();
-      })) {
-        newBankWords.push({ lemma: n.pl, en: n.en });
+      if (!srs['n' + i]) {
+        const nForms = [n.pl];
+        if (CONFIG.lang === 'pl') [n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(f => { if (f) nForms.push(f); });
+        else if (CONFIG.lang === 'it' && n.plural) nForms.push(n.plural);
+        if (unknownList.find(w => nForms.some(f => f.toLowerCase() === w.toLowerCase()))) {
+          newBankWords.push({ lemma: n.pl, en: n.en });
+        }
       }
     });
     WORD_BANK.verbs.forEach((v, i) => {
@@ -4301,7 +4485,7 @@ function reader_loadBook() {
     reader_renderPage();
     return;
   }
-  fetch('sample_book.json').then(r => r.json()).then(book => {
+  fetch(LANG_DIR + '/sample_book.json').then(r => r.json()).then(book => {
     reader_book = book;
     reader_buildKnowledge();
     reader_renderPage();
@@ -4319,10 +4503,14 @@ function reader_buildKnowledge() {
       if (!s || s.reviews === 0) return;
       const conf = s.box >= 4 ? 0.8 : s.box >= 3 ? 0.7 : s.box >= 2 ? 0.6 : 0.4;
       known.set(n.pl.toLowerCase(), conf);
-      // All case forms map back to same confidence
-      [n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(form => {
-        if (form) known.set(form.toLowerCase(), conf);
-      });
+      // All inflected forms map back to same confidence
+      if (CONFIG.lang === 'pl') {
+        [n.nom_pl, n.acc_sg, n.acc_pl, n.gen_sg, n.gen_pl].forEach(form => {
+          if (form) known.set(form.toLowerCase(), conf);
+        });
+      } else if (CONFIG.lang === 'it' && n.plural) {
+        known.set(n.plural.toLowerCase(), conf);
+      }
     });
   }
 
@@ -4551,7 +4739,7 @@ function reader_renderPage() {
   const statsEl = document.getElementById('reader-stats');
   const plPct = totalChunks > 0 ? Math.round(plChunks / totalChunks * 100) : 0;
   const knownWords = reader_knowledge.known.size;
-  statsEl.innerHTML = `<span>Polish: <strong>${plPct}%</strong> of text</span>` +
+  statsEl.innerHTML = `<span>${CONFIG ? CONFIG.name : 'Target'}: <strong>${plPct}%</strong> of text</span>` +
     `<span>Known words: <strong>${knownWords}</strong></span>` +
     `<span>New words: <strong>${i1Chunks}</strong></span>` +
     `<span>Freq. tier: <strong>top ${reader_knowledge.medianRank}</strong></span>`;
@@ -4638,18 +4826,19 @@ function reader_setDensity(val) {
 // ===================== INIT =====================
 initDark();
 
-// Load word bank then init UI
-fetch('word_bank.json').then(r => r.json()).then(data => {
-  loadWordBank(data);
+// Load config then init UI
+fetch(LANG_DIR + '/config.json').then(r => r.json()).then(config => {
+  loadConfig(config);
+  activeLevel = localStorage.getItem(CONFIG.storagePrefix + '_level') || null;
   buildModeNav();
   buildGroups();
-  buildPlKeyboard('sp-keyboard', 'sp-input');
+  buildLangKeyboard('sp-keyboard', 'sp-input');
   updateStreakBadge();
   updateXPDisplay();
   switchMode('flashcard');
 }).catch(err => {
-  console.error('Failed to load word bank:', err);
-  document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#dc2626"><h2>Failed to load word bank</h2><p>Make sure word_bank.json is available.</p></div>';
+  console.error('Failed to load config:', err);
+  document.body.innerHTML = '<div style="padding:40px;text-align:center;color:#dc2626"><h2>Failed to load language config</h2><p>Make sure ' + LANG_DIR + '/config.json is available.</p></div>';
 });
 </script>
 </body>

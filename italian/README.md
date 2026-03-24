@@ -1,123 +1,67 @@
 # Schede - Italian Language Trainer
 
-A single-page web app for learning Italian vocabulary, built as a standalone HTML file with no dependencies.
+Italian module for the [Language Trainer](../README.md). Loaded via `app.html?lang=italian` using `config.json` for all language-specific data.
 
-`python3 -m http.server 8000  `
+## Modes
 
-## Features
+8 study modes:
 
-### Study Modes
+- **Flashcards** — flip cards with word type metadata, hints, IPA for verbs
+- **Spelling** — type the Italian translation, accepts answers with or without accents (e.g. "citta" matches "citta")
+- **Multiple Choice** — four options, both directions (Italian <-> English)
+- **Listening** — hear a word via Speech Synthesis API (`it-IT`, 0.85x speed), type the meaning
+- **Articles** — fill in definite articles (il/la/l'/lo/i/le/gli), indefinite articles (un/una/un'/uno), plural noun form, and gender (m/f)
+- **Conjugation** — present-tense verb conjugation for all 6 persons (io, tu, lui/lei, noi, voi, loro)
+- **Gender** — adjective agreement (`libro grande` vs `casa grande`) and passato prossimo with essere/avere (`Lui e andato` vs `Lei e andata`, `Io ho mangiato`)
+- **Progress** — streak, activity chart, mastery breakdown, error patterns, weak words
 
-- **Flashcards** — Flip cards showing an Italian word on the front and English translation on the back. Includes word type metadata (noun gender, verb, adjective). Supports hints that reveal the first letter with blanks. Verbs display IPA transcriptions.
-- **Spelling** — Given an English word, type the Italian translation. Accepts answers with or without Italian accents (e.g. "citta" matches "città"). Shows the exact spelling after answering. Includes an on-screen Italian character keyboard (à, è, é, ì, ò, ù).
-- **Multiple Choice** — Pick the correct translation from four options. Supports both directions: Italian → English and English → Italian.
-- **Listening** — Hear an Italian word spoken aloud (via the browser's Speech Synthesis API, `it-IT` locale, 0.85x speed) and type its English meaning. Includes a replay button and hints. Requires the browser/OS to have an Italian voice installed.
-- **Articles** — Practice Italian articles by filling in definite articles (il/la/l'/lo/i/le/gli), indefinite articles (un/una/un'/uno), partitive articles (dei/delle/degli), and plural noun forms, plus identifying the noun's grammatical gender (m/f).
-- **Conjugation** — Practice present-tense verb conjugation (presente indicativo) by filling in all 6 person forms (io, tu, lui/lei, noi, voi, loro) for each of the 30 verbs. Each verb displays its IPA transcription and includes a collapsible pronunciation guide covering Italian sounds.
-- **Gender** — Gender-aware practice mode testing adjective agreement and passato prossimo forms. Exercise types include:
-  - *Adjective agreement*: given a noun, type the correctly gendered adjective (e.g. "libro grande" vs "casa grande" vs "piccolo" vs "piccola").
-  - *Passato prossimo with essere*: fill in the correct past participle agreeing with the subject (e.g. "Lui è andato" vs "Lei è andata" vs "Loro sono andati").
-  - *Passato prossimo with avere*: fill in the past participle (e.g. "Io ho mangiato").
+## Vocabulary
 
-### Vocabulary
-
-150+ words organized into categories:
-
-| Category | Type | Count |
+| Type | Count | Details |
 |---|---|---|
-| People, Animals, Food, Home, Nature, Body, Objects, Places, Concepts, Misc | Nouns | 100 |
-| — | Verbs | 30 |
-| — | Adjectives | 20 |
+| Nouns | 100 | Plural form, definite/indefinite articles (sg/pl), gender (m/f), 10 thematic groups |
+| Verbs | 30 | Present-tense conjugation (6 persons), passato prossimo participles (m_sg/f_sg/m_pl/f_pl + auxiliary), IPA |
+| Adjectives | 20 | Four forms `{m, f, m_pl, f_pl}` |
 
-Noun entries include plural forms, definite/indefinite/partitive articles for both singular and plural, and grammatical gender.
+## Pronunciation Guide
 
-Verb entries include present-tense conjugation for all 6 persons, passato prossimo past participle forms (masculine/feminine singular and plural), auxiliary verb (essere/avere), and IPA transcriptions.
+17 Italian sounds with IPA transcriptions and plain-English descriptions. Covers soft c/g (before e/i), hard ch/gh, double consonants, gl/gn combinations, accented vowels, and the z sound.
 
-Adjective entries include masculine singular, feminine singular, masculine plural, and feminine plural forms.
+## Language-Specific Grammar
 
-### Pronunciation Guide
+### Articles Mode
 
-A built-in reference for Italian pronunciation aimed at English speakers, accessible from the Conjugation tab. Covers 17 Italian sounds with:
+Tests all Italian article types in a single exercise:
 
-- IPA transcription
-- Plain-English description of how to produce each sound
-- Special focus on sounds that differ from English: soft c/g (before e/i), hard ch/gh, double consonants, gl/gn combinations, accented vowels, and the z sound
-
-### Word Groups
-
-Filter vocabulary by thematic group (People, Animals, Food, etc.) or word type (Verbs, Adjectives). A **Smart Review** group surfaces words that are due for review based on the spaced repetition schedule.
-
-### Spaced Repetition (Leitner System)
-
-Words are tracked across 5 boxes with increasing review intervals (1, 2, 4, 8, 16 days). Correct answers promote a word to the next box; incorrect answers reset it to box 1. All progress is persisted in `localStorage`.
-
-### Progress Tracker
-
-A dedicated Progress tab showing:
-
-- **Day streak** — consecutive days of practice
-- **New words this week** — words seen for the first time in the last 7 days
-- **Words seen** — total words encountered vs. total available
-- **7-day activity chart** — bar chart of daily review counts
-- **Word mastery breakdown** — stacked bar showing distribution across Leitner boxes (Unseen → Mastered)
-- **Error pattern analysis** — horizontal bar chart breaking down mistakes by category (Accents, Gender, Articles, Conjugation, Vocabulary), with descriptions of your weakest areas and a reset option
-- **Weak words list** — words with the lowest accuracy after 2+ reviews
-
-### Error Pattern Analysis
-
-Errors are automatically classified and tracked across all modes:
-
-| Category | Tracked from | Description |
+| | Singular | Plural |
 |---|---|---|
-| Accents | Spelling, Conjugation, Gender | Correct letters but wrong/missing Italian accent marks |
-| Gender | Articles, Gender | Wrong masculine/feminine form |
-| Articles | Articles | Wrong definite/indefinite/partitive article |
-| Conjugation | Conjugation | Wrong verb conjugation form |
-| Vocabulary | Spelling, Multiple Choice, Listening | Completely wrong word or meaning |
+| **Definite** | il, lo, la, l' | i, gli, le |
+| **Indefinite** | un, uno, una, un' | — |
 
-All error counts are persisted in `localStorage` and visualized in the Progress tab.
+### Gender in Past Tense
 
-### Session Results
+Italian passato prossimo requires choosing the correct auxiliary verb and agreeing the past participle with the subject:
 
-After completing a round, a results screen shows:
+- **Essere verbs**: participle agrees with subject gender/number (`andato/andata/andati/andate`)
+- **Avere verbs**: participle is invariant (`mangiato`)
 
-- Animated score ring with percentage
-- Count of correct answers
-- List of missed words for review
-- Option to retry only missed words or start a new round
+## Error Categories
 
-### UI / UX
+| Category | Sources |
+|---|---|
+| Accents | Spelling, Conjugation, Gender |
+| Gender | Articles, Gender |
+| Articles | Articles |
+| Conjugation | Conjugation |
+| Vocabulary | Spelling, Multiple Choice, Listening |
 
-- **Dark mode** — toggle between light and dark themes, preference saved in `localStorage`
-- **Keyboard shortcuts** — full keyboard navigation for every mode (Space to flip, arrow keys, number keys for multiple choice, Enter to advance, Tab between conjugation fields, etc.)
-- **Responsive design** — adapts layout for mobile screens
-- **Italian keyboard** — on-screen buttons for accented characters in spelling, conjugation, and gender modes
+## TODO
 
-## Usage
-
-### Desktop
-
-Open `flashcards.html` in any modern browser. No server or build step required.
-
-### Mobile (PWA)
-
-The app is a Progressive Web App — install it on your phone for offline access:
-
-1. Start a local server from the `language_learning/` root:
-   ```
-   cd ~/language_learning
-   python3 -m http.server 8000
-   ```
-   Or host the files on any static web server.
-
-2. Open the URL on your phone (e.g. `http://<your-ip>:8000`)
-
-3. You'll see a language selector — pick Polish or Italian
-
-4. **Install to home screen:**
-   - **Android (Chrome):** Tap the menu (three dots) > "Add to Home Screen" or "Install app"
-   - **iOS (Safari):** Tap the share button > "Add to Home Screen"
-
-5. The app now works like a native app — own icon, no browser bar, fully offline
-
-All your progress is saved in the browser's localStorage and persists across sessions.
+Port remaining modes from Polish:
+- Cloze
+- Numbers
+- Sentence Builder
+- Speed Round
+- Survival Phrases
+- Conversations
+- Reader
